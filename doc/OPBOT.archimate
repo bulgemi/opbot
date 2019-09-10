@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" name="OPBOT" id="490512c1-d52a-4558-8ecc-326bcf3cea69" version="4.4.0">
+  <folder name="Strategy" id="c40c679a-9969-4251-8f49-b3747b914364" type="strategy"/>
+  <folder name="Business" id="da5f23e4-ce97-4693-aef4-259b3bb195bb" type="business"/>
+  <folder name="Application" id="5291dede-65b6-4ee4-aa05-fdb887338b5b" type="application">
+    <element xsi:type="archimate:ApplicationComponent" name="Application Component" id="c9007ad8-39dc-40ea-90a5-ccfa00e1d765"/>
+    <element xsi:type="archimate:ApplicationService" name="Application Service" id="1d7c8917-cc7b-4614-a6e7-d2d3b82d9fc3"/>
+  </folder>
+  <folder name="Technology &amp; Physical" id="38032175-632d-4e02-9c63-a901398b0f18" type="technology"/>
+  <folder name="Motivation" id="66f363bd-7b88-44d1-aed5-b42ee5a2958c" type="motivation"/>
+  <folder name="Implementation &amp; Migration" id="8d5a4c4d-1147-46d5-91d8-4bb91e3f6c84" type="implementation_migration">
+    <element xsi:type="archimate:WorkPackage" name="Work Package" id="8da05d4e-bb6f-4ed6-893c-fe12922900d6"/>
+  </folder>
+  <folder name="Other" id="4b97dec5-929e-43f7-9bb2-7fd3b9e774c0" type="other"/>
+  <folder name="Relations" id="9a5fc104-b54a-45dc-9e04-2688afb40626" type="relations"/>
+  <folder name="Views" id="98c2c290-6649-41a1-8160-c592dacc2eb7" type="diagrams">
+    <element xsi:type="archimate:ArchimateDiagramModel" name="Default View" id="1011a907-01b8-4c79-9fcd-369f44c7334b"/>
+    <element xsi:type="archimate:SketchModel" name="New Sketch" id="d313a24c-2617-4e5a-8eec-2da332e4e034"/>
+  </folder>
+</archimate:model>
