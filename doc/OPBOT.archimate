@@ -213,6 +213,10 @@
         </child>
       </child>
     </element>
-    <element xsi:type="archimate:ArchimateDiagramModel" name="alerter" id="1ae0bb00-0e19-45d9-80d8-3aeeb02686a1"/>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="alerter" id="1ae0bb00-0e19-45d9-80d8-3aeeb02686a1">
+      <child xsi:type="archimate:DiagramObject" id="7b737b35-a8fe-4237-b654-8c0a58b2855a" archimateElement="6b673254-7b76-4d26-a885-2d71d1ff2c18">
+        <bounds x="141" y="106" width="120" height="55"/>
+      </child>
+    </element>
   </folder>
 </archimate:model>
