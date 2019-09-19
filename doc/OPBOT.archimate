@@ -456,7 +456,7 @@
           <sourceConnection xsi:type="archimate:Connection" id="70d24cf2-da0c-4b2f-930b-98dcf173b07b" source="53db41b8-1ce7-4b19-8ce7-d33052ab55a3" target="47496721-cc7a-47a4-b8a3-fdcadc47e2ec" archimateRelationship="12efb47a-630c-4555-918b-dff0413e4a89"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="d41d4b11-115a-413f-aba7-e135dbec1839" targetConnections="2ee34bbc-ff97-4088-9b04-d1320a333bcc" archimateElement="793b254e-77c1-4601-8e2c-f3e3cbd0e159">
-          <bounds x="181" y="48" width="120" height="28"/>
+          <bounds x="168" y="48" width="133" height="28"/>
           <sourceConnection xsi:type="archimate:Connection" id="a08cff87-d69e-4580-936d-e3548042503a" source="d41d4b11-115a-413f-aba7-e135dbec1839" target="539c3e0c-012c-4768-a453-dfb8b79b0028" archimateRelationship="bee97dbb-6ced-4fc0-b013-a35c39d9babd"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="b568e118-cff3-4497-affc-51fe8deb46c9" targetConnections="15aa4cb6-d67a-495f-a401-4f6aa3d5ea6f ac061f87-05a5-4667-8ea2-db4805cc90a3" archimateElement="981390fb-5532-493b-86e6-f7af270100b5">
@@ -759,7 +759,7 @@ DB 경합 없어야 함.</documentation>
           <sourceConnection xsi:type="archimate:Connection" id="b0ce2d6e-efe9-4574-941b-97518dfa517f" source="a4d8a020-3559-420c-b436-0b1f7f61e836" target="15838dbe-d835-4d46-88c9-4b2dc80507c7" archimateRelationship="8a256652-30be-436e-8e32-96fcdbd4aa8b"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="3a42035e-83b3-4126-9fee-5f68c5e17341" targetConnections="d8280efc-7182-4bab-a798-e48564092892 514ce9b4-202e-41be-b242-6cc02b4b9e1f" archimateElement="2404f6d7-4999-4b39-b08e-543df6230f7a">
-          <bounds x="180" y="60" width="133" height="25"/>
+          <bounds x="180" y="84" width="133" height="25"/>
           <sourceConnection xsi:type="archimate:Connection" id="e98f77d9-4048-4913-9d4e-b413f21c261b" source="3a42035e-83b3-4126-9fee-5f68c5e17341" target="15838dbe-d835-4d46-88c9-4b2dc80507c7" archimateRelationship="f099479c-b6ac-4bcd-81f2-46e676b71e5e"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="0610750f-556f-41b5-891f-34a226e2897e" targetConnections="63c3d49c-7f4d-46db-bac3-837ee1bdf58d ec39d9a8-2783-405a-b424-7f090732b8a5" archimateElement="1f9e12b6-c20b-4a65-b821-ce8f786a347d">
