@@ -44,7 +44,7 @@
     <element xsi:type="archimate:DataObject" name="TASK_RESULT_LIST" id="a773171d-81ca-409d-b2db-e5f021891f04"/>
     <element xsi:type="archimate:DataObject" name="TASK_RESULT_DETAIL" id="14f30345-0648-4552-96f2-a3185a8282ce"/>
     <element xsi:type="archimate:ApplicationFunction" name="log_collect" id="a0c92046-a2be-493f-bc61-84be6b6946a1"/>
-    <element xsi:type="archimate:ApplicationEvent" name="1month" id="5f0f73ac-97c1-4dd1-9ca8-6674e9ae8202"/>
+    <element xsi:type="archimate:ApplicationEvent" name="1day" id="5f0f73ac-97c1-4dd1-9ca8-6674e9ae8202"/>
     <element xsi:type="archimate:ApplicationFunction" name="recommend_info_get" id="8f713578-702b-4873-9434-fafd8a7b668b"/>
     <element xsi:type="archimate:DataObject" name="TASK_DETAIL" id="eb14772d-4561-4749-a755-8198a5c90a05"/>
     <element xsi:type="archimate:DataObject" name="RECOMMEND_INFO" id="f940535f-7053-4366-9f87-bc7bd92d5df8"/>
