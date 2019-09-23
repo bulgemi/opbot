@@ -116,8 +116,8 @@
     <element xsi:type="archimate:SystemSoftware" name="Redis" id="a2a85214-1345-446f-ad9c-40a76a10b7d5"/>
     <element xsi:type="archimate:SystemSoftware" name="Oracle" id="adebf3aa-8f8f-4bef-8a8c-49fe4e6f5fe5"/>
     <element xsi:type="archimate:TechnologyCollaboration" name="Flask&amp;Celery" id="2c583930-0e41-4831-abd4-b7f93d30e343"/>
-    <element xsi:type="archimate:SystemSoftware" name="tensorflow(real)" id="651bc35c-cec6-4f66-bf47-8289f6465022"/>
-    <element xsi:type="archimate:SystemSoftware" name="tensorflow(dev)" id="4551af2d-019d-44ea-8eee-6fb133de1e98"/>
+    <element xsi:type="archimate:SystemSoftware" name="keras(real)" id="651bc35c-cec6-4f66-bf47-8289f6465022"/>
+    <element xsi:type="archimate:SystemSoftware" name="keras(dev)" id="4551af2d-019d-44ea-8eee-6fb133de1e98"/>
     <element xsi:type="archimate:Artifact" name="CSV" id="a6a42138-52a6-4b67-9667-88fbb290a723"/>
     <element xsi:type="archimate:SystemSoftware" name="SA" id="d210bc27-c6ce-44a2-828e-4a1d884c1909"/>
     <element xsi:type="archimate:SystemSoftware" name="OPMATE" id="0312c56b-4c30-49cb-9ba3-478f72acf7d4"/>
