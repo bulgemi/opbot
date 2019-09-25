@@ -45,11 +45,13 @@
     <element xsi:type="archimate:ApplicationFunction" name="outbound_broadcast" id="af38c989-16ff-4796-8d7b-c0462a6d94be">
       <documentation>- RTM(Real Time Message)&#xD;
 - Async I/O&#xD;
-- 아웃바운드 메시지 브로드케스팅</documentation>
+- 아웃바운드 메시지 브로드케스팅&#xD;
+- 개방 채널(open channel)</documentation>
     </element>
     <element xsi:type="archimate:ApplicationFunction" name="outbound_chat" id="981390fb-5532-493b-86e6-f7af270100b5">
-      <documentation>-작업자에게 수행가능한 Task 리스트 제공&#xD;
--처리결과 제공</documentation>
+      <documentation>- 작업자에게 수행가능한 Task 리스트 제공&#xD;
+- 처리결과 제공&#xD;
+- 폐쇄 채널(closed channel)</documentation>
     </element>
     <element xsi:type="archimate:ApplicationFunction" name="task_recommend" id="94bc0d17-fc4b-4a87-8641-e713cf750046">
       <documentation>채널 ID별 수행가능한 분석/조치 태스크 제공(추천 알고리즘 적용)</documentation>
@@ -98,8 +100,12 @@
     <element xsi:type="archimate:ApplicationFunction" name="learning_data_generate" id="7090ef5d-45aa-43df-836e-a5d561837d81">
       <documentation>일별 전처리된 학습 데이터 생성</documentation>
     </element>
-    <element xsi:type="archimate:ApplicationFunction" name="work_history_get" id="95ea29cc-8421-490d-9e05-903e5df0d6ab"/>
-    <element xsi:type="archimate:ApplicationFunction" name="recommend_renew" id="1efcf300-256d-4342-b15a-d6352ecfca71"/>
+    <element xsi:type="archimate:ApplicationFunction" name="work_history_get" id="95ea29cc-8421-490d-9e05-903e5df0d6ab">
+      <documentation>수행 이력 조회</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationFunction" name="recommend_renew" id="1efcf300-256d-4342-b15a-d6352ecfca71">
+      <documentation>추천 정보 갱신</documentation>
+    </element>
     <element xsi:type="archimate:ApplicationFunction" name="action_info_get" id="44c160c7-1ed6-4d9d-9a2d-5231f32b3f8c">
       <documentation>QUEUE에 적재된 수행 이력 수집</documentation>
     </element>
@@ -120,9 +126,15 @@
     <element xsi:type="archimate:ApplicationFunction" name="task_del" id="81d1ad64-382d-4d71-a47f-4e6b5fe4ea92">
       <documentation>작업(task), slack channel 삭제</documentation>
     </element>
-    <element xsi:type="archimate:ApplicationFunction" name="user_add" id="5592269a-68f2-41b1-8fd9-ee92f94eebbc"/>
-    <element xsi:type="archimate:ApplicationFunction" name="user_edit" id="11309340-25c3-479d-927f-ae50514d9f8c"/>
-    <element xsi:type="archimate:ApplicationFunction" name="user_del" id="8d42a000-2365-4c8c-9257-451404002463"/>
+    <element xsi:type="archimate:ApplicationFunction" name="user_add" id="5592269a-68f2-41b1-8fd9-ee92f94eebbc">
+      <documentation>사용자 추가</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationFunction" name="user_edit" id="11309340-25c3-479d-927f-ae50514d9f8c">
+      <documentation>사용자 정보 수정</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationFunction" name="user_del" id="8d42a000-2365-4c8c-9257-451404002463">
+      <documentation>사용자 삭제</documentation>
+    </element>
     <element xsi:type="archimate:DataObject" name="USERS" id="afdf454e-026b-4074-ad23-7b53aa26a116">
       <property key="USER_EMAIL" value="VARCHAR2(256), 사용자 아이디, PK"/>
       <property key="USER_PASSWORD" value="VARCHAR(512), 사용자 비밀번호, 암호화(해시)"/>
@@ -130,8 +142,12 @@
       <property key="CHANGE_DATE" value="VARCHAR2(16), YYYYMMDDHHMMSS"/>
       <property key="USER_NAME" value="VARCHAR2(256), 사용자 이름"/>
     </element>
-    <element xsi:type="archimate:ApplicationFunction" name="sign_in" id="4e3a9898-512c-47ea-a9b8-97d2f41bca85"/>
-    <element xsi:type="archimate:ApplicationFunction" name="sign_out" id="935314b2-3d0b-4f77-aba3-851952c12628"/>
+    <element xsi:type="archimate:ApplicationFunction" name="sign_in" id="4e3a9898-512c-47ea-a9b8-97d2f41bca85">
+      <documentation>로그인</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationFunction" name="sign_out" id="935314b2-3d0b-4f77-aba3-851952c12628">
+      <documentation>로그 오프</documentation>
+    </element>
     <element xsi:type="archimate:ApplicationInterface" name="adapter_opmate" id="5a4d7e59-ee02-437d-9b6b-a2479e3bea0e"/>
     <element xsi:type="archimate:ApplicationInterface" name="adapter_sa" id="2404f6d7-4999-4b39-b08e-543df6230f7a"/>
     <element xsi:type="archimate:ApplicationFunction" name="task_result_add" id="1f9e12b6-c20b-4a65-b821-ce8f786a347d"/>
