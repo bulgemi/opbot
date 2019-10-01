@@ -34,7 +34,7 @@ class Trigger(object):
             time1 = time.strftime('%Y-%m-%d %H:%M', cur_time)
             time2 = time.strftime('%Y%m%d%H%M', cur_time)
 
-            row = [x.strip() for x in row]
+            row = [str(x).strip() for x in row]
 
             edit_info = {
                 5: time1,
@@ -65,7 +65,7 @@ class Trigger(object):
                     pick_num = 0
                 else:
                     pick_num = int(tmp)
-                print("%d" % pick_num)
+                # print("%d" % pick_num)
 
             pick_num += 1
 
