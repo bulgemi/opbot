@@ -32,7 +32,7 @@ class PmSvcLogMon(db.Model):
 
 
 @manager.command
-def tt():
+def trigger():
     print("tp timeout")
 
 
