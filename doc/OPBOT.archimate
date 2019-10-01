@@ -30,7 +30,7 @@
 -신규 채널이 추가되면 별도 구현&#xD;
 -채널 ID 지정</documentation>
     </element>
-    <element xsi:type="archimate:ApplicationInterface" name="alarm" id="d643b61b-c8aa-42b8-b943-5d0fdb632ffa"/>
+    <element xsi:type="archimate:ApplicationInterface" name="notify" id="d643b61b-c8aa-42b8-b943-5d0fdb632ffa"/>
     <element xsi:type="archimate:ApplicationFunction" name="history_read" id="d411975b-1efe-4d52-81a3-19281012bd8f">
       <documentation>이벤트 정보 조회(채널 아이디, 메시지)</documentation>
     </element>
@@ -177,6 +177,7 @@
     <element xsi:type="archimate:ApplicationFunction" name="channel_read" id="6319eb7e-f92c-4302-aa40-8cff45ee3afa">
       <documentation>CHANNEL_INFO 정보 조회</documentation>
     </element>
+    <element xsi:type="archimate:ApplicationFunction" name="scrape" id="5b513606-8ce4-4a53-a093-332746e8dd02"/>
   </folder>
   <folder name="Technology &amp; Physical" id="38032175-632d-4e02-9c63-a901398b0f18" type="technology">
     <element xsi:type="archimate:Node" name="OPBOT" id="52eb7b9f-2724-4adf-8375-9f1f0512d3cd"/>
@@ -191,10 +192,20 @@
     </element>
     <element xsi:type="archimate:SystemSoftware" name="Gunicorn" id="7893666b-d325-44f2-b635-5d668bbafdc7"/>
     <element xsi:type="archimate:SystemSoftware" name="Slacker" id="793b254e-77c1-4601-8e2c-f3e3cbd0e159"/>
-    <element xsi:type="archimate:SystemSoftware" name="MariaDB" id="de52ad2a-5af8-4c7c-b0f5-b4273df5d029"/>
+    <element xsi:type="archimate:SystemSoftware" name="MariaDB" id="de52ad2a-5af8-4c7c-b0f5-b4273df5d029">
+      <documentation>database: opbot_db
+user: opbot_appl/apbot_appl26#!
+
+!주의 사항: Database 생성시 인코딩 주의!
+alter database opbot_db character set=utf8mb4 collate=utf8mb4_unicode_ci;
+alter table [table명] convert to character set utf8mb4 collate utf8mb4_unicode_ci;</documentation>
+    </element>
     <element xsi:type="archimate:SystemSoftware" name="Celery" id="a002ad63-65d2-4039-b9ee-5b7830211349"/>
     <element xsi:type="archimate:SystemSoftware" name="Redis" id="a2a85214-1345-446f-ad9c-40a76a10b7d5"/>
-    <element xsi:type="archimate:SystemSoftware" name="Oracle" id="adebf3aa-8f8f-4bef-8a8c-49fe4e6f5fe5"/>
+    <element xsi:type="archimate:SystemSoftware" name="Oracle" id="adebf3aa-8f8f-4bef-8a8c-49fe4e6f5fe5">
+      <documentation>Prototype에서는 MariadB에 'oracle_db'로 database 생성.
+계정: pm_svc/!pm1svc</documentation>
+    </element>
     <element xsi:type="archimate:TechnologyCollaboration" name="Flask&amp;Celery" id="2c583930-0e41-4831-abd4-b7f93d30e343"/>
     <element xsi:type="archimate:SystemSoftware" name="keras(real)" id="651bc35c-cec6-4f66-bf47-8289f6465022"/>
     <element xsi:type="archimate:SystemSoftware" name="keras(dev)" id="4551af2d-019d-44ea-8eee-6fb133de1e98"/>
@@ -501,7 +512,7 @@ Tool 매핑 관리</content>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="cce3b7a3-bc90-476f-bb35-1fcc4b22d355" fillColor="#ff8080" archimateElement="2c583930-0e41-4831-abd4-b7f93d30e343">
-        <bounds x="252" y="12" width="373" height="217"/>
+        <bounds x="252" y="12" width="373" height="253"/>
         <sourceConnection xsi:type="archimate:Connection" id="1e83e2a0-9496-44d4-854e-79c6fec725ec" source="cce3b7a3-bc90-476f-bb35-1fcc4b22d355" target="5ce13151-d2ed-41bc-9aa6-81b7c62374bc" archimateRelationship="7f64a93d-50cb-408d-9c92-630fd87b2807"/>
         <sourceConnection xsi:type="archimate:Connection" id="8f7e0876-5bde-4271-84f0-0f092e2d4e8b" source="cce3b7a3-bc90-476f-bb35-1fcc4b22d355" target="d65477bf-eab7-4967-9a91-0ec8f5b32d59" archimateRelationship="000ae5b8-bf0b-4ae0-9ba6-c5e46a3d1c4b"/>
         <sourceConnection xsi:type="archimate:Connection" id="e79e3679-a955-469d-af59-dcc55759d107" source="cce3b7a3-bc90-476f-bb35-1fcc4b22d355" target="e44aaa1a-6e66-4f4c-94dd-78ab4d0d5bd1" archimateRelationship="8d2c1539-48bf-413b-9490-ebc9466510fc"/>
@@ -516,8 +527,11 @@ Tool 매핑 관리</content>
           <sourceConnection xsi:type="archimate:Connection" id="2142d971-4802-4e57-862c-1e20f0c5dc1a" source="5ce13151-d2ed-41bc-9aa6-81b7c62374bc" target="5518e925-d22c-4296-8d1b-9b607142d3d8" archimateRelationship="69feba97-e194-44dd-866b-2a90adbd6979"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="d65477bf-eab7-4967-9a91-0ec8f5b32d59" targetConnections="b44bc268-3b00-4df3-a3c9-3d9f9fe8baf0 8f7e0876-5bde-4271-84f0-0f092e2d4e8b" archimateElement="8464c129-977d-4bb8-b2e1-2f008c6cfdbc">
-          <bounds x="12" y="180" width="145" height="25"/>
+          <bounds x="12" y="180" width="145" height="61"/>
           <sourceConnection xsi:type="archimate:Connection" id="a460f23b-c26c-46e5-b317-8b6821d8094b" source="d65477bf-eab7-4967-9a91-0ec8f5b32d59" target="0015e808-c98c-451c-93cf-4d480594674f" archimateRelationship="3bde3cbe-d063-46cc-8bac-5d81d93fc9ed"/>
+          <child xsi:type="archimate:DiagramObject" id="27f86c12-3f25-49b4-950e-609df500677b" archimateElement="5b513606-8ce4-4a53-a093-332746e8dd02">
+            <bounds x="12" y="24" width="120" height="25"/>
+          </child>
         </child>
         <child xsi:type="archimate:DiagramObject" id="e44aaa1a-6e66-4f4c-94dd-78ab4d0d5bd1" targetConnections="606df59d-896f-47a0-8f47-e525a6e64430 e79e3679-a955-469d-af59-dcc55759d107" archimateElement="08d464e8-4d56-4054-9aaa-23927a5627fd">
           <bounds x="12" y="36" width="145" height="25"/>
@@ -538,7 +552,7 @@ Tool 매핑 관리</content>
         <bounds x="12" y="12" width="169" height="25"/>
       </child>
       <child xsi:type="archimate:DiagramObject" id="c1e09bbb-b97e-4638-befe-dcc962a4364e" archimateElement="4a9568f4-cfc5-4631-8512-57f86f0b23dc" type="1">
-        <bounds x="12" y="108" width="169" height="121"/>
+        <bounds x="12" y="144" width="169" height="121"/>
         <sourceConnection xsi:type="archimate:Connection" id="8f66444b-ce62-4d81-be9f-6e7033bb57a0" source="c1e09bbb-b97e-4638-befe-dcc962a4364e" target="0015e808-c98c-451c-93cf-4d480594674f" archimateRelationship="9440231a-1aec-459e-8f2a-1caa1f23cb62"/>
         <child xsi:type="archimate:DiagramObject" id="0015e808-c98c-451c-93cf-4d480594674f" targetConnections="a460f23b-c26c-46e5-b317-8b6821d8094b 8f66444b-ce62-4d81-be9f-6e7033bb57a0" fillColor="#0000ff" archimateElement="adebf3aa-8f8f-4bef-8a8c-49fe4e6f5fe5">
           <bounds x="12" y="36" width="145" height="73"/>
