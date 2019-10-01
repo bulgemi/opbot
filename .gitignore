@@ -2,3 +2,4 @@ venv/
 .idea/
 */test/migrations/
 prototype_env/migrations/
+event.pick
