@@ -3,8 +3,6 @@ __author__ = 'kim dong-hun'
 from flask import Flask, request
 from flask_script import Manager
 from flask_restplus import Api, Resource
-from .channel_adapter import ChannelAdapter
-from .adapter_oracle import AdapterOracle
 
 
 def create_app(config=None):
