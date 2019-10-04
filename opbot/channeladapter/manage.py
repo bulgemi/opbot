@@ -12,25 +12,17 @@ app.config.update(
 celery = make_celery(app)
 
 
-@manager.command
-def hello():
-    print("hello")
-    logger.debug("hello")
-
-
-@celery.task()
-def add_together(a, b):
-    return a + b
-
-
 @celery.task()
 def task_channel_adapter():
     from app.channel_adapter import ChannelAdapter
     from app.adapter.adapter_oracle import AdapterOracle
 
     channel_adapter = ChannelAdapter(db, logger)
+
+    # Adapter 추가.
     adapter = AdapterOracle(channel_adapter)
     channel_adapter.attach(adapter)
+
     channel_adapter.notify_all()
 
 
