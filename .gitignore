@@ -4,3 +4,5 @@ venv/
 prototype_env/migrations/
 manager/migrations/
 event.pick
+*.log
+celerybeat-schedule
