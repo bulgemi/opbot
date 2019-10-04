@@ -9,6 +9,7 @@ from datetime import date, datetime, timedelta
 from abc import ABCMeta, abstractmethod
 from sqlalchemy.exc import SQLAlchemyError
 sys.path.append(os.getenv('OPBOT_HOME'))
+from manager.app.models import EventHistory
 
 
 class ChannelAdapter(object):
@@ -39,8 +40,6 @@ class ChannelAdapter(object):
         :return:
         """
         import time
-        sys.path.append(os.getenv('OPBOT_HOME'))
-        from manager.app.models import EventHistory
 
         for observer in self.__observers:
             channel_id, uid_set, msg_dict = observer.scrape(self)
@@ -94,9 +93,6 @@ class ChannelAdapter(object):
         :param channel_event_set: channel 이벤트 리스트 집합
         :return:
         """
-        sys.path.append(os.getenv('OPBOT_HOME'))
-        from manager.app.models import EventHistory
-
         day1 = "{}%".format(datetime.strftime(datetime.now() - timedelta(1), '%Y%m%d'))
         day2 = "{}%".format(datetime.strftime(datetime.now(), '%Y%m%d'))
 
