@@ -6,7 +6,7 @@ import unittest
 sys.path.append(os.getenv('OPBOT_HOME'))
 
 
-class TestChannelAdapter(unittest.TestCase):
+class TestAdapterOracle(unittest.TestCase):
     def setUp(self) -> None:
         import logging
         from flask import Flask
@@ -32,45 +32,31 @@ class TestChannelAdapter(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_channel_adapter_notify_all(self):
+    def test_init_adatper(self):
         from channeladapter.app.channel_adapter import ChannelAdapter
         from channeladapter.app.adapter.adapter_oracle import AdapterOracle
 
         channel_adapter = ChannelAdapter(self.db, self.logger)
         adapter = AdapterOracle(channel_adapter)
-        channel_adapter.attach(adapter)
-        channel_adapter.notify_all()
 
-    def test_create_channel_adapter(self):
+        print(adapter)
+
+    def test_scrape(self):
         from channeladapter.app.channel_adapter import ChannelAdapter
+        from channeladapter.app.adapter.adapter_oracle import AdapterOracle
 
         channel_adapter = ChannelAdapter(self.db, self.logger)
+        adapter = AdapterOracle(channel_adapter)
+        tmp = adapter.scrape(channel_adapter)
+        print(tmp)
 
-        print(channel_adapter)
-
-    def test_logger(self):
-        self.logger.debug("test logging!")
-        self.logger.debug("%r" % os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-
-    def test_channel_adapter_call_rest_api(self):
+    def test_catch_event(self):
         from channeladapter.app.channel_adapter import ChannelAdapter
+        from channeladapter.app.adapter.adapter_oracle import AdapterOracle
 
         channel_adapter = ChannelAdapter(self.db, self.logger)
+        adapter = AdapterOracle(channel_adapter)
+        tmp = adapter.scrape(channel_adapter)
 
-        print(channel_adapter.call_rest_api('channel_id', 'msg'))
-
-    def test_channel_adapter_add_history(self):
-        import uuid
-        import time
-        from channeladapter.app.channel_adapter import ChannelAdapter
-        from manager.app.models import EventHistory
-
-        cur_time = time.localtime(time.time())
-        channel_adapter = ChannelAdapter(self.db, self.logger)
-        event_history = EventHistory()
-
-        event_history.channel_id = 'test_channel_01'
-        event_history.event_uid = str(uuid.uuid4())
-        event_history.event_msg = "한글, english, 1234, !@$#"
-        event_history.create_date = time.strftime('%Y%m%d%H%M%S', cur_time)
-        channel_adapter.add_history(event_history)
+        event_list = channel_adapter.catch_event(tmp)
+        print(event_list)
