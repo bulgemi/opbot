@@ -53,7 +53,12 @@ class AdapterOracle(object):
         :param event_message:
         :return:
         """
-        channel_adapter.call_rest_api(channel_id, event_message)
+        import requests
+
+        try:
+            channel_adapter.call_rest_api(channel_id, event_message)
+        except requests.exceptions.RequestException as e:
+            raise e
 
     def scrape(self, channel_adapter):
         """

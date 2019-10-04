@@ -40,6 +40,7 @@ class ChannelAdapter(object):
         :return:
         """
         import time
+        import requests
 
         for observer in self.__observers:
             channel_id, uid_set, msg_dict = observer.scrape(self)
@@ -57,9 +58,12 @@ class ChannelAdapter(object):
                 cur_time = time.localtime(time.time())
                 event_history.create_date = time.strftime('%Y%m%d%H%M%S', cur_time)
 
-                self.add_history(event_history)
                 # notify
-                observer.notify(self, channel_id, msg_dict[new_event])
+                try:
+                    observer.notify(self, channel_id, msg_dict[new_event])
+                    self.add_history(event_history)
+                except requests.exceptions.RequestException as e:
+                    pass
 
     def call_rest_api(self, channel_id, msg):
         import requests
@@ -72,7 +76,13 @@ class ChannelAdapter(object):
         api_host = "http://127.0.0.1:5555/notify"
         data = {'CHANNEL_ID': channel_id,
                 'EVENT_MSG': msg}
-        return requests.post(api_host, data=data)
+
+        try:
+            r = requests.post(api_host, data=data)
+            return r
+        except requests.exceptions.RequestException as e:
+            self.logger.error("!%s!" % e)
+            raise e
 
     def add_history(self, event_info):
         """
