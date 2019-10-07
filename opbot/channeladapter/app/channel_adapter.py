@@ -60,22 +60,24 @@ class ChannelAdapter(object):
 
                 # notify
                 try:
-                    observer.notify(self, channel_id, msg_dict[new_event])
+                    observer.notify(self, channel_id, msg_dict[new_event], new_event)
                     self.add_history(event_history)
                 except requests.exceptions.RequestException as e:
                     pass
 
-    def call_rest_api(self, channel_id, msg):
+    def call_rest_api(self, channel_id, msg, msg_uid):
         import requests
         """
         REST API 호출
         :param channel_id:
         :param msg:
+        :param msg_uid:
         :return:
         """
         api_host = "http://127.0.0.1:5555/notify"
         data = {'CHANNEL_ID': channel_id,
-                'EVENT_MSG': msg}
+                'EVENT_MSG': msg,
+                'EVENT_UID': msg_uid}
 
         try:
             r = requests.post(api_host, data=data)
@@ -103,6 +105,7 @@ class ChannelAdapter(object):
         :param channel_event_set: channel 이벤트 리스트 집합
         :return:
         """
+        # Todo : 'EventHistory' 테이블 조회 부분 개선 여부 확인
         day1 = "{}%".format(datetime.strftime(datetime.now() - timedelta(1), '%Y%m%d'))
         day2 = "{}%".format(datetime.strftime(datetime.now(), '%Y%m%d'))
 

@@ -11,6 +11,7 @@ class HelloWorld(Resource):
     def post(self):
         print(request.form.get('CHANNEL_ID'))
         print(request.form.get('EVENT_MSG'))
+        print(request.form.get('EVENT_UID'))
         return request.get_json()
         # return {'hello': 'world'}
 

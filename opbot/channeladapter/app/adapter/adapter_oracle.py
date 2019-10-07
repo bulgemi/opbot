@@ -45,18 +45,19 @@ class AdapterOracle(object):
         self.__conn.close()
         # print("disconnect db.")
 
-    def notify(self, channel_adapter, channel_id, event_message):
+    def notify(self, channel_adapter, channel_id, event_message, event_uid):
         """
         Chatbot REST API 호출
         :param channel_adapter:
         :param channel_id:
         :param event_message:
+        :param event_uid:
         :return:
         """
         import requests
 
         try:
-            channel_adapter.call_rest_api(channel_id, event_message)
+            channel_adapter.call_rest_api(channel_id, event_message, event_uid)
         except requests.exceptions.RequestException as e:
             raise e
 
@@ -80,7 +81,7 @@ class AdapterOracle(object):
                 cursor.execute(sql)
                 results = cursor.fetchall()
 
-                channel_adapter.logger.debug("results=<%r>" % results)
+                channel_adapter.logger.debug("results=<%r>" % results if len(results) > 0 else "None")
         except pymysql.MySQLError as e:
             channel_adapter.logger.error("Error: %r" % e)
             return None
