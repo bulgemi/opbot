@@ -74,13 +74,13 @@ class ChannelAdapter(object):
         :param msg_uid:
         :return:
         """
-        api_host = "https://127.0.0.1:9595/opbot/event/put"
-        data = {'CHANNEL_ID': channel_id,
-                'EVENT_MSG': msg,
-                'EVENT_UID': msg_uid}
+        api_host = "https://127.0.0.1:9595/opbot/event"
+        data = {'channel_id': channel_id,
+                'event_msg': msg,
+                'event_uid': msg_uid}
 
         try:
-            r = requests.post(api_host, data=data)
+            r = requests.put(api_host, data=data)
             return r
         except requests.exceptions.RequestException as e:
             self.logger.error("!%s!" % e)
