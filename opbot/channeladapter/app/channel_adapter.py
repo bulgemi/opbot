@@ -74,7 +74,7 @@ class ChannelAdapter(object):
         :param msg_uid:
         :return:
         """
-        api_host = "http://127.0.0.1:5555/notify"
+        api_host = "https://127.0.0.1:9595/opbot/event/put"
         data = {'CHANNEL_ID': channel_id,
                 'EVENT_MSG': msg,
                 'EVENT_UID': msg_uid}
