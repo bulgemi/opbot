@@ -6,3 +6,4 @@ manager/migrations/
 event.pick
 *.log
 celerybeat-schedule
+celerybeat.pid
