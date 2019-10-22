@@ -74,7 +74,7 @@ class ChannelAdapter(object):
         :param msg_uid:
         :return:
         """
-        api_host = "https://127.0.0.1:9595/api/1/events/"
+        api_host = "http://127.0.0.1:9595/api/1/events/"
         data = {'channel_id': channel_id,
                 'event_msg': msg,
                 'event_uid': msg_uid}

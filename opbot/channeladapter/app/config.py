@@ -22,7 +22,7 @@ class AdapterOracle(object):
 
 class Schedule(object):
     # Celery 환경 설정.
-    CELERY_TASK_RESULT_EXPIRES = 18000 # 5 hours
+    CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours
     CELERY_TIMEZONE = 'Asia/Seoul'
     CELERY_ENABLE_UTC = False
     CELERYBEAT_SCHEDULE = {
