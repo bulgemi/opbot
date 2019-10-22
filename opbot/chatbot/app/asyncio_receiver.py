@@ -4,6 +4,7 @@ __author__ = 'kim dong-hun'
 Slack으로부터 RTM을 이용하여 메시지를 받아온다.
 수신된 메시지는 채널명과 text를 추출하여, Chatbot으로 REST API로 전송.
 """
+import re
 import json
 import sys
 import os
@@ -95,12 +96,16 @@ async def asyncio_recv(end_point, air):
 
     while True:
         message_str = await ws.recv()
-        json_acceptable_string = message_str.replace("'", "\"")
+        # todo: replace 해야 할 항목 확인 필요.
+        json_acceptable_string = message_str.replace("'", "\'").replace('"', '\"').replace('\\\\"', '\\"')
+
+        air.logger.debug("(%r)<%r>" % (type(json_acceptable_string), json_acceptable_string))
+
         message_json = json.loads(json_acceptable_string)
 
         if message_json['type'] == 'hello':
             air.set_hello()
-        elif message_json['type'] == 'message':
+        elif message_json['type'] == 'message' and 'client_msg_id' in message_json:
             air.logger.debug("(%r)<%r>" % (type(message_json), message_json))
             try:
                 air.call_rest_api(air.channels_list[message_json['channel']],

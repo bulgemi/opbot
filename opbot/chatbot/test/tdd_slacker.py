@@ -128,7 +128,7 @@ class SlackerTestCase(unittest.TestCase):
                     "value": "tp_status",
                     "action_id": "tp_status",
                     "style": "primary"
-        },
+                },
                 {
                     "name": "db_status",
                     "text": "DB 상태 분석",
@@ -147,10 +147,11 @@ class SlackerTestCase(unittest.TestCase):
             ]
         }]
 
-        self.slack.chat.post_message(text=text,
-                                     channel=channel,
-                                     username=username,
-                                     attachments=attachments)
+        response = self.slack.chat.post_message(text=text,
+                                                channel=channel,
+                                                username=username,
+                                                attachments=attachments)
+        print(response.body)
 
     def test_listing_channels(self):
         import slack
@@ -187,6 +188,6 @@ class SlackerTestCase(unittest.TestCase):
         client.files_upload(
             channels="#opbot_swing",
             username='opbot',
-            file="robot.png",
-            title="Test upload"
+            file="top.pdf",
+            title="시스템_상태_분석 보고서"
         )
