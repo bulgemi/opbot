@@ -38,11 +38,11 @@ class AsyncRtm(Resource):
 
         rtm_msg = rtm_a.payload
 
-        task_list = current_app.bot.parse_command(rtm_msg['message'])
+        command_list = current_app.bot.parse_command(rtm_msg['message'])
 
         recommend_tasks = None
 
-        if len(task_list) <= 0:
+        if len(command_list) <= 0:
             err_messages = [
                 "죄송해요. 다시 입력해주세요.",
                 "죄송해요. 알수 없는 명령입니다.",
@@ -58,12 +58,38 @@ class AsyncRtm(Resource):
 
             # current_app.logger.debug("recommend_tasks=<%r>" % recommend_tasks)
 
-        for task in task_list:
-            task_id = current_app.bot.get_task_id(recommend_tasks, task)
+        for task in command_list:
+            current_app.logger.debug("task=<%r>" % task)
 
-            result = manage.task_execute.delay(task_id)
-            result.wait()
-            # current_app.bot.put_broadcast(channel=rtm_msg['channel'],
-            #                               message="[{}] 수행하였습니다.".format(task_id))
+            if task == '!조치!':
+                # context 상태 변경.
+                current_app.bot.set_context_s()
+                # 조치 Task
+                # 3.분석 task 추천 정보 조회
+                anal_tasks = current_app.bot.task_recommend(in_channel_id)
+                current_app.bot.put_chat(channel=rtm_msg['channel'], message=None, tasks=anal_tasks)
+            elif task == '!분석!':
+                # context 상태 변경.
+                current_app.bot.set_context_a()
+                anal_tasks = current_app.bot.task_recommend(in_channel_id)
+                current_app.bot.put_chat(channel=rtm_msg['channel'], message=None, tasks=anal_tasks)
+            elif task == '!종료!':
+                # context 상태 변경.
+                current_app.bot.set_context_a()
+                msg = "상황 종료되었습니다. 감사합니다."
+                # 전체 채널에 공지
+                out_channels = current_app.bot.channel_read(in_channel_id)
+                if len(out_channels) > 0:
+                    for channel_info in out_channels:
+                        if channel_info[0] == 'B':
+                            current_app.bot.put_broadcast(channel=channel_info[1], message=msg)
+                        elif channel_info[0] == 'C':
+                            current_app.bot.put_broadcast(channel=channel_info[1], message=msg)
+                break
+            else:
+                task_id = current_app.bot.get_task_id(recommend_tasks, task)
+
+                result = manage.task_execute.delay(task_id, rtm_msg['channel'])
+                result.wait()
 
         return res_msg, 201
