@@ -205,7 +205,7 @@ class ChatBot(object):
         """
         # Todo: recommender 연동, task 명 공백 없음.
         if self.__context == 'A':
-            tasks = ["DB_상태_분석", "EAI/MCG_상태_분석", "시스템_상태_분석", "TP_상태_분석"]
+            tasks = ["DB_상태_분석", "EAI/MCG_상태_분석", "TP_상태_분석", "시스템_상태_분석"]
         else:
             tasks = ["DB_Session_Lock_제거", "EAI_Queue_Purge", "TP_재기동"]
         return tasks
