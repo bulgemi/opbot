@@ -22,3 +22,28 @@ class ChannelInfo(db.Model):
     def __repr__(self):
         return '<in_channel_id %r, out_channel_type %r, out_channel_id %r>'\
                % (self.in_channel_id, self.out_channel_type, self.out_channel_id)
+
+
+class TargetList(db.Model):
+    task_id = db.Column(db.String(256), primary_key=True)
+    host = db.Column(db.String(126), primary_key=True)
+    port = db.Column(db.Integer, nullable=False)
+    user = db.Column(db.String(126), nullable=False)
+    passwd = db.Column(db.String(512), nullable=False)
+    out_channel_id = db.Column(db.String(256), primary_key=True)
+    adapter_type = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return '<task_id %r, host %r, out_channel_id %r>' \
+               % (self.task_id, self.host, self.out_channel_id)
+
+
+class TaskInfo(db.Model):
+    task_id = db.Column(db.String(256), primary_key=True)
+    task_type = db.Column(db.String(1), nullable=False)
+    script_seq = db.Column(db.Integer, primary_key=True)
+    script = db.Column(db.Text)
+
+    def __repr__(self):
+        return '<task_id %r, script_seq %r>' \
+               % (self.task_id, self.script_seq)
