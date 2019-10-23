@@ -84,6 +84,8 @@ class TaskExecutor(object):
                     if result is True:
                         pdf_file = str(uuid.uuid1()) + ".pdf"
                         org_file = ssh_adapter.save_file(out)
+                        # txt 파일 삭제, todo: 파일 안 지워짐!!
+                        ssh_adapter.delete_file(out)
                 else:
                     pass
 
