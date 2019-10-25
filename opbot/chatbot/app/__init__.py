@@ -24,7 +24,7 @@ def create_app():
     db.init_app(app)
 
     # RESTPlus
-    api.init_app(blueprint, version='1.0', title='OPBOT APIs', description="OPBOT Rest APIs")
+    api.init_app(blueprint, version='1.0', title='OPBOT APIs', description="OPBOT REST APIs")
     add_ns(api)
     app.register_blueprint(blueprint, url_prefix='/api/1')
 
