@@ -34,10 +34,7 @@ class AsyncEvent(Resource):
         # 2.channel 정보 조회
         out_channels = current_app.bot.channel_read(event_info['channel_id'])
 
-        # 3.분석 task 추천 정보 조회
-        anal_tasks = current_app.bot.task_recommend(event_info['channel_id'])
-
-        # 4.등록된 채널에 메시지 전송
+        # 3.등록된 채널에 메시지 전송
         if len(out_channels) > 0:
             for channel_info in out_channels:
                 current_app.logger.debug("channel_info=<%r, %r, %r>"
@@ -46,6 +43,10 @@ class AsyncEvent(Resource):
                 if channel_info[0] == 'B':
                     current_app.bot.put_broadcast(channel=channel_info[1], message=event_info['event_msg'])
                 elif channel_info[0] == 'C':
+                    # context 분석'A'로 설정.
+                    current_app.bot.set_context_a(channel_info[1])
+                    # 분석 task 추천 정보 조회
+                    anal_tasks = current_app.bot.task_recommend(event_info['channel_id'], channel_info[1])
                     current_app.bot.put_chat(channel=channel_info[1], message=event_info['event_msg'], tasks=anal_tasks)
                 else:
                     current_app.logger.error("invalid channel type!")
