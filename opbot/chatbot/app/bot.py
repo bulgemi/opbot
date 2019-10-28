@@ -46,6 +46,8 @@ class ChatBot(object):
         context_key = "{}_chat_context".format(out_channel)
         context = self.__r.get(context_key)
 
+        current_app.logger.debug("context_key=<%r>" % context_key)
+
         # default context는 분석, 'A': 분석, 'S': 조치
         if context is None:
             self.__r.set(context_key, 'A')
@@ -64,6 +66,7 @@ class ChatBot(object):
         """
         # default context는 분석, 'A': 분석, 'S': 조치
         context_key = "{}_chat_context".format(out_channel)
+        current_app.logger.debug("context_key=<%r>" % context_key)
         return self.__r.set(context_key, 'A')
 
     def set_context_s(self, out_channel):
@@ -74,6 +77,7 @@ class ChatBot(object):
         """
         # default context는 분석, 'A': 분석, 'S': 조치
         context_key = "{}_chat_context".format(out_channel)
+        current_app.logger.debug("context_key=<%r>" % context_key)
         return self.__r.set(context_key, 'S')
 
     def put_broadcast(self, channel, message=None):
