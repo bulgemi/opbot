@@ -14,6 +14,11 @@ def create_app():
     # charset=utf8 설정 중요!
     app.config['SQLALCHEMY_DATABASE_URI'] = Config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'pool_size': 10,
+        'pool_recycle': 500,  # bug-fix: MySQL server has gone away, my.conf: wait_timeout 보다 작아야 함.
+        'pool_pre_ping': True
+    }
     db.init_app(app)
     manager = Manager(app)
     # manager.add_command('db', MigrateCommand)
