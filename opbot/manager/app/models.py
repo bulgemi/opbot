@@ -47,3 +47,13 @@ class TaskInfo(db.Model):
     def __repr__(self):
         return '<task_id %r, script_seq %r>' \
                % (self.task_id, self.script_seq)
+
+
+class WorkHistory(db.Model):
+    event_uid = db.Column(db.String(256), primary_key=True)
+    outbound_task_id = db.Column(db.String(256), primary_key=True)
+    create_date = db.Column(db.String(16), primary_key=True)
+
+    def __repr__(self):
+        return '<event_uid %r, outbound_task_id %r>' % (self.event_uid, self.outbound_task_id)
+
