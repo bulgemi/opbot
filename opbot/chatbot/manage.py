@@ -28,5 +28,16 @@ def task_execute(task_id, out_channel_id):
     return current_app.bot.task_execute(task_id, out_channel_id)
 
 
+@celery.task()
+def put_collector(event_uid, task_id):
+    """
+    Collector 에 사용자 이벤트 전송.(Async Task Queue)
+    :param event_uid:
+    :param task_id:
+    :return:
+    """
+    return current_app.bot.put_collect(event_uid, task_id)
+
+
 if __name__ == '__main__':
     manager.run()
