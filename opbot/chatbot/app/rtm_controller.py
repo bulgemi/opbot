@@ -4,6 +4,7 @@ from random import randrange
 from flask import current_app
 from flask_restplus import Resource
 from .apis.v1_.rtm import RtmDto
+from redis.exceptions import DataError
 
 rtm_a = RtmDto.api
 rtm_m = RtmDto.rtm
@@ -71,32 +72,76 @@ class AsyncRtm(Resource):
 
             if task == '!조치!':
                 # context 상태 변경.
-                current_app.bot.set_context_s(rtm_msg['channel'])
+                # todo: code refactoring 필요.
+                try:
+                    current_app.bot.set_context_s(rtm_msg['channel'],
+                                                  current_app.bot.get_current_subjects(rtm_msg['channel']))
+                except DataError:
+                    msg = "처리할 이벤트가 없습니다."
+                    current_app.bot.put_broadcast(channel=rtm_msg['channel'], message=msg)
+                    return res_msg, 201
                 # 조치 Task
                 # 3.분석 task 추천 정보 조회
-                anal_tasks = current_app.bot.task_recommend(in_channel_id, rtm_msg['channel'])
+                anal_tasks = current_app.bot.task_recommend(rtm_msg['channel'])
                 current_app.bot.put_chat(channel=rtm_msg['channel'], message=None, tasks=anal_tasks)
             elif task == '!분석!':
                 # context 상태 변경.
-                current_app.bot.set_context_a(rtm_msg['channel'])
-                anal_tasks = current_app.bot.task_recommend(in_channel_id, rtm_msg['channel'])
+                # todo: code refactoring 필요.
+                try:
+                    current_app.bot.set_context_a(rtm_msg['channel'],
+                                                  current_app.bot.get_current_subjects(rtm_msg['channel']))
+                except DataError:
+                    msg = "처리할 이벤트가 없습니다."
+                    current_app.bot.put_broadcast(channel=rtm_msg['channel'], message=msg)
+                    return res_msg, 201
+                anal_tasks = current_app.bot.task_recommend(rtm_msg['channel'])
                 current_app.bot.put_chat(channel=rtm_msg['channel'], message=None, tasks=anal_tasks)
             elif task == '!종료!':
                 # context 상태 변경.
-                current_app.bot.set_context_a(rtm_msg['channel'])
-                msg = "상황 종료되었습니다. 감사합니다."
-                # 전체 채널에 공지
-                out_channels = current_app.bot.channel_read(in_channel_id)
+                # context 삭제.
+                # todo: code refactoring 필요.
+                try:
+                    current_app.bot.del_context(rtm_msg['channel'],
+                                                current_app.bot.get_current_subjects(rtm_msg['channel']))
+                except DataError:
+                    msg = "처리할 이벤트가 없습니다."
+                    current_app.bot.put_broadcast(channel=rtm_msg['channel'],
+                                                  message=msg)
+                    return res_msg, 201
 
-                if len(out_channels) > 0:
-                    for channel_info in out_channels:
-                        if channel_info[0] == 'B':
-                            current_app.bot.put_end(channel=channel_info[1], message=msg)
-                        elif channel_info[0] == 'C':
-                            current_app.bot.put_end(channel=channel_info[1], message=msg)
-                break
+                # 잔여 context 가 있는지 확인
+                event_uid, _ = current_app.bot.get_context_one(rtm_msg['channel'])
+
+                current_app.logger.debug("event_uid=<%r>" % event_uid)
+
+                if event_uid is None:
+                    # subject 삭제.
+                    current_app.bot.del_current_subjects(rtm_msg['channel'])
+                    # 종료 처리
+                    msg = "상황 종료되었습니다. 감사합니다."
+                    # 전체 채널에 공지
+                    out_channels = current_app.bot.channel_read(in_channel_id)
+
+                    if len(out_channels) > 0:
+                        for channel_info in out_channels:
+                            if channel_info[0] == 'B':
+                                current_app.bot.put_end(channel=channel_info[1], message=msg)
+                            elif channel_info[0] == 'C':
+                                current_app.bot.put_end(channel=channel_info[1], message=msg)
+                            else:
+                                pass
+                    break
+                else:
+                    # 다음 event 처리
+                    current_app.bot.set_context_a(rtm_msg['channel'], event_uid)
+                    current_app.bot.set_current_subjects(rtm_msg['channel'], event_uid)
+
+                    # 분석 task 추천 정보 조회
+                    message = current_app.bot.get_event_message(event_uid)
+                    anal_tasks = current_app.bot.task_recommend(rtm_msg['channel'])
+                    current_app.bot.put_chat(channel=rtm_msg['channel'], message=message, tasks=anal_tasks)
             else:
-                recommend_tasks = current_app.bot.task_recommend(in_channel_id, rtm_msg['channel'])
+                recommend_tasks = current_app.bot.task_recommend(rtm_msg['channel'])
                 # current_app.logger.debug("recommend_tasks=<%r>" % recommend_tasks)
                 task_id = current_app.bot.get_task_id(recommend_tasks, task)
 
@@ -104,7 +149,11 @@ class AsyncRtm(Resource):
                     current_app.bot.put_broadcast(channel=rtm_msg['channel'],
                                                   message="죄송해요. 알수 없는 명령입니다.")
                 else:
+                    # Task 수행 비동기 처리.
                     result = manage.task_execute.delay(task_id, rtm_msg['channel'])
                     result.wait()
+                    # put collector, 비동기 처리.
+                    c = manage.put_collector.delay(current_app.bot.get_current_subjects(rtm_msg['channel']), task_id)
+                    c.wait()
 
         return res_msg, 201

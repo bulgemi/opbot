@@ -1,7 +1,7 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'kim dong-hun'
 """
-Chatbot REST Server
+Chatbot REST API Server
 """
 import sys
 import os
@@ -12,8 +12,9 @@ from sqlalchemy import and_
 from slacker import Slacker
 from redis import Redis
 sys.path.append(os.getenv('OPBOT_HOME'))
-from manager.app.models import ChannelInfo
+from manager.app.models import ChannelInfo, EventHistory
 from chatbot.app.config import Config
+from collector.app.collect import Collector
 
 
 class ChatBot(object):
@@ -24,6 +25,7 @@ class ChatBot(object):
         self.__client = slack.WebClient(token=Config.SLACK_TOKEN)
         self.__db = db
         self.__r = Redis(host='localhost', port=6389, db=0)
+        self.__c = Collector(db)
 
     def __put_out_channel(self, channel, username='opbot', text=None, attachments=None):
         """
@@ -37,48 +39,106 @@ class ChatBot(object):
         blocks = attachments
         return self.__client.chat_postMessage(channel=channel, username=username, blocks=blocks)
 
-    def get_context(self, out_channel):
+    def set_current_subjects(self, out_channel_id, event_uid):
         """
-        chat context 반화
-        :param out_channel:
+        현재 처리 중인 event subject 세팅.
+        :param out_channel_id:
+        :param event_uid:
         :return:
         """
-        context_key = "{}_chat_context".format(out_channel)
-        context = self.__r.get(context_key)
+        hash_key = "opbot_subjects"
+        data = {out_channel_id: event_uid}
+        return self.__r.hmset(hash_key, data)
 
-        current_app.logger.debug("context_key=<%r>" % context_key)
+    def get_current_subjects(self, out_channel_id):
+        """
+        현재 처리 중인 event subject 반환.
+        :param out_channel_id:
+        :return:
+        """
+        hash_key = "opbot_subjects"
+        result = self.__r.hmget(hash_key, out_channel_id)
 
-        # default context는 분석, 'A': 분석, 'S': 조치
+        if result[0] is None or len(result) <= 0:
+            return None
+        else:
+            return result[0].decode('utf-8')
+
+    def del_current_subjects(self, out_channel_id):
+        """
+        현재 처리 중인 event subject 삭제.
+        :param out_channel_id:
+        :return:
+        """
+        hash_key = "opbot_subjects"
+        self.__r.hdel(hash_key, out_channel_id)
+
+    def get_context(self, out_channel_id, event_uid):
+        """
+        chat context 반환
+        :param out_channel_id:
+        :param event_uid:
+        :return:
+        """
+        hash_key = "opbot_events{}".format(out_channel_id)
+        context = self.__r.hget(hash_key, event_uid)
+
+        # default context 는 분석, 'A': 분석, 'S': 조치
         if context is None:
-            self.__r.set(context_key, 'A')
-            context = self.__r.get(context_key)
-
-        current_app.logger.debug("context=<%r>" % context)
+            data = {event_uid: 'A'}
+            self.__r.hmset(hash_key, data)
+            context = self.__r.hget(hash_key, event_uid)
 
         return context.decode('utf-8')
 
-    def set_context_a(self, out_channel):
+    def get_context_one(self, out_channel_id):
+        """
+        chat contexts 중 하나 반환.
+        :param out_channel_id:
+        :return:
+        """
+        hash_key = "opbot_events{}".format(out_channel_id)
+        contexts = self.__r.hgetall(hash_key)
+
+        for key, value in contexts.items():
+            return key.decode('utf-8'), value.decode('utf-8')
+        return None, None
+
+    def del_context(self, out_channel_id, event_uid):
+        """
+        chat context 삭제
+        :param out_channel_id:
+        :param event_uid:
+        :return:
+        """
+        hash_key = "opbot_events{}".format(out_channel_id)
+        self.__r.hdel(hash_key, event_uid)
+
+    def set_context_a(self, out_channel_id, event_uid):
         """
         chat context: 분석 모드
-        default context는 분석, 'A': 분석, 'S': 조치
-        :param out_channel:
+        default context 는 분석, 'A': 분석, 'S': 조치
+        :param out_channel_id:
+        :param event_uid:
         :return:
         """
-        # default context는 분석, 'A': 분석, 'S': 조치
-        context_key = "{}_chat_context".format(out_channel)
-        current_app.logger.debug("context_key=<%r>" % context_key)
-        return self.__r.set(context_key, 'A')
+        # default context 는 분석, 'A': 분석, 'S': 조치
+        hash_key = "opbot_events{}".format(out_channel_id)
+        data = {event_uid: 'A'}
+        return self.__r.hmset(hash_key, data)
 
-    def set_context_s(self, out_channel):
+    def set_context_s(self, out_channel_id, event_uid):
         """
         chat context: 조치 모드
-        default context는 분석, 'A': 분석, 'S': 조치
+        default context 는 분석, 'A': 분석, 'S': 조치
+        :param out_channel_id:
+        :param event_uid:
         :return:
         """
-        # default context는 분석, 'A': 분석, 'S': 조치
-        context_key = "{}_chat_context".format(out_channel)
-        current_app.logger.debug("context_key=<%r>" % context_key)
-        return self.__r.set(context_key, 'S')
+        # default context 는 분석, 'A': 분석, 'S': 조치
+        hash_key = "opbot_events{}".format(out_channel_id)
+        data = {event_uid: 'S'}
+        return self.__r.hmset(hash_key, data)
 
     def put_broadcast(self, channel, message=None):
         """
@@ -274,76 +334,95 @@ class ChatBot(object):
 
         return True
 
-    def log_collect(self):
+    def put_collect(self, event_uid, task_id):
         """
         작업자가 수행한 이력을 Collector 에 전송.
         작업 요청은 Celery 기반의 Async task queue 사용.
+        :param event_uid:
+        :param task_id:
         :return:
         """
-        pass
+        return self.__c.action_info_get(event_uid, task_id)
 
-    def get_cause(self, channel_id):
+    def get_cause(self, out_channel_id):
         """
         이벤트 원인 내용 반환.
-        Recommender에 요청, REST API 사용
-        :param channel_id:
+        Recommender 에 요청, REST API 사용
+        :param out_channel_id:
         :return:
         """
         return "'DB Session Lock'으로 인한 거래 Timeout 발생"
 
-    def get_solution(self, channel_id):
+    def get_solution(self, out_channel_id):
         """
         이벤트 조치 내용 반환.
-        Recommender에 요청, REST API 사용
-        :param channel_id:
+        Recommender 에 요청, REST API 사용
+        :param out_channel_id:
         :return:
         """
         return "'DB_Session_Lock_제거' 수행"
 
-    def task_recommend(self, channel_id, context_key):
+    def task_recommend(self, out_channel_id):
         """
         분석/조치 task 추천 정보 Recommender 에 요청.
         요청은 REST API 사용
-        :param channel_id: 이벤트 발생 채널 ID
-        :param context_key
+        :param out_channel_id: OUT 채널 ID
         :return:
         """
         # Todo: recommender 연동, task 명 공백 없음.
-        if self.get_context(context_key) == 'A':
+        context_key = self.get_current_subjects(out_channel_id)
+
+        if self.get_context(out_channel_id, context_key) == 'A':
             tasks = ["DB_상태_분석", "EAI/MCG_상태_분석", "TP_상태_분석", "시스템_상태_분석"]
         else:
             tasks = ["DB_Session_Lock_제거", "EAI_Queue_Purge", "TP_재기동"]
+
         return tasks
 
-    def task_opinion(self, channel_id):
+    def task_opinion(self, out_channel_id):
         """
         발생한 event 유형을 분석하고 이에 적합한 분석/조치 task 적합도 제공
-        REST API를 이용하여 Recommander로부터 의견 수신
-        :param channel_id: 이벤트 발생 채널 ID
+        REST API 를 이용하여 Recommander 로부터 의견 수신
+        :param out_channel_id: OUT 채널 ID
         :return:
         """
         # Todo: recommender 연동, task 명 공백 없음.
-        if self.get_context(channel_id) == 'A':
+        context_key = self.get_current_subjects(out_channel_id)
+
+        if self.get_context(out_channel_id, context_key) == 'A':
             opinion = ["DB_상태_분석: 85.3 %", "EAI/MCG_상태_분석: 13.2 %", "TP_상태_분석: 1.5 %", "시스템_상태_분석: 0%"]
         else:
             opinion = ["DB_Session_Lock_제거: 95 %", "EAI_Queue_Purge: 15 %", "TP_재기동: 0 %"]
 
         return opinion
 
-    def analysis_opinion(self, channel_id):
+    def analysis_opinion(self, out_channel_id):
         """
         발생한 event 유형을 분석하고 이에 적합한 분석/조치 의견 제공
-        REST API를 이용하여 Recommander로부터 의견 수신
-        :param channel_id: 이벤트 발생 채널 ID
+        REST API 를 이용하여 Recommander 로부터 의견 수신
+        :param out_channel_id: OUT 채널 ID
         :return:
         """
         # Todo: recommender 연동, task 명 공백 없음.
-        if self.get_context(channel_id) == 'A':
+        context_key = self.get_current_subjects(out_channel_id)
+
+        if self.get_context(out_channel_id, context_key) == 'A':
             opinion = "장애원인은 'DB Session Lock'일 확률이 높으며, 분석작업은 'DB_상태_분석'을(를) 추천합니다."
         else:
             opinion = "장애원인은 'DB Session Lock'일 확률이 높으며, 조치작업은 'DB_Session_Lock_제거'을(를) 추천합니다."
 
         return opinion
+
+    def get_event_message(self, event_uid):
+        """
+        event_uid 에 해당하는 event message 반환.
+        :param event_uid:
+        :return:
+        """
+        stmt = self.__db.session.query(EventHistory)
+        stmt = stmt.with_entities(EventHistory.event_msg)
+        event_message = stmt.filter(EventHistory.event_uid == event_uid.strip()).first()
+        return event_message[0]
 
     def channel_read(self, in_channel_id):
         """

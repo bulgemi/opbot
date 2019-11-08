@@ -33,6 +33,7 @@ class AsyncEvent(Resource):
         event_info = event_a.payload
         # 2.channel 정보 조회
         out_channels = current_app.bot.channel_read(event_info['channel_id'])
+        event_uid = event_info['event_uid']
 
         # 3.등록된 채널에 메시지 전송
         if len(out_channels) > 0:
@@ -43,10 +44,17 @@ class AsyncEvent(Resource):
                 if channel_info[0] == 'B':
                     current_app.bot.put_broadcast(channel=channel_info[1], message=event_info['event_msg'])
                 elif channel_info[0] == 'C':
+                    # 채널별(out_channel_id) events hash 추가(redis)
                     # context 분석'A'로 설정.
-                    current_app.bot.set_context_a(channel_info[1])
+                    current_app.bot.set_context_a(channel_info[1], event_uid)
+                    # subject list(hash) 추가(redis)
+                    current_subject = current_app.bot.get_current_subjects(channel_info[1])
+                    # 현재 처리중인 subject 가 없으면 subject 설정.
+                    if current_subject is None:
+                        current_app.bot.set_current_subjects(channel_info[1], event_uid)
                     # 분석 task 추천 정보 조회
-                    anal_tasks = current_app.bot.task_recommend(event_info['channel_id'], channel_info[1])
+                    anal_tasks = current_app.bot.task_recommend(channel_info[1])
+                    # 메시지 전송.
                     current_app.bot.put_chat(channel=channel_info[1], message=event_info['event_msg'], tasks=anal_tasks)
                 else:
                     current_app.logger.error("invalid channel type!")

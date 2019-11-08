@@ -12,6 +12,7 @@ import asyncio
 import logging
 from logging.handlers import RotatingFileHandler
 import websockets
+from websockets.exceptions import ConnectionClosedError
 import requests
 from slacker import Slacker
 import slack
@@ -95,7 +96,15 @@ async def asyncio_recv(end_point, air):
     ws = await websockets.connect(end_point)
 
     while True:
-        message_str = await ws.recv()
+        try:
+            message_str = await ws.recv()
+        except ConnectionClosedError as e:
+            air.logger.error("Error: (%d) %r" % (e.code, e.reason))
+            from time import sleep
+            sleep(3)
+            ws = await websockets.connect(end_point)
+            continue
+
         # todo: replace 해야 할 항목 확인 필요.
         json_acceptable_string = message_str.replace("'", "\'").replace('"', '\"').replace('\\\\"', '\\"')
 
