@@ -57,3 +57,11 @@ class WorkHistory(db.Model):
     def __repr__(self):
         return '<event_uid %r, outbound_task_id %r>' % (self.event_uid, self.outbound_task_id)
 
+
+class RecommendInfo(db.Model):
+    outbound_task_id = db.Column(db.String(256), primary_key=True)
+    recommendation = db.Column(db.Float, nullable=False)
+
+    def __repr__(self):
+        return '<outbound_task_id %r, recommendation %r>' % (self.outbound_task_id, self.recommendation)
+
