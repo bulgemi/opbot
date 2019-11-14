@@ -1,5 +1,8 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'kim dong-hun'
+from logging.handlers import RotatingFileHandler
+from logging import Formatter
+import os
 import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -22,8 +25,22 @@ def create_app():
     db.init_app(app)
     manager = Manager(app)
     # manager.add_command('db', MigrateCommand)
-    logging.basicConfig(filename=Config.LOG_FILE,
-                        level=Config.LOG_LEVEL,
-                        format='%(levelname)s|%(asctime)s[%(filename)s:%(funcName)s(%(lineno)d) %(message)s')
+    # logging
+    if os.path.isdir(Config.LOG_DIR) is False:
+        os.mkdir(Config.LOG_DIR)
+
+    app.config['LOGGING_LEVEL'] = Config.LOG_LEVEL
+    app.config['LOGGING_FORMAT'] = Config.LOG_FORMAT
+    app.config['LOGGING_LOCATION'] = Config.LOG_DIR
+    app.config['LOGGING_FILENAME'] = Config.LOG_FILE
+    app.config['LOGGING_MAX_BYTES'] = 1024 * 100
+    app.config['LOGGING_BACKUP_COUNT'] = 10
+    log_full_path = "{}/{}".format(app.config['LOGGING_LOCATION'], app.config['LOGGING_FILENAME'])
+    file_handler = RotatingFileHandler(log_full_path,
+                                       maxBytes=app.config['LOGGING_MAX_BYTES'],
+                                       backupCount=app.config['LOGGING_BACKUP_COUNT'])
+    file_handler.setFormatter(Formatter(app.config['LOGGING_FORMAT']))
+    app.logger.setLevel(app.config['LOGGING_LEVEL'])
+    app.logger.addHandler(file_handler)
 
     return app, manager, logging
