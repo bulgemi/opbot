@@ -52,16 +52,19 @@ class TaskInfo(db.Model):
 class WorkHistory(db.Model):
     event_uid = db.Column(db.String(256), primary_key=True)
     outbound_task_id = db.Column(db.String(256), primary_key=True)
+    exec_type = db.Column(db.String(1), nullable=True)
     create_date = db.Column(db.String(16), primary_key=True)
 
     def __repr__(self):
         return '<event_uid %r, outbound_task_id %r>' % (self.event_uid, self.outbound_task_id)
 
 
-class RecommendInfo(db.Model):
-    outbound_task_id = db.Column(db.String(256), primary_key=True)
-    recommendation = db.Column(db.Float, nullable=False)
+class RecommendBaseInfo(db.Model):
+    pattern_id = db.Column(db.String(126), primary_key=True)
+    message_pattern = db.Column(db.Text, nullable=False)
+    outbound_task_id = db.Column(db.String(256), nullable=False)
+    call_cnt = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<outbound_task_id %r, recommendation %r>' % (self.outbound_task_id, self.recommendation)
-
+        return '<pattern_id %r, outbound_task_id %r, call_cnt %d>'\
+               % (self.pattern_id, self.outbound_task_id, self.call_cnt)
