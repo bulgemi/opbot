@@ -64,6 +64,7 @@ class RecommendBaseInfo(db.Model):
     message_pattern = db.Column(db.Text, nullable=False)
     outbound_task_id = db.Column(db.String(256), nullable=False)
     call_cnt = db.Column(db.Integer, nullable=False)
+    task_type = db.Column(db.String(1), nullable=False)
 
     def __repr__(self):
         return '<pattern_id %r, outbound_task_id %r, call_cnt %d>'\
