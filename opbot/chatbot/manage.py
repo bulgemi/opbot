@@ -29,14 +29,15 @@ def task_execute(task_id, out_channel_id):
 
 
 @celery.task()
-def put_collector(event_uid, task_id):
+def put_collector(event_uid, task_id, exec_type):
     """
     Collector 에 사용자 이벤트 전송.(Async Task Queue)
     :param event_uid:
     :param task_id:
+    :param exec_type:
     :return:
     """
-    return current_app.bot.put_collect(event_uid, task_id)
+    return current_app.bot.put_collect(event_uid, task_id, exec_type)
 
 
 if __name__ == '__main__':
