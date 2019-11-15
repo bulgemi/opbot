@@ -21,7 +21,7 @@ class TestChatBot(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_channel_read(self):
+    def test_001_channel_read(self):
         from chatbot.app.bot import ChatBot
 
         chatbot = ChatBot(self.db)
@@ -35,7 +35,7 @@ class TestChatBot(unittest.TestCase):
             for channel_info in result:
                 print(channel_info)
 
-    def test_put_broadcast(self):
+    def test_002_put_broadcast(self):
         from chatbot.app.bot import ChatBot
 
         chatbot = ChatBot(self.db)
@@ -44,7 +44,7 @@ class TestChatBot(unittest.TestCase):
                   " - 담당자 김보현B(010-4588-8647)"
         chatbot.put_broadcast(channel='#swing', message=message)
 
-    def test_put_chat(self):
+    def test_003_put_chat(self):
         from chatbot.app.bot import ChatBot
 
         chatbot = ChatBot(self.db)
@@ -54,7 +54,7 @@ class TestChatBot(unittest.TestCase):
         tasks = ["시스템 상태 분석", "TP 상태 분석", "DB 상태 분석", "EAI/MCG 상태 분석"]
         chatbot.put_chat(channel='#opbot_swing', message=message, tasks=tasks)
 
-    def test_task_recommend(self):
+    def test_004_task_recommend(self):
         from chatbot.app.bot import ChatBot
 
         chatbot = ChatBot(self.db)
@@ -62,7 +62,7 @@ class TestChatBot(unittest.TestCase):
         self.assertIsNotNone(chatbot.task_recommend('swing'))
         self.assertIsNotNone(chatbot.task_recommend('swing', 'S'))
 
-    def test_parse_command(self):
+    def test_005_parse_command(self):
         from chatbot.app.bot import ChatBot
 
         chatbot = ChatBot(self.db)
@@ -85,3 +85,36 @@ class TestChatBot(unittest.TestCase):
         self.assertEqual(chatbot.parse_command("aaaaa!a!"), ["!a!"])
         self.assertEqual(chatbot.parse_command("!TP_상태_분석!"), ["!TP_상태_분석!"])
 
+    def test_006_subjects(self):
+        from chatbot.app.bot import ChatBot
+
+        chatbot = ChatBot(self.db)
+
+        chatbot.set_current_subjects("#test_out_channel", "abc123!")
+        self.assertEqual(chatbot.get_current_subjects("#test_out_channel"), "abc123!")
+
+    def test_007_subjects(self):
+        from chatbot.app.bot import ChatBot
+
+        chatbot = ChatBot(self.db)
+
+        chatbot.del_current_subjects("#test_out_channel")
+        self.assertIsNone(chatbot.get_current_subjects("#test_out_channel"))
+
+    def test_008_context(self):
+        from chatbot.app.bot import ChatBot
+
+        chatbot = ChatBot(self.db)
+
+        chatbot.set_context_a("#test_out_channel", "abc123!")
+        self.assertEqual(chatbot.get_context("#test_out_channel", "abc123!"), "A")
+        chatbot.set_context_s("#test_out_channel", "abc123!")
+        self.assertEqual(chatbot.get_context("#test_out_channel", "abc123!"), "S")
+
+    def test_009_context(self):
+        from chatbot.app.bot import ChatBot
+
+        chatbot = ChatBot(self.db)
+
+        chatbot.del_context("#test_out_channel", "abc123!")
+        self.assertEqual(chatbot.get_context("#test_out_channel", "abc123!"), "A")
