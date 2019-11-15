@@ -60,11 +60,9 @@ class Analyzer(object):
             self.__logger.error("!%r!" % str(e.orig))
             return False
         finally:
-            self.__logger.debug("!!! close csv files.")
-
+            # self.__logger.debug("!!! close csv files.")
             a_csv.close()
             s_csv.close()
-
         return True
 
     def dataset_pre_proc(self):
@@ -238,9 +236,10 @@ class Analyzer(object):
         :return:
         """
         c_dir = "{0}/{1}/classfy/{2}".format(self.__datasets_dir, t, create_date)
-        f_list = os.listdir(c_dir)
 
         try:
+            f_list = os.listdir(c_dir)
+
             for f in f_list:
                 c_csv = "{0}/{1}".format(c_dir, f)
 
@@ -277,6 +276,8 @@ class Analyzer(object):
             self.__logger.error("!%r!" % str(e))
             self.__db.session.rollback()
             return False
+        except FileNotFoundError:
+            return True
         except BaseException as e:
             self.__logger.error("!%r!" % str(e))
             return False
