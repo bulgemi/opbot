@@ -15,21 +15,23 @@ class Collector(object):
     def __init__(self, db):
         self.__db = db
 
-    def action_info_get(self, event_uid, task_id):
+    def action_info_get(self, event_uid, task_id, exec_type):
         """
         사용자 이벤트 수집.
         :param event_uid:
         :param task_id:
+        :param exec_type:
         :return:
         """
-        return self.action_info_add(event_uid, task_id)
+        return self.action_info_add(event_uid, task_id, exec_type)
 
-    def action_info_add(self, event_uid, task_id):
+    def action_info_add(self, event_uid, task_id, exec_type):
         """
         사용자 이벤트 저장.
         WorkHistory table 에 사용자 이벤트 데이터 저장.
         :param event_uid: 
         :param task_id: 
+        :param exec_type:
         :return:
         """
         now = datetime.now()
@@ -37,6 +39,7 @@ class Collector(object):
         work_history = WorkHistory()
         work_history.event_uid = event_uid
         work_history.outbound_task_id = task_id
+        work_history.exec_type = exec_type
         work_history.create_date = now.strftime('%Y%m%d%H%M%S')  # create_date, YYYYmmddHHMMSS
 
         try:
