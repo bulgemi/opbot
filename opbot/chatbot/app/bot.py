@@ -334,15 +334,16 @@ class ChatBot(object):
 
         return True
 
-    def put_collect(self, event_uid, task_id):
+    def put_collect(self, event_uid, task_id, exec_type):
         """
         작업자가 수행한 이력을 Collector 에 전송.
         작업 요청은 Celery 기반의 Async task queue 사용.
         :param event_uid:
         :param task_id:
+        :param exec_type:
         :return:
         """
-        return self.__c.action_info_get(event_uid, task_id)
+        return self.__c.action_info_get(event_uid, task_id, exec_type)
 
     def get_cause(self, out_channel_id):
         """
