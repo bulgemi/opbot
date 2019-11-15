@@ -52,10 +52,11 @@ def create_app():
     file_handler.setFormatter(Formatter(app.config['LOGGING_FORMAT']))
     app.logger.setLevel(app.config['LOGGING_LEVEL'])
     app.logger.addHandler(file_handler)
-    app.logger.debug("Start Chatbot.")
-    app.logger.info("Start Chatbot.")
-    app.logger.warning("Start Chatbot.")
-    app.logger.error("Start Chatbot.")
-    app.logger.critical("Start Chatbot.")
+
+    # app.logger.debug("Start Chatbot.")
+    # app.logger.info("Start Chatbot.")
+    # app.logger.warning("Start Chatbot.")
+    # app.logger.error("Start Chatbot.")
+    # app.logger.critical("Start Chatbot.")
 
     return app, manager
