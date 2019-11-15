@@ -153,7 +153,11 @@ class AsyncRtm(Resource):
                     result = manage.task_execute.delay(task_id, rtm_msg['channel'])
                     result.wait()
                     # put collector, 비동기 처리.
-                    c = manage.put_collector.delay(current_app.bot.get_current_subjects(rtm_msg['channel']), task_id)
+                    ctx = current_app.bot.get_context(rtm_msg['channel'],
+                                                      current_app.bot.get_current_subjects(rtm_msg['channel']))
+                    c = manage.put_collector.delay(current_app.bot.get_current_subjects(rtm_msg['channel']),
+                                                   task_id,
+                                                   ctx)
                     c.wait()
 
         return res_msg, 201
