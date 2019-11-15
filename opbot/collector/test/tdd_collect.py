@@ -28,7 +28,7 @@ class TestCollect(unittest.TestCase):
         self.__c = Collector(db)
 
     def test_001_action_info_add(self):
-        self.__c.action_info_add('uid1234567890', 'task001')
+        self.__c.action_info_add('uid1234567890', 'task001', 'A')
 
     def test_002_action_info_get(self):
-        self.__c.action_info_get('uid0987654321', 'task002')
+        self.__c.action_info_get('uid0987654321', 'task002', 'S')
