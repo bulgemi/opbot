@@ -11,7 +11,7 @@
   <folder name="Application" id="5291dede-65b6-4ee4-aa05-fdb887338b5b" type="application">
     <element xsi:type="archimate:ApplicationComponent" name="Chatbot" id="2513ea21-21d3-4978-96f8-bbd458d97aab">
       <documentation>ip: localhost
-port: 5555</documentation>
+port: 9595</documentation>
       <property key="notify" value="http://127.0.0.1:5555/notify"/>
     </element>
     <element xsi:type="archimate:ApplicationComponent" name="ChannelAdapter" id="1df1ca90-e21a-448e-81ef-01ee100c9d3c"/>
@@ -83,7 +83,10 @@ port: 5555</documentation>
       <documentation>분석/조치 수행 정보 수집/저장 요청</documentation>
     </element>
     <element xsi:type="archimate:ApplicationEvent" name="1day" id="5f0f73ac-97c1-4dd1-9ca8-6674e9ae8202"/>
-    <element xsi:type="archimate:ApplicationFunction" name="recommend_info_get" id="8f713578-702b-4873-9434-fafd8a7b668b"/>
+    <element xsi:type="archimate:ApplicationFunction" name="recommend_info_get" id="8f713578-702b-4873-9434-fafd8a7b668b">
+      <documentation>-분석('A')/조치('S')에 따라 TASK_INFO 테이블에서 action_type 별로 조회
+-조회된 TASK를 기준으로 RECOMMEND_BASE_INFO 정보를 이용하여 백분율 계산 및 추천 순위 반환</documentation>
+    </element>
     <element xsi:type="archimate:DataObject" name="TASK_DETAIL" id="eb14772d-4561-4749-a755-8198a5c90a05">
       <property key="OUTBOUND_TASK_ID" value="VARCHAR2(256), 태스크 아이디, PK"/>
       <property key="OUTBOUND_TASK_NAME" value="VARCHAR2(256), 태스크 명"/>
@@ -127,12 +130,12 @@ Origin CSV를 기반으로 RECOMMEND_INFO 정보 갱신.
 -Origin CSV 내 오류 메시지의 유사도가 90%이상인 row들끼리 그룹핑
 -파일명: 'A' or 'S'/group/YYYYMMDD/{uuid}.csv
 
-2.Classfy
+2.Classify
 -그룹 csv 파일을 read하여 task ID 별로 분류한다.
--파일명: 'A' or 'S'/classfy/YYYYMMDD/{uuid}.csv
+-파일명: 'A' or 'S'/classify/YYYYMMDD/{uuid}.csv
 
 3.Adding
--classfy csv 파일 row의 오류 메시지가 RECOMMEND_INFO 테이블에 MESSAGE_PATTERN 컬럼 데이터와 유사도 90%일 경우
+-classify csv 파일 row의 오류 메시지가 RECOMMEND_INFO 테이블에 MESSAGE_PATTERN 컬럼 데이터와 유사도 90%일 경우
  OUTBOUND_TASK_ID 없으면 INSERT 존재하면 CALL_CNT 1 증가</documentation>
     </element>
     <element xsi:type="archimate:ApplicationFunction" name="action_info_get" id="44c160c7-1ed6-4d9d-9a2d-5231f32b3f8c">
@@ -244,6 +247,7 @@ REST API를 이용하여 Recommander로부터 의견 수신
       <property key="task_type" value="VARCHAR(1), 'c'(명령어), 'S'(쉘스크립트)"/>
       <property key="script_seq" value="INTEGER, PK"/>
       <property key="script" value="TEXT"/>
+      <property key="action_type" value="VARCHAR(1), 'A'(분석), 'S'(조치)"/>
     </element>
     <element xsi:type="archimate:ApplicationFunction" name="dataset_preproc" id="d1b51105-d960-44ca-abc5-70f19e4ae8f5"/>
     <element xsi:type="archimate:ApplicationFunction" name="dataset_grouping" id="6b03f5b1-0459-46db-9a04-d6e3db8d9006">
@@ -251,15 +255,15 @@ REST API를 이용하여 Recommander로부터 의견 수신
 -Origin CSV 내 오류 메시지의 유사도가 90%이상인 row들끼리 그룹핑
 -파일명: 'A' or 'S'/group/YYYYMMDD/g_NNNN.csv</documentation>
     </element>
-    <element xsi:type="archimate:ApplicationFunction" name="dataset_classfy" id="3acc59ff-0b0d-46c8-9607-fe9662f3d126">
-      <documentation>2.Classfy
--그룹 csv 파일을 read하여 task ID 별로 분류한다.
--파일명: 'A' or 'S'/classfy/YYYYMMDD/c_NNNN.csv
+    <element xsi:type="archimate:ApplicationFunction" name="dataset_classify" id="3acc59ff-0b0d-46c8-9607-fe9662f3d126">
+      <documentation>2.Classify
+-그룹 csv 파일을 read 하여 task ID 별로 분류한다.
+-파일명: 'A' or 'S'/classify/YYYYMMDD/c_NNNN.csv
 </documentation>
     </element>
     <element xsi:type="archimate:ApplicationFunction" name="dataset_adding" id="ae213c49-62ba-497c-bb60-6dacfe949ff5">
       <documentation>3.Adding
--classfy csv 파일 row의 오류 메시지가 RECOMMEND_INFO 테이블에 MESSAGE_PATTERN 컬럼 데이터와 유사도 90%일 경우
+-classify csv 파일 row의 오류 메시지가 RECOMMEND_INFO 테이블에 MESSAGE_PATTERN 컬럼 데이터와 유사도 90%일 경우
  OUTBOUND_TASK_ID 없으면 INSERT 존재하면 CALL_CNT 1 증가</documentation>
     </element>
   </folder>
@@ -329,7 +333,7 @@ alter table [table명] convert to character set utf8mb4 collate utf8mb4_unicode_
       <property key="One-Hot Columns" value="One-Hot encoding 된 컬럼들..."/>
     </element>
     <element xsi:type="archimate:Artifact" name="Group CSV" id="93925381-ff22-4ede-99e1-b2e2c1ed3862"/>
-    <element xsi:type="archimate:Artifact" name="Classfy CSV" id="82b6038b-6d08-4c3a-a3dd-88da6c7e8181"/>
+    <element xsi:type="archimate:Artifact" name="Classify CSV" id="82b6038b-6d08-4c3a-a3dd-88da6c7e8181"/>
   </folder>
   <folder name="Motivation" id="66f363bd-7b88-44d1-aed5-b42ee5a2958c" type="motivation"/>
   <folder name="Implementation &amp; Migration" id="8d5a4c4d-1147-46d5-91d8-4bb91e3f6c84" type="implementation_migration"/>
@@ -426,6 +430,8 @@ RES: 수행 가능한 TASK 리스트(추천 알고리즘 적용)</documentation>
     <element xsi:type="archimate:TriggeringRelationship" name="REST API" id="a1d10181-acd7-40db-bf0a-544af9523cf8" source="2513ea21-21d3-4978-96f8-bbd458d97aab" target="b8028510-c510-4ccf-a158-22b48f443ed5">
       <documentation>REQ: 채널 아이디&#xD;
 RES: 수행 가능한 TASK 리스트(추천 알고리즘 적용)</documentation>
+      <property key="EVENT_MESSAGE" value="이벤트 메시지, Text"/>
+      <property key="ACTION_TYPE" value="분석('A')/조치('S')"/>
     </element>
     <element xsi:type="archimate:RealizationRelationship" id="97aa53d0-8bdc-4e58-81b0-99f88e230dd3" source="2c583930-0e41-4831-abd4-b7f93d30e343" target="b8028510-c510-4ccf-a158-22b48f443ed5"/>
     <element xsi:type="archimate:RealizationRelationship" id="c9aa61d8-242e-4366-a1b5-39d1f72b86bf" source="2c583930-0e41-4831-abd4-b7f93d30e343" target="8f713578-702b-4873-9434-fafd8a7b668b"/>
@@ -883,18 +889,22 @@ xoxb-734637364624-785690158341-OQmmNw70SUuxfHgKdrzhkX2j
     </element>
     <element xsi:type="archimate:ArchimateDiagramModel" name="Recommender" id="0222ff59-fad2-4ae8-9df1-6e95e3016bf3">
       <child xsi:type="archimate:DiagramObject" id="c22fbeea-e2c9-45d2-a899-9bba5e5ebd32" targetConnections="ef9e58af-7f49-4904-8080-7507875be19b" fillColor="#0000ff" archimateElement="de52ad2a-5af8-4c7c-b0f5-b4273df5d029">
-        <bounds x="504" y="96" width="169" height="181"/>
+        <bounds x="504" y="96" width="193" height="229"/>
         <sourceConnection xsi:type="archimate:Connection" id="1ada57bb-ad62-430f-ab8d-acb0288b179b" source="c22fbeea-e2c9-45d2-a899-9bba5e5ebd32" target="abc6cb50-33a2-4087-a854-93fbb6d4cf3a" archimateRelationship="df4afaa9-6ccc-417c-b85c-0e61d3fd46b6"/>
         <sourceConnection xsi:type="archimate:Connection" id="34278395-e7c7-4f32-a55b-f11305f29bdb" source="c22fbeea-e2c9-45d2-a899-9bba5e5ebd32" target="e93e5e84-013a-4535-80be-7d795ca0fe18" archimateRelationship="bb1fddd4-b1bf-44b7-a0b1-ac2d67c6dafb"/>
         <sourceConnection xsi:type="archimate:Connection" id="4a5f612c-bd39-4c88-b80f-023b770b7536" source="c22fbeea-e2c9-45d2-a899-9bba5e5ebd32" target="4a8af659-bfbb-4f91-bb24-58cf088203cb" archimateRelationship="6ef51bc6-cc54-4749-a25a-1c265b5399d4"/>
+        <sourceConnection xsi:type="archimate:Connection" id="0372cfd3-0374-404f-86d0-8487d88fc0a1" source="c22fbeea-e2c9-45d2-a899-9bba5e5ebd32" target="f0e4e6be-8fea-43a8-915f-91191fd088eb" archimateRelationship="39f63dba-e633-4cc5-8725-b9208031a6ae"/>
         <child xsi:type="archimate:DiagramObject" id="abc6cb50-33a2-4087-a854-93fbb6d4cf3a" targetConnections="1ada57bb-ad62-430f-ab8d-acb0288b179b" archimateElement="eb14772d-4561-4749-a755-8198a5c90a05">
-          <bounds x="12" y="84" width="121" height="37"/>
+          <bounds x="12" y="84" width="169" height="37"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="e93e5e84-013a-4535-80be-7d795ca0fe18" targetConnections="34278395-e7c7-4f32-a55b-f11305f29bdb" archimateElement="f940535f-7053-4366-9f87-bc7bd92d5df8">
-          <bounds x="12" y="132" width="121" height="37"/>
+          <bounds x="12" y="132" width="169" height="37"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="4a8af659-bfbb-4f91-bb24-58cf088203cb" targetConnections="4a5f612c-bd39-4c88-b80f-023b770b7536" archimateElement="0bd44d8f-fec0-4fb3-93dc-661db8029c87">
-          <bounds x="12" y="30" width="121" height="43"/>
+          <bounds x="12" y="30" width="169" height="43"/>
+        </child>
+        <child xsi:type="archimate:DiagramObject" id="f0e4e6be-8fea-43a8-915f-91191fd088eb" targetConnections="0372cfd3-0374-404f-86d0-8487d88fc0a1" archimateElement="f689a7f0-a423-4748-a9c0-71e874a904ad">
+          <bounds x="12" y="180" width="169" height="37"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="376fd1d1-3307-4191-a468-004ada4a2641" fillColor="#00ff40" archimateElement="2513ea21-21d3-4978-96f8-bbd458d97aab" type="1">
@@ -902,10 +912,10 @@ xoxb-734637364624-785690158341-OQmmNw70SUuxfHgKdrzhkX2j
         <sourceConnection xsi:type="archimate:Connection" id="7f9b094d-ce51-49f6-8c9d-e2d1ffd4c72f" source="376fd1d1-3307-4191-a468-004ada4a2641" target="63842670-973f-4cdf-82e7-1810279f24cf" archimateRelationship="a1d10181-acd7-40db-bf0a-544af9523cf8"/>
       </child>
       <child xsi:type="archimate:DiagramObject" id="4f950d30-6ac0-48d6-81fe-eb4e77206854" fillColor="#ffff80" archimateElement="651bc35c-cec6-4f66-bf47-8289f6465022">
-        <bounds x="504" y="12" width="169" height="73"/>
+        <bounds x="504" y="12" width="193" height="73"/>
         <sourceConnection xsi:type="archimate:Connection" id="189d9611-a3e6-42d7-8ef0-6a1999d1e62d" source="4f950d30-6ac0-48d6-81fe-eb4e77206854" target="4f7a2909-cacf-42d6-8936-aabd91be077a" archimateRelationship="69b3ad16-074e-490f-9142-4296e81e71ea"/>
         <child xsi:type="archimate:DiagramObject" id="4f7a2909-cacf-42d6-8936-aabd91be077a" targetConnections="189d9611-a3e6-42d7-8ef0-6a1999d1e62d 225b539f-4239-424c-b82e-31f51cbdb78f" archimateElement="b3bba506-b4a7-4d58-a67b-1382d9ea9410">
-          <bounds x="12" y="36" width="148" height="25"/>
+          <bounds x="12" y="36" width="169" height="25"/>
         </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="d6727c5c-b2aa-4d35-beeb-26db53ae9fe2" fillColor="#00ffff" archimateElement="bb9f46c4-0b7e-4aca-94b5-1fd49301e336">
@@ -922,6 +932,9 @@ xoxb-734637364624-785690158341-OQmmNw70SUuxfHgKdrzhkX2j
           <sourceConnection xsi:type="archimate:Connection" id="ef9e58af-7f49-4904-8080-7507875be19b" source="d154ee10-f7a8-4a7a-a6ab-3d082e74b913" target="c22fbeea-e2c9-45d2-a899-9bba5e5ebd32" archimateRelationship="0a60c417-790f-4a0b-8448-ccd0512978a7"/>
         </child>
       </child>
+      <documentation>발생한 이벤트 메시지의 유사도를 측정하여 90% 이상의 패턴을 추천 및 백분율을 제시한다.
+물리서버 분리를 고려하여 REST API 서버로 구현.(Web UI제공 X)
+-Port: 5959</documentation>
     </element>
     <element xsi:type="archimate:ArchimateDiagramModel" name="Analyzer" id="31aa7d98-6d98-4695-b625-25f7a4c10f96">
       <child xsi:type="archimate:DiagramObject" id="0a6ec6dd-14b2-4b71-a38e-dc17abf574ed" fillColor="#ffff80" archimateElement="651bc35c-cec6-4f66-bf47-8289f6465022">
@@ -1177,7 +1190,7 @@ DB 경합 없어야 함.
           <sourceConnection xsi:type="archimate:Connection" id="9a2387f0-488b-4604-adb9-83d5486b5a18" source="0610750f-556f-41b5-891f-34a226e2897e" target="a6077883-50a0-421c-b811-74fd1f937006" archimateRelationship="377367c2-850c-43f3-9440-fe4f46de049a"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="8e296795-967e-4798-b70a-ace08dd60cf9" targetConnections="f914f490-1b8a-4366-8ae4-851c844438d4" fillColor="#ffff80" archimateElement="bed649b2-891d-4080-81c6-f82db718d492">
-          <bounds x="24" y="24" width="120" height="25"/>
+          <bounds x="12" y="24" width="120" height="25"/>
           <sourceConnection xsi:type="archimate:Connection" id="b88d6fea-fb4d-4057-bcf3-6c471e7089b9" source="8e296795-967e-4798-b70a-ace08dd60cf9" target="5482028f-96e9-4d0f-8cd3-5d9da57c71d6" archimateRelationship="ac3bd390-9949-47e8-a676-274dcb9d859a"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="c54ee4ce-0938-4a64-9e4d-9448b4f1cea4" targetConnections="463d8afc-5a5f-4e1f-a4f2-634c3beb8b94 7b55ac27-721d-422f-a134-72d4fdf8c5a0" archimateElement="6394e59e-aca0-47c6-ab60-dbef52f41842">
