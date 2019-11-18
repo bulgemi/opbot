@@ -95,42 +95,49 @@ def seed():
 
     seed_data = TaskInfo(task_id='DB_상태_분석',
                          task_type='c',
+                         action_type='A',
                          script_seq=0,
                          script="cat /home/tester/db_stat.txt")
     db.session.add(seed_data)
 
     seed_data = TaskInfo(task_id='EAI/MCG_상태_분석',
                          task_type='c',
+                         action_type='A',
                          script_seq=0,
                          script="cat /home/tester/eai_stat.txt")
     db.session.add(seed_data)
 
     seed_data = TaskInfo(task_id='시스템_상태_분석',
                          task_type='c',
+                         action_type='A',
                          script_seq=0,
                          script="top -n 1 -b")
     db.session.add(seed_data)
 
     seed_data = TaskInfo(task_id='TP_상태_분석',
                          task_type='c',
+                         action_type='A',
                          script_seq=0,
                          script="cat /home/tester/tp_stat.txt")
     db.session.add(seed_data)
 
     seed_data = TaskInfo(task_id='DB_Session_Lock_제거',
                          task_type='c',
+                         action_type='S',
                          script_seq=0,
                          script="cat /home/tester/db_solution.txt")
     db.session.add(seed_data)
 
     seed_data = TaskInfo(task_id='EAI_Queue_Purge',
                          task_type='c',
+                         action_type='S',
                          script_seq=0,
                          script="cat /home/tester/eai_solution.txt")
     db.session.add(seed_data)
 
     seed_data = TaskInfo(task_id='TP_재기동',
                          task_type='c',
+                         action_type='S',
                          script_seq=0,
                          script="cat /home/tester/tp_solution.txt")
     db.session.add(seed_data)
