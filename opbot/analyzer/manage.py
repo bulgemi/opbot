@@ -25,9 +25,9 @@ def task_channel_adapter():
         now_date = now.strftime('%Y%m%d')
         # 1.Grouping
         r = analyzer.dataset_grouping(now_date)
-        # 2.Classfy
+        # 2.Classify
         if r is True:
-            r = analyzer.dataset_classfy(now_date)
+            r = analyzer.dataset_classify(now_date)
         # 3.adding
         r = analyzer.dataset_adding(now_date)
     return r
