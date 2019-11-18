@@ -953,16 +953,16 @@ xoxb-734637364624-785690158341-OQmmNw70SUuxfHgKdrzhkX2j
           <sourceConnection xsi:type="archimate:Connection" id="ef9e58af-7f49-4904-8080-7507875be19b" source="d154ee10-f7a8-4a7a-a6ab-3d082e74b913" target="c22fbeea-e2c9-45d2-a899-9bba5e5ebd32" archimateRelationship="0a60c417-790f-4a0b-8448-ccd0512978a7"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="9384d222-c7c6-4b39-936e-24cfca41f8b7" targetConnections="a89441fd-d854-43f4-aed7-36f8195f9ac1 72751afc-f4c3-4fe1-8f30-1d6bae9cf6c0" archimateElement="f2a07ec9-560d-4bda-9eed-9e34738c6d5c">
-          <bounds x="12" y="36" width="133" height="25"/>
+          <bounds x="12" y="24" width="145" height="25"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="a52675fa-cb56-4ea6-9e8e-29afd4163ce3" targetConnections="1ac272cc-9c0c-4783-b73a-ede3835378db c085bbb8-2be4-43de-87b5-ff028e813cec" archimateElement="5881b49b-5564-41b0-84f9-d385ea7c259c">
-          <bounds x="156" y="36" width="120" height="25"/>
+          <bounds x="168" y="24" width="108" height="25"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="4c6a45b2-f965-4269-85c9-072fadf8c770" targetConnections="149c8824-89e4-49a9-9d39-6271719835d9 dfe5484e-9979-4bb4-aae9-79e2c49c2e96" archimateElement="7377f090-b0ec-417e-8422-f3c503448dc1">
           <bounds x="119" y="156" width="157" height="25"/>
         </child>
       </child>
-      <documentation>발생한 이벤트 메시지의 유사도를 측정하여 90% 이상의 패턴을 추천 및 백분율을 제시한다.
+      <documentation>발생한 이벤트 메시지의 유사도를 측정하여 90% 이상의 패턴을 추천 및 적합도(백분율)를 제시한다.
 물리서버 분리를 고려하여 REST API 서버로 구현.(Web UI제공 X)
 -Port: 5959</documentation>
     </element>
