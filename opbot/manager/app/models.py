@@ -41,6 +41,7 @@ class TargetList(db.Model):
 class TaskInfo(db.Model):
     task_id = db.Column(db.String(256), primary_key=True)
     task_type = db.Column(db.String(1), nullable=False)
+    action_type = db.Column(db.String(1), nullable=False)
     script_seq = db.Column(db.Integer, primary_key=True)
     script = db.Column(db.Text)
 
