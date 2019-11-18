@@ -77,11 +77,11 @@ class TestAnalyzer(unittest.TestCase):
         analyzer = Analyzer(self.__db, self.__logger)
         self.assertTrue(analyzer.dataset_grouping('20191113'))
 
-    def test_006_classfy(self):
+    def test_006_classify(self):
         from analyzer.app.analysis import Analyzer
 
         analyzer = Analyzer(self.__db, self.__logger)
-        self.assertTrue(analyzer.dataset_classfy('20191113'))
+        self.assertTrue(analyzer.dataset_classify('20191113'))
 
     def test_007_adding(self):
         from analyzer.app.analysis import Analyzer
