@@ -162,14 +162,14 @@ class Analyzer(object):
 
         return True
 
-    def __classfy(self, create_date, t='A'):
+    def __classify(self, create_date, t='A'):
         """
         grouping csv 파일을 TASK ID 별로 분류한다.
         :param create_date:
         :param t:
         :return:
         """
-        p = 'classfy'
+        p = 'classify'
         g_dir = "{0}/{1}/group/{2}".format(self.__datasets_dir, t, create_date)
         f_list = os.listdir(g_dir)
         task_map = dict()
@@ -194,7 +194,7 @@ class Analyzer(object):
                     # 파일 내용 쓰기.
                     tmp_tf = task_map[row[1]][1]
                     tmp_tf.writerow(row)
-
+        # close the files
         for k, v in task_map.items():
             v[0].close()
 
@@ -213,29 +213,29 @@ class Analyzer(object):
 
         return True
 
-    def dataset_classfy(self, create_date):
+    def dataset_classify(self, create_date):
         """
-        2.Classfy
+        2.Classify
         -그룹 csv 파일을 read 하여 TASK ID 별로 분류한다.
-        -파일명: 'A' or 'S'/classfy/YYYYMMDD/{uuid}.csv
+        -파일명: 'A' or 'S'/classify/YYYYMMDD/{uuid}.csv
         :param create_date:
         :return:
         """
-        self.__classfy(create_date, 'A')
-        self.__classfy(create_date, 'S')
+        self.__classify(create_date, 'A')
+        self.__classify(create_date, 'S')
 
         return True
 
     def __adding(self, create_date, t='A'):
         """
-        1.claassfy 디렉토리에 생성된 csv 파일 read
+        1.classify 디렉토리에 생성된 csv 파일 read
         2.recommend_base_info table 에 유사도가 90%이상이고 TASK ID가 동일한 row 존재시 call_cnt +1 증가.
         3.row 없을 경우, row 추가 후 call_cnt +1 증가
         :param create_date:
         :param t:
         :return:
         """
-        c_dir = "{0}/{1}/classfy/{2}".format(self.__datasets_dir, t, create_date)
+        c_dir = "{0}/{1}/classify/{2}".format(self.__datasets_dir, t, create_date)
 
         try:
             f_list = os.listdir(c_dir)
@@ -286,7 +286,7 @@ class Analyzer(object):
     def dataset_adding(self, create_date):
         """
         3.Adding
-        -classfy csv 파일 row의 오류 메시지가 RECOMMEND_INFO 테이블에 MESSAGE_PATTERN 컬럼 데이터와 유사도 90%일 경우
+        -classify csv 파일 row의 오류 메시지가 RECOMMEND_INFO 테이블에 MESSAGE_PATTERN 컬럼 데이터와 유사도 90%일 경우
          OUTBOUND_TASK_ID 없으면 INSERT 존재하면 CALL_CNT 1 증가
         :param create_date:
         :return:
