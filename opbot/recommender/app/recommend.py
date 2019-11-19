@@ -6,11 +6,11 @@ class Recommender(object):
     """
     알고리즘을 통한 분석/조치 태스크 추천
     """
-    def __init__(self):
+    def __init__(self, db):
         """
         recommender 초기화.
         """
-        pass
+        self.__db = db
 
     def percentage_calc(self):
         """
