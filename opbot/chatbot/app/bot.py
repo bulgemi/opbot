@@ -12,7 +12,7 @@ from sqlalchemy import and_
 from slacker import Slacker
 from redis import Redis
 sys.path.append(os.getenv('OPBOT_HOME'))
-from manager.app.models import ChannelInfo, EventHistory
+from manager.app.models import ChannelInfo, EventHistory, TaskInfo
 from chatbot.app.config import Config
 from collector.app.collect import Collector
 
@@ -26,6 +26,7 @@ class ChatBot(object):
         self.__db = db
         self.__r = Redis(host='localhost', port=6389, db=0)
         self.__c = Collector(db)
+        self.__recommend_uri = Config.RECOMMENDER_URI
 
     def __put_out_channel(self, channel, username='opbot', text=None, attachments=None):
         """
@@ -370,15 +371,28 @@ class ChatBot(object):
         :param out_channel_id: OUT 채널 ID
         :return:
         """
-        # Todo: recommender 연동, task 명 공백 없음.
+        import requests
+
         context_key = self.get_current_subjects(out_channel_id)
+        msg = self.get_event_message(context_key)
 
-        if self.get_context(out_channel_id, context_key) == 'A':
-            tasks = ["DB_상태_분석", "EAI/MCG_상태_분석", "TP_상태_분석", "시스템_상태_분석"]
-        else:
-            tasks = ["DB_Session_Lock_제거", "EAI_Queue_Purge", "TP_재기동"]
+        data = {'event_msg': msg,
+                'action_type': self.get_context(out_channel_id, context_key)}
+        task_list = list()
 
-        return tasks
+        try:
+            r = requests.post(self.__recommend_uri, json=data)
+
+            if r.status_code == 201:
+                for task in r.json():
+                    task_list.append(task['task_id'])
+            else:
+                current_app.logger.error("return error(%d)" % r.status_code)
+                return None
+        except requests.exceptions.RequestException as e:
+            current_app.logger.error("!%s!" % e)
+            return None
+        return task_list
 
     def task_opinion(self, out_channel_id):
         """
@@ -387,15 +401,28 @@ class ChatBot(object):
         :param out_channel_id: OUT 채널 ID
         :return:
         """
-        # Todo: recommender 연동, task 명 공백 없음.
+        import requests
+
         context_key = self.get_current_subjects(out_channel_id)
+        msg = self.get_event_message(context_key)
 
-        if self.get_context(out_channel_id, context_key) == 'A':
-            opinion = ["DB_상태_분석: 85.3 %", "EAI/MCG_상태_분석: 13.2 %", "TP_상태_분석: 1.5 %", "시스템_상태_분석: 0%"]
-        else:
-            opinion = ["DB_Session_Lock_제거: 95 %", "EAI_Queue_Purge: 15 %", "TP_재기동: 0 %"]
+        data = {'event_msg': msg,
+                'action_type': self.get_context(out_channel_id, context_key)}
+        opinion_list = list()
 
-        return opinion
+        try:
+            r = requests.post(self.__recommend_uri, json=data)
+
+            if r.status_code == 201:
+                for task in r.json():
+                    opinion_list.append("{}: {} %".format(task['task_id'], task['percentage']))
+            else:
+                current_app.logger.error("return error(%d)" % r.status_code)
+                return None
+        except requests.exceptions.RequestException as e:
+            current_app.logger.error("!%s!" % e)
+            return None
+        return opinion_list
 
     def analysis_opinion(self, out_channel_id):
         """
@@ -404,14 +431,47 @@ class ChatBot(object):
         :param out_channel_id: OUT 채널 ID
         :return:
         """
-        # Todo: recommender 연동, task 명 공백 없음.
+        import requests
+
         context_key = self.get_current_subjects(out_channel_id)
+        msg = self.get_event_message(context_key)
 
-        if self.get_context(out_channel_id, context_key) == 'A':
-            opinion = "장애원인은 'DB Session Lock'일 확률이 높으며, 분석작업은 'DB_상태_분석'을(를) 추천합니다."
-        else:
-            opinion = "장애원인은 'DB Session Lock'일 확률이 높으며, 조치작업은 'DB_Session_Lock_제거'을(를) 추천합니다."
+        data_a = {'event_msg': msg, 'action_type': 'A'}
+        data_s = {'event_msg': msg, 'action_type': 'S'}
+        opinion = ""
 
+        try:
+            cause = "None"
+            work = "None"
+            r_a = requests.post(self.__recommend_uri, json=data_a)
+
+            if r_a.status_code != 201:
+                current_app.logger.error("return error r_a(%d)" % r_a.status_code)
+                return None
+
+            r_s = requests.post(self.__recommend_uri, json=data_s)
+
+            if r_s.status_code != 201:
+                current_app.logger.error("return error r_s(%d)" % r_s.status_code)
+                return None
+
+            if len(r_s.json()) > 0:
+                cause_info = r_s.json()[0]
+                cause = self.__get_task_cause(cause_info['task_id'])
+
+            if self.get_context(out_channel_id, context_key) == 'A':
+                if len(r_a.json()) > 0:
+                    work_info = r_a.json()[0]
+                    work = self.__get_task_cause(work_info['task_id'])
+                opinion = "장애원인은 '{}'일 확률이 높으며, 분석작업은 '{}'을(를) 추천합니다.".format(cause, work)
+            else:
+                if len(r_s.json()) > 0:
+                    work_info = r_s.json()[0]
+                    work = self.__get_task_cause(work_info['task_id'])
+                opinion = "장애원인은 '{}'일 확률이 높으며, 조치작업은 '{}'을(를) 추천합니다.".format(cause, work)
+        except requests.exceptions.RequestException as e:
+            current_app.logger.error("!%s!" % e)
+            return ""
         return opinion
 
     def get_event_message(self, event_uid):
@@ -424,6 +484,17 @@ class ChatBot(object):
         stmt = stmt.with_entities(EventHistory.event_msg)
         event_message = stmt.filter(EventHistory.event_uid == event_uid.strip()).first()
         return event_message[0]
+
+    def __get_task_cause(self, task_id):
+        """
+        발생 원인 반환.
+        :param task_id:
+        :return:
+        """
+        stmt = self.__db.session.query(TaskInfo)
+        stmt = stmt.with_entities(TaskInfo.cause)
+        cause = stmt.filter(TaskInfo.task_id == task_id.strip()).first()
+        return cause[0]
 
     def channel_read(self, in_channel_id):
         """
