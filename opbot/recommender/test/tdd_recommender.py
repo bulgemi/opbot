@@ -46,3 +46,23 @@ class TestRecommend(unittest.TestCase):
         event_msg = "[SWING TIMEOUT 발생] ZORDSSUBS0050_TR01(고객 서비스목록 조회)업무에서 최근 3분간 TIMEOUT 90건 발생 - 담당자 권오성(010-9001-5059)"
         print(recomm.recommend_info_get(event_msg))
         print(recomm.recommend_info_get(event_msg, 'S'))
+        print(recomm.recommend_info_get("dkjflsldjdj"))
+        print(recomm.recommend_info_get("dlkjfljlwld", 'S'))
+
+    def test_003_call_rest_api(self):
+        import requests
+
+        api_host = "http://127.0.0.1:5959/api/1/events/"
+
+        msg = "[SWING TIMEOUT 발생] ZORDSSUBS0050_TR01(고객 서비스목록 조회)업무에서 최근 3분간 TIMEOUT 90건 발생 - 담당자 권오성(010-9001-5059)"
+        data = {'event_msg': msg,
+                'action_type': 'A'}
+
+        try:
+            r = requests.post(api_host, json=data)
+            print("="*20)
+            print(r.status_code)
+            print(r.json())
+            print("="*20)
+        except requests.exceptions.RequestException as e:
+            self.logger.error("!%s!" % e)
