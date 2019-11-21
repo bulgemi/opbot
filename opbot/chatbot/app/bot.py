@@ -353,6 +353,7 @@ class ChatBot(object):
         :param out_channel_id:
         :return:
         """
+        # Todo: 이벤트의 원인을 추론, M/L
         return "'DB Session Lock'으로 인한 거래 Timeout 발생"
 
     def get_solution(self, out_channel_id):
@@ -362,9 +363,10 @@ class ChatBot(object):
         :param out_channel_id:
         :return:
         """
+        # Todo: 이벤트의 해결을 추론, M/L
         return "'DB_Session_Lock_제거' 수행"
 
-    def task_recommend(self, out_channel_id):
+    def task_recommend(self, out_channel_id, msg):
         """
         분석/조치 task 추천 정보 Recommender 에 요청.
         요청은 REST API 사용
@@ -462,12 +464,12 @@ class ChatBot(object):
             if self.get_context(out_channel_id, context_key) == 'A':
                 if len(r_a.json()) > 0:
                     work_info = r_a.json()[0]
-                    work = self.__get_task_cause(work_info['task_id'])
+                    work = work_info['task_id']
                 opinion = "장애원인은 '{}'일 확률이 높으며, 분석작업은 '{}'을(를) 추천합니다.".format(cause, work)
             else:
                 if len(r_s.json()) > 0:
                     work_info = r_s.json()[0]
-                    work = self.__get_task_cause(work_info['task_id'])
+                    work = work_info['task_id']
                 opinion = "장애원인은 '{}'일 확률이 높으며, 조치작업은 '{}'을(를) 추천합니다.".format(cause, work)
         except requests.exceptions.RequestException as e:
             current_app.logger.error("!%s!" % e)
@@ -480,6 +482,8 @@ class ChatBot(object):
         :param event_uid:
         :return:
         """
+        current_app.logger.debug("event_uid=<%r>" % event_uid)
+
         stmt = self.__db.session.query(EventHistory)
         stmt = stmt.with_entities(EventHistory.event_msg)
         event_message = stmt.filter(EventHistory.event_uid == event_uid.strip()).first()
