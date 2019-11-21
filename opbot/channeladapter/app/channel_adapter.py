@@ -60,9 +60,13 @@ class ChannelAdapter(object):
 
                 # notify
                 try:
-                    observer.notify(self, channel_id, msg_dict[new_event], new_event)
                     self.add_history(event_history)
+                    observer.notify(self, channel_id, msg_dict[new_event], new_event)
                 except requests.exceptions.RequestException as e:
+                    self.logger.error("!%s!" % e)
+                    pass
+                except SQLAlchemyError as e:
+                    self.logger.error("!%s!" % e)
                     pass
 
     def call_rest_api(self, channel_id, msg, msg_uid):
@@ -100,6 +104,7 @@ class ChannelAdapter(object):
         except SQLAlchemyError as e:
             self.logger.error("!%r!" % str(e.orig))
             self.__db.session.rollback()
+            raise e
 
     def catch_event(self, channel_event_set):
         """
