@@ -44,6 +44,7 @@ class TaskInfo(db.Model):
     action_type = db.Column(db.String(1), nullable=False)
     script_seq = db.Column(db.Integer, primary_key=True)
     script = db.Column(db.Text)
+    cause = db.Column(db.String(256), nullable=True)
 
     def __repr__(self):
         return '<task_id %r, script_seq %r>' \
