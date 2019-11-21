@@ -13,4 +13,5 @@ class Config(object):
     LOG_FILE_ASYNCIO_RECEIVER = 'asyncio_receiver.log'
     LOG_FORMAT = '%(levelname)s|%(asctime)s[%(filename)s:%(funcName)s(%(lineno)d) %(message)s'
 
+    RECOMMENDER_URI = "http://127.0.0.1:5959/api/1/events/"
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://opbot_appl:apbot_appl26#!@localhost/opbot_db?charset=utf8'
