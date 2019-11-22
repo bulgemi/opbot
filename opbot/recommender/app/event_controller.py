@@ -9,14 +9,14 @@ sys.path.append(os.getenv('OPBOT_HOME'))
 
 event_a = EventDto.api
 event_m = EventDto.event
-mfields = {'task_id': fields.Raw, 'percentage': fields.Raw}
+recommend_tasks = EventDto.resource_fields
 
 
 @event_a.route('/')
 class AsyncEvent(Resource):
     @event_a.doc('create a New Recommend Event')
     @event_a.expect(event_m)
-    @event_a.marshal_with(mfields, code=201)
+    @event_a.marshal_with(recommend_tasks, code=201)
     def post(self):
         """
         create a new Recommend event
