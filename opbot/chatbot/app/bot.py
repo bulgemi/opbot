@@ -366,7 +366,7 @@ class ChatBot(object):
         # Todo: 이벤트의 해결을 추론, M/L
         return "'DB_Session_Lock_제거' 수행"
 
-    def task_recommend(self, out_channel_id, msg):
+    def task_recommend(self, out_channel_id):
         """
         분석/조치 task 추천 정보 Recommender 에 요청.
         요청은 REST API 사용
