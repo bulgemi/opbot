@@ -44,24 +44,6 @@ class TestChatBot(unittest.TestCase):
                   " - 담당자 김보현B(010-4588-8647)"
         chatbot.put_broadcast(channel='#swing', message=message)
 
-    def test_003_put_chat(self):
-        from chatbot.app.bot import ChatBot
-
-        chatbot = ChatBot(self.db)
-
-        message = "[SWING TIMEOUT 발생] ZORDSCUS00700_TR01(KAIT부정가입방지 수신)업무에서 최근 3분간 TIMEOUT 24건 발생"\
-                  " - 담당자 김보현B(010-4588-8647)"
-        tasks = ["시스템 상태 분석", "TP 상태 분석", "DB 상태 분석", "EAI/MCG 상태 분석"]
-        chatbot.put_chat(channel='#opbot_swing', message=message, tasks=tasks)
-
-    def test_004_task_recommend(self):
-        from chatbot.app.bot import ChatBot
-
-        chatbot = ChatBot(self.db)
-
-        self.assertIsNotNone(chatbot.task_recommend('swing'))
-        self.assertIsNotNone(chatbot.task_recommend('swing', 'S'))
-
     def test_005_parse_command(self):
         from chatbot.app.bot import ChatBot
 
