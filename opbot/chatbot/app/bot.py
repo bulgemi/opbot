@@ -11,6 +11,7 @@ from flask import current_app
 from sqlalchemy import and_
 from slacker import Slacker
 from redis import Redis
+from redis.exceptions import DataError
 sys.path.append(os.getenv('OPBOT_HOME'))
 from manager.app.models import ChannelInfo, EventHistory, TaskInfo
 from chatbot.app.config import Config
@@ -82,15 +83,19 @@ class ChatBot(object):
         :return:
         """
         hash_key = "opbot_events{}".format(out_channel_id)
-        context = self.__r.hget(hash_key, event_uid)
-
-        # default context 는 분석, 'A': 분석, 'S': 조치
-        if context is None:
-            data = {event_uid: 'A'}
-            self.__r.hmset(hash_key, data)
+        try:
             context = self.__r.hget(hash_key, event_uid)
 
-        return context.decode('utf-8')
+            # default context 는 분석, 'A': 분석, 'S': 조치
+            if context is None:
+                data = {event_uid: 'A'}
+                self.__r.hmset(hash_key, data)
+                context = self.__r.hget(hash_key, event_uid)
+
+            return context.decode('utf-8')
+        except DataError as e:
+            current_app.logger.error("!%s!" % e)
+            raise DataError
 
     def get_context_one(self, out_channel_id):
         """
@@ -375,11 +380,15 @@ class ChatBot(object):
         """
         import requests
 
-        context_key = self.get_current_subjects(out_channel_id)
-        msg = self.get_event_message(context_key)
+        try:
+            context_key = self.get_current_subjects(out_channel_id)
+            msg = self.get_event_message(context_key)
 
-        data = {'event_msg': msg,
-                'action_type': self.get_context(out_channel_id, context_key)}
+            data = {'event_msg': msg,
+                    'action_type': self.get_context(out_channel_id, context_key)}
+        except DataError:
+            return None
+
         task_list = list()
 
         try:
@@ -484,6 +493,9 @@ class ChatBot(object):
         """
         current_app.logger.debug("event_uid=<%r>" % event_uid)
 
+        if event_uid is None:
+            return None
+
         stmt = self.__db.session.query(EventHistory)
         stmt = stmt.with_entities(EventHistory.event_msg)
         event_message = stmt.filter(EventHistory.event_uid == event_uid.strip()).first()
@@ -575,6 +587,8 @@ class ChatBot(object):
         :param command_message:
         :return:
         """
+        if task_list is None:
+            return None
         command = command_message.replace('!', '')
         command_split = command.split('.')
 
