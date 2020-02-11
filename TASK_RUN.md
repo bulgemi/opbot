@@ -19,10 +19,6 @@
     * 암호화
     * 사용자/그룹 등록/수정/삭제
         * Slack에 등록된 사용자 중 TASK 수행 가능한 사용자/그룹 관리
-1. 챗봇 __[챗봇(Chatbot)]__
-    * 사용자 검증(인증, 권한)
-        * Slack을 통해 요청한 사용자에 대한 유효성 검증 및 소속 그룹 확인
-        * 사용자(그룹) 사용 가능한 TASK 검증 
 1. TASK 관리 __[관리모듈(Manager), GUI]__
     * TASK 신규 정의 (SSH or K8s 연동일 경우)
         * 운영자가 사용하려는 TASK 정의(TASK 명, 설명)
@@ -35,12 +31,16 @@
         * TASK와 사용자/그룹 연결
     * TASK 유효성 검증
         * 사용가능 TASK 여부
-1. TASK 수행 __[수행모듈(TaskExecutor)]__
-    * 다양한 연동 방식 제공(SA, OPMATE, Ansible, K8s, SSH)
-    * 결과 출력 포맷(PDF)
+1. 챗봇 __[챗봇(Chatbot)]__
+    * 사용자 검증(인증, 권한)
+        * Slack을 통해 요청한 사용자에 대한 유효성 검증 및 소속 그룹 확인
+        * 사용자(그룹) 사용 가능한 TASK 검증 
 1. 명령어 __[챗봇(Chatbot)]__
     * 사용자(그룹) TASK 리스트
     * TASK 수행
+1. TASK 수행 __[수행모듈(TaskExecutor)]__
+    * 다양한 연동 방식 제공(SA, OPMATE, Ansible, K8s, SSH)
+    * 결과 출력 포맷(PDF)
 ## 구현 및 적용
 ## 결론
 ## References 
