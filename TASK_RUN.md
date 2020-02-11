@@ -34,7 +34,7 @@
     * TASK별 사용자/그룹 관리
         * TASK와 사용자/그룹 연결
     * TASK 유효성 검증
-        * 삭제 TASK 여부
+        * 사용가능 TASK 여부
 1. TASK 수행 __[수행모듈(TaskExecutor)]__
     * 다양한 연동 방식 제공(SA, OPMATE, Ansible, SSH)
     * 결과 출력 포맷(PDF)
