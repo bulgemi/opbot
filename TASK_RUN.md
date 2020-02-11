@@ -14,29 +14,31 @@
 > 하지만 IT 인프라 자원을 운영하는 담당자의 경우 이벤트가 발생한 상황이 아니더라도 모니터링 같은 작업을 수행할 필요가 있다.
 > 이를 위해서는 이벤트 기반의 처리에 사용자 기반의 처리가 추가되어야 한다.
 ### 요건
-1. 사용자(그룹) 관리 __[GUI]__
+1. 사용자(그룹) 관리 __[관리모듈(Manager), GUI]__
+    * 인증
+    * 암호화
     * 사용자/그룹 등록/수정/삭제
         * Slack에 등록된 사용자 중 TASK 수행 가능한 사용자/그룹 관리
-1. 챗봇
+1. 챗봇 __[챗봇(Chatbot)]__
     * 사용자 검증(인증, 권한)
         * Slack을 통해 요청한 사용자에 대한 유효성 검증 및 소속 그룹 확인
         * 사용자(그룹) 사용 가능한 TASK 검증 
-1. TASK 관리 __[GUI]__
+1. TASK 관리 __[관리모듈(Manager), GUI]__
     * TASK 신규 정의 (SSH 연동일 경우)
         * 운영자가 사용하려는 TASK 정의(TASK 명, 설명)
         * Web Editor
-        * Inspection
+        * Code Inspection
     * TASK 관리
         * 유형별(SA, OPMATE, Ansible, SSH) 등록된 TASK 조회
         * TASK 등록/변경/삭제
     * TASK별 사용자/그룹 관리
         * TASK와 사용자/그룹 연결
     * TASK 유효성 검증
-        * 삭제된 TASK가 아닌지 검증
-1. TASK 수행
+        * 삭제 TASK 여부
+1. TASK 수행 __[수행모듈(TaskExecutor)]__
     * 다양한 연동 방식 제공(SA, OPMATE, Ansible, SSH)
     * 결과 출력 포맷(PDF)
-1. 명령어
+1. 명령어 __[챗봇(Chatbot)]__
     * 사용자(그룹) TASK 리스트
     * TASK 수행
 ## 구현 및 적용
