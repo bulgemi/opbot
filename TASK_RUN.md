@@ -20,12 +20,12 @@
     * 사용자/그룹 등록/수정/삭제
         * Slack에 등록된 사용자 중 TASK 수행 가능한 사용자/그룹 관리
 1. TASK 관리 __[관리모듈(Manager), GUI]__
-    * TASK 신규 정의 (SSH or K8s 연동일 경우)
+    * TASK 신규 정의 (K8s or SSH 연동일 경우)
         * 운영자가 사용하려는 TASK 정의(TASK 명, 설명)
         * Web Editor
         * Code Inspection
     * TASK 관리
-        * 유형별(SA, OPMATE, Ansible, K8s, SSH) 등록된 TASK 조회
+        * 유형별(OPMATE[1], K8s[2], Ansible[3], SSH) 등록된 TASK 조회
         * TASK 등록/변경/삭제
     * TASK별 사용자/그룹 관리
         * TASK와 사용자/그룹 연결
@@ -39,8 +39,10 @@
     * 사용자(그룹) TASK 리스트
     * TASK 수행
 1. TASK 수행 __[수행모듈(TaskExecutor)]__
-    * 다양한 연동 방식 제공(SA, OPMATE, Ansible, K8s, SSH)
+    * 다양한 연동 방식 제공(OPMATE[1], K8s[2], Ansible[3], SSH)
     * 결과 출력 포맷(PDF)
+    * System 기본 정보(CPU, Memory) Chart 제공(파라메터 설정)
+    > !cpu, node01!<br>!mem, node01!
 ## 구현 및 적용
 ## 결론
 ## References 
