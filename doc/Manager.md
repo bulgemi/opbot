@@ -19,11 +19,11 @@
         * status_code: INT, NotNull, 0(inactive)/1(active), default: 0
         * role_code: INT, NotNull, 0(admin)/1(leader)/2(user)
             * 0(admin): 관리자
-                > 그룹과 사용자에 대한 생성/수정/삭제 처리. TASK 생성/수정/삭제, 그룹/사용자 연결. 사용자 역할(role) 지정
+                > 그룹과 사용자에 대한 생성/수정/삭제 처리.<br>TASK 생성/수정/삭제, 그룹/사용자 연결.<br> 사용자 역할(role) 지정
             * 1(leader): 그룹 관리자
-                > 그룹내 사용자 생성/수정/삭제. TASK 생성/수정/삭제, 그룹 연결
+                > 그룹내 사용자 생성/수정/삭제.<br>TASK 생성/수정/삭제, 그룹 연결
             * 2(user): 일반 사용자
-                > 사용자 본인 생성/수정/삭제. TASK 생성/수정/삭제, 본인 사용자 연결
+                > 사용자 본인 생성/수정/삭제.<br>TASK 생성/수정/삭제, 본인 사용자 연결
         * slack_id: VARCHAR(128)
             * email 기준으로 slack 연동 입력, slack 연동 email이 없을 경우 Null 처리(Null일 경우 TASK 수행 불가)
             * slack과 동일한 email 사용
@@ -44,7 +44,7 @@
         * 삭제
             1. 탈퇴시 삭제
     1. 그룹
-        > login 후 사용가능, 'admin', 'leader' 권한만 생성/수정/삭제/등록 가능
+        > login 후 사용, 'admin', 'leader' 권한만 허용 
         * 생성
             1. Groupname 입력(자동 중복체크)
         * 수정
