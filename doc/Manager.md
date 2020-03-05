@@ -13,30 +13,41 @@
 ### 사용자(그룹) 관리
 1. 주요 정보
     1. 사용자(user_info)
-        > 사용자 관리 테이블
+        > 사용자 정보 테이블
         * user_code: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
         * user_name: VARCHAR2(128), NotNull, 한글/영문, 공백불허
         * email: VARCHAR2(128), PK, NotNull, e-mail(xxx@xxx.xxx), 공백불허
         * password: VARCHAR2(512), NotNull, 최소 8자리이상 소문자/대문자/숫자/특수문자 조합, 공백불허
-        * group_code: VARCHAR2(64), NotNull, default: 'None', 'g_' + UUID(32자리)
         * status_code: INT, NotNull, 0(inactive)/1(active), default: 0
         * role_code: INT, NotNull, 0(admin)/1(leader)/2(user)
             * 0(admin): 관리자
-                > 그룹과 사용자에 대한 생성/수정/삭제 처리.<br>TASK 생성/수정/삭제, 그룹/사용자 연결.<br> 사용자 역할(role) 지정
+                > 그룹과 사용자에 대한 생성/수정/삭제 처리.<br>
+                > TASK 생성/수정/삭제, 그룹/사용자 연결<br>
+                > 사용자 역할(role) 지정
             * 1(leader): 그룹 관리자
-                > 그룹내 사용자 생성/수정/삭제.<br>TASK 생성/수정/삭제, 그룹 연결
+                > 그룹내 사용자 생성/수정/삭제.<br>
+                > TASK 생성/수정/삭제, 그룹 연결
             * 2(user): 일반 사용자
-                > 사용자 본인 생성/수정/삭제.<br>TASK 생성/수정/삭제, 본인 사용자 연결
+                > 사용자 본인 생성/수정/삭제.<br>
+                > TASK 생성/수정/삭제, 본인 사용자 연결
         * slack_id: VARCHAR(128)
             * email 기준으로 slack 연동 입력, slack 연동 email이 없을 경우 Null 처리(Null일 경우 TASK 수행 불가)
             * slack과 동일한 email 사용
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
     1. 그룹(group_info)
-        > 그룹 관리 테이블
+        > 그룹 정보 테이블
         * group_code: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리), 자동생성
         * group_name: VARCHAR2(256), PK, NotNull, 한글/영문/숫자/'-'/'_', 공백불허
         * owner_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+        * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+            > 수정하는 user_code update
+    1. 그룹관리(group_management)
+        > 그룹 관리 테이블
+        * user_code: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
+        * group_code: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리), 자동생성
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
@@ -69,7 +80,7 @@
         * 수정
             1. Groupname 수정(자동 중복체크)
         * 삭제
-            1. 삭제시 사용자 정보에 해당 group_code 정보 'None' update
+            1. group_management에 해당 group_code row 삭제
         * 사용자 등록관리
             * 추가
                 1. 그룹에 등록한 사용자 추가
