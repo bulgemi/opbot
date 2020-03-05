@@ -42,7 +42,8 @@
     * 다양한 연동 방식 제공(OPMATE[1], K8s[2], Ansible[3], SSH)
     * 결과 출력 포맷(PDF)
     * System 기본 정보(CPU, Memory) Chart 제공(파라메터 설정)
-        > !cpu, node01!<br>!mem, node01!
+        > !cpu, node01!<br>
+        > !mem, node01!
 ## 구현 및 적용
 ## 결론
 ## References 
