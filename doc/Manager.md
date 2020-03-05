@@ -77,7 +77,7 @@
                 1. 등록된 사용자 삭제
 ### TASK 관리
 1. 주요 정보
-    > 기존 테이블 수정 필수
+    > 기존 테이블 수정 필수!
     1. TASK(task_info)
         > TASK 정의 테이블
         * task_code: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리), 자동생성
