@@ -155,4 +155,4 @@
         1. task_info 테이블에 Tasktype이 OPMATE인 TASK의 task_name이 OPMATE Master에서 조회한 TASK 리스트에 존재하는 확인
             * 없을 경우, status_code 0(abnormal) update
             * 있을 경우, status_code 1(normal) update
-        2. task_info 테이블에 status_code가 1인 TASK를 수행할 경우 chatbot은 유효하지 않은 TASK라는 결과 사용자에게 통보
+        2. task_info 테이블에 status_code가 1인 TASK를 수행할 경우 chatbot은 유효하지 않은 TASK라는 내용 사용자에게 통보
