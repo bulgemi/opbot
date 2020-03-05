@@ -5,13 +5,16 @@
 > 
 ## 주요 기능
 ### 공통
+1. Web Application 모든 처리는 Ajax 적용
 1. 주요 데이터 암호화
     * AES-256(보안강도: 256bit)
     * 2011년부터 2025년까지 112bit 이상 보안강도 사용 권고
     * 관련 python package: pycryptodomex
 ### 사용자(그룹) 관리
 1. 주요 정보
-    1. 사용자 정보
+    1. 사용자(user_info)
+        > 사용자 관리 테이블
+        * user_code: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
         * user_name: VARCHAR2(128), NotNull, 한글/영문, 공백불허
         * email: VARCHAR2(128), PK, NotNull, e-mail(xxx@xxx.xxx), 공백불허
         * password: VARCHAR2(512), NotNull, 최소 8자리이상 소문자/대문자/숫자/특수문자 조합, 공백불허
@@ -27,9 +30,25 @@
         * slack_id: VARCHAR(128)
             * email 기준으로 slack 연동 입력, slack 연동 email이 없을 경우 Null 처리(Null일 경우 TASK 수행 불가)
             * slack과 동일한 email 사용
-    1. 그룹 정보
+        * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+    1. 그룹(group_info)
+        > 그룹 관리 테이블
         * group_code: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리), 자동생성
         * group_name: VARCHAR2(256), PK, NotNull, 한글/영문/숫자/'-'/'_', 공백불허
+        * owner_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+        * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+            > 수정하는 user_code update
+1. 공통
+    * 모든 데이터 처리시 create_time, update_time 갱신
+        * 해당 테이블
+            * user_info
+            * group_info
+    * 모든 데이터 처리시 audit_code 갱신
+        * 해당 테이블
+            * group_info
 1. 권한검증
     * slack 사용자 ID와 관리모듈에 등록된 사용자 정보를 기반으로 권한 및 수행가능 TASK 검증
 1. 사용자/그룹 등록/수정/삭제
@@ -57,8 +76,83 @@
             * 삭제
                 1. 등록된 사용자 삭제
 ### TASK 관리
-1. 신규 정의
-    > K8s or 연동일 경우
-1. 관리
-1. 사용자/그룹 관리
+1. 주요 정보
+    > 기존 테이블 수정 필수
+    1. TASK(task_info)
+        > TASK 정의 테이블
+        * task_code: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리), 자동생성
+        * task_name: VARCHAR2(512), PK, NotNull, 한글/영문/숫자/'-'/'_', 공백불허
+        * task_type: INT, NotNull, 0(OPMATE)/1(K8s)/2(SSH: Command)/3(SSH: Sell Script)/4(Ansible), 공백불허
+        * action_type: VARCHAR(1), NotNull, 'A'(분석)/'S'(조치), 공백불허
+        * status_code: INT, NotNull, 0(abnormal)/1(normal), default: 0, 공백불허
+        * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+            > 수정하는 user_code update
+    1. TASK Playbook(task_playbook)
+        > task_type 1/2/3/4일 경우, Script 관리 테이블
+        * task_code: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리)
+        * task_seq: INT, PK, NotNull, default: 0, 공백불허
+        * contents: TEXT, NotNull, Command/Shell/K8s/Ansible Script
+        * cause: VARCHAR(256), Nullable
+        * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+            > 수정하는 user_code update
+    1. TASK Management(task_management)
+        > 사용자(그룹)별 TASK 관리 테이블 
+        * owner_code: VARCHAR2(64), PK, NotNull, 'u_' or 'g_' + UUID(32자리)
+        * task_code: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리)
+        * owner_type: INT, NotNull, 0(user)/1(group)
+        * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
+        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+            > 수정하는 user_code update
+1. 공통
+    * 모든 데이터 처리시 create_time, update_time, audit_code 갱신
+        * 해당 테이블
+            * task_info
+            * task_playbook
+            * task_management
+1. TASK 등록/수정/삭제
+    > K8s, SSH, (Ansible) 연동일 경우
+    * Web Editor(관련 라이브러리: [CodeMirror](https://codemirror.net/index.html)) 기반 Script 작성 기능 제공
+    * 등록
+        1. Tasktype 선택(Radio 버튼: OPMATE, K8s, SSH: Command, SSH: Sell Script)
+        1. Taskname 입력
+            * Tasktype OPMATE일 경우, OPMATE Master에서 TASK 리스트 조회후 선택 입력
+            * Tasktype OPMATE 아닐 경우, 사용자가 Taskname 수동입력(자동 중복체크)
+        1. Tasktype[K8s, SSH: Command, SSH: Sell Script]일 경우, Web Editor 인터페이스 제공
+    * 수정
+        1. Tasktype, Taskname 수정
+        1. Script 내용 수정
+    * 삭제
+        1. Task 삭제
+            1. task_management 해당 task_code 삭제
+            1. task_playbook 해당 task_code 삭제
+            1. task_info 해당 task_code 삭제
+1. 사용자별 TASK/그룹별 TASK 관리
+    > 사용자가 사용하려는 TASK 정의<br>
+    > 그룹이 사용하려는 TASK 정의
+    1. 사용자별 TASK 등록/삭제
+        > 사용자가 이용하려는 TASK 관리 화면 제공<br>
+        > Grid 인터페이스 
+        * 등록 
+            1. 자신이 등록한 TASK 리스트 조회 후 선택 등록
+        * 삭제
+            1. Grid 선택 삭제
+    1. 그룹별 TASK 등록/수정/삭제
+        > login 후 사용, 'admin', 'leader' 권한만 허용<br>
+        > 그룹이 이용하려는 TASK 관리 화면 제공<br>
+        > Grid 인터페이스 
+        * 등록 
+            1. 자신이 등록한 TASK 리스트 조회 후 선택 등록
+        * 삭제
+            1. Grid 선택 삭제
 1. 유효성 검증
+    > OPMATE 경우 해당
+    * daily batch 처리를 통한 OPMATE TASK 유효성 점검
+        1. task_info 테이블에 Tasktype이 OPMATE인 TASK의 task_name이 OPMATE Master에서 조회한 TASK 리스트에 존재하는 확인
+            * 없을 경우, status_code 0(abnormal) update
+            * 있을 경우, status_code 1(normal) update
+        2. task_info 테이블에 status_code가 1인 TASK를 수행할 경우 chatbot은 유효하지 않은 TASK라는 결과 사용자에게 통보
