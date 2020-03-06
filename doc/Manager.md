@@ -170,3 +170,5 @@
             * 없을 경우, status_code 0(abnormal) update
             * 있을 경우, status_code 1(normal) update
         2. task_info 테이블에 status_code가 1인 TASK를 수행할 경우 chatbot은 유효하지 않은 TASK라는 내용 사용자에게 통보
+1. UI 설계
+    1. 
