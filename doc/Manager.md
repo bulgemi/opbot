@@ -171,4 +171,24 @@
             * 있을 경우, status_code 1(normal) update
         2. task_info 테이블에 status_code가 1인 TASK를 수행할 경우 chatbot은 유효하지 않은 TASK라는 내용 사용자에게 통보
 1. UI 설계
-    1. 
+    1. 로그인
+    ![로그인](https://github.com/bulgemi/opbot/blob/master/doc/001login.png)
+    1. 사용자 생성
+    ![사용자 생성](https://github.com/bulgemi/opbot/blob/master/doc/101createuser.png)
+    1. Task
+        1. Task 등록
+        ![Task 등록](https://github.com/bulgemi/opbot/blob/master/doc/301tasktaskregist.png)
+        1. Task 조회
+        ![Task 조회](https://github.com/bulgemi/opbot/blob/master/doc/302tasktaskgrid.png)
+    1. Group
+        1. Group 등록
+        ![Group 등록](https://github.com/bulgemi/opbot/blob/master/doc/401groupgroupregist.png)
+        1. Group 조회
+        ![Group 조회](https://github.com/bulgemi/opbot/blob/master/doc/402groupgroupgrid.png)
+    1. Admin
+        1. User 관리
+        ![User 관리](https://github.com/bulgemi/opbot/blob/master/doc/201adminusermanage.png)
+        1. Group 관리
+        ![Group 관리](https://github.com/bulgemi/opbot/blob/master/doc/202admingroupmanage.png)
+        1. Task 관리
+        ![Task 관리](https://github.com/bulgemi/opbot/blob/master/doc/203admintaskmanage.png)
