@@ -2,10 +2,12 @@
 ## 설명
 > 관리모듈은 Web GUI로 구성된 OPBOT 모듈중 하나이다.<br>
 > 작업 채널에 등록된 사용자에 대한 권한검증 및 수행 가능한 TASK들을 관리할 수 있다.
-> 
 ## 주요 기능
 ### 공통
 1. Web Application 모든 처리는 Ajax 적용
+1. Web library
+    * UI: [INK](http://ink.sapo.pt/)
+    * Grid: [jsGrid](http://js-grid.com/)
 1. 주요 데이터 암호화
     * AES-256(보안강도: 256bit)
     * 2011년부터 2025년까지 112bit 이상 보안강도 사용 권고
@@ -31,8 +33,8 @@
                 > 사용자 본인 생성/수정/삭제.<br>
                 > TASK 생성/수정/삭제, 본인 사용자 연결
         * slack_id: VARCHAR(128)
-            * email 기준으로 slack 연동 입력, slack 연동 email이 없을 경우 Null 처리(Null일 경우 TASK 수행 불가)
-            * slack과 동일한 email 사용
+            * email 기준으로 slack 연동 입력, slack 연동 email 없을 경우 Null 처리(Null일 경우 TASK 수행 불가)
+            * slack id와 동일한 email 사용
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
     1. 그룹(group_info)
@@ -94,8 +96,9 @@
         * task_code: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리), 자동생성
         * task_name: VARCHAR2(512), PK, NotNull, 한글/영문/숫자/'-'/'_', 공백불허
         * task_type: INT, NotNull, 0(OPMATE)/1(K8s)/2(SSH: Command)/3(SSH: Sell Script)/4(Ansible), 공백불허
+        * owner_code: VARCHAR2(64), PK, NotNull, 'u_' or 'g_' + UUID(32자리)
         * action_type: VARCHAR(1), NotNull, 'A'(분석)/'S'(조치), 공백불허
-        * status_code: INT, NotNull, 0(abnormal)/1(normal), default: 0, 공백불허
+        * status_code: INT, NotNull, 0(abnormal)/1(normal)/2(lock), default: 0, 공백불허
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
@@ -131,7 +134,7 @@
     * 등록
         1. Tasktype 선택(Radio 버튼: OPMATE, K8s, SSH: Command, SSH: Sell Script)
         1. Taskname 입력
-            * Tasktype OPMATE일 경우, OPMATE Master에서 TASK 리스트 조회후 선택 입력
+            * Tasktype OPMATE일 경우, OPMATE Master에서 TASK 리스트 조회하여 Redis 데이터 적재 자동완성 처리
             * Tasktype OPMATE 아닐 경우, 사용자가 Taskname 수동입력(자동 중복체크)
         1. Tasktype[K8s, SSH: Command, SSH: Sell Script]일 경우, Web Editor 인터페이스 제공
     * 수정
