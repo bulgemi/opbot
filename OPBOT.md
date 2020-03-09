@@ -68,7 +68,7 @@ Filter, Wrapper, Embedded 방법 등을 이용하여 학습에 반드시 필요�
 인프라 자원, 서비스 장애 발생시 실시간 이벤트 감지
 ![Fig. 2. Channel Adapter](/doc/ChannelAdapter.bmp "Channel Adapter")
 
-#### ChatBot
+#### Chatbot
 이벤트 정보를 이해 관계자에게 알려주고, 분석/조치 가능한 행위를 추천하는 역할을 수행
 ![Fig. 3. ChatBot](/doc/Chatbot.bmp "ChatBot")
 
