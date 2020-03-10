@@ -68,7 +68,7 @@
         > !gt, task_index!
 1. System 상태정보
     1. 목록 조회
-        > !stat!
+        > !stat!<br>
         > !st!
     1. CPU
         > !cpu, node01, ...!<br>
