@@ -31,11 +31,11 @@
         * TASK와 사용자/그룹 연결
     * TASK 유효성 검증
         * 사용가능 TASK 여부
-1. 챗봇 __[챗봇(Chatbot)]__
+1. [챗봇](https://github.com/bulgemi/opbot/blob/master/doc/Chatbot.md) __[챗봇(Chatbot)]__
     * 사용자 검증(인증, 권한)
         * Slack을 통해 요청한 사용자에 대한 유효성 검증 및 소속 그룹 확인
         * 사용자(그룹) 사용 가능한 TASK 검증 
-1. 명령어 __[챗봇(Chatbot)]__
+1. [명령어](https://github.com/bulgemi/opbot/blob/master/doc/Chatbot.md) __[챗봇(Chatbot)]__
     * 사용자(그룹) TASK 리스트
     * TASK 수행
 1. TASK 수행 __[수행모듈(TaskExecutor)]__
