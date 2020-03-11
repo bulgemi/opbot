@@ -16,7 +16,7 @@
 1. 주요 데이터 암호화
     * AES-256(보안강도: 256bit)
     * 2011년부터 2025년까지 112bit 이상 보안강도 사용 권고
-    * 관련 python package: pycryptodomex
+    * 관련 python package: [pycryptodomex](https://pypi.org/project/pycryptodomex/)
 ### 챗봇(Chatbot)
 1. 주요 정보
 1. 사용자(User) 검증
@@ -24,9 +24,9 @@
         > 등록된 사용자 여부 확인
         1. Slack 작업 Channel을 통해 TASK 관련 요청 수신
         1. 요청한 사용자 email 확인(작업 channel에 등록되어 있다는 것으로 요청 권한은 있는 것으로 판단)
-        1. 사용자 email을 이용하여 Database usre_info table에 존재여부 확인
+        1. 사용자 email을 이용하여 Database user_info table에 존재여부 확인
     1. 권한
-        > TASK 수행권한 유무, 그룹(Group) 소속유무 확인
+        > TASK 수행권한 유무, 그룹(Group) 소속 유무 확인
         1. 그룹(Group) 파악
             * Database group_management table 조회(DB 조회)
         1. TASK 파악
@@ -35,6 +35,7 @@
                 * 그룹(Group) TASK 조회
 1. System 기본 정보 제공
     1. Splunk Macro 연동을 통한 CPU, Memory 사용량 제공
+        > !성능 이슈 존재함.
     1. 사용량 정보 Chart 형식의 보고서 제공
 1. 구문 분석 
     * '!' 문자를 이용한 OPBOT 명령어 구분
@@ -42,6 +43,10 @@
         * ','존재시 0번째 단어는 명령어
         * 1번째 단어부터 인자값
 ### 명령어(Command)
+1. 기능목록 조회
+    > !help!<br>
+    > !h!
+    > !?!
 1. TASK 목록 조회
     1. 사용자(User) TASK
         > !my task!<br>
@@ -67,9 +72,6 @@
         > !gt, task_name!<br>
         > !gt, task_index!
 1. System 상태정보
-    1. 목록 조회
-        > !stat!<br>
-        > !st!
     1. CPU
         > !cpu, node01, ...!<br>
         > !c, node01, ...!
