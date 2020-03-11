@@ -38,7 +38,7 @@
 1. [명령어](https://github.com/bulgemi/opbot/blob/master/doc/Chatbot.md) __[챗봇(Chatbot)]__
     * 사용자(그룹) TASK 리스트
     * TASK 수행
-1. TASK 수행 __[수행모듈(TaskExecutor)]__
+1. [TASK 수행](https://github.com/bulgemi/opbot/blob/master/doc/TaskExecutor.md) __[수행모듈(TaskExecutor)]__
     * 다양한 연동 방식 제공(OPMATE[1], K8s[2], Ansible[3], SSH)
     * 결과 출력 포맷(PDF)
     * System 기본 정보(CPU, Memory) Chart 제공(파라메터 설정)
