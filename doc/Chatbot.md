@@ -16,7 +16,8 @@
 1. 주요 데이터 암호화
     * AES-256(보안강도: 256bit)
     * 2011년부터 2025년까지 112bit 이상 보안강도 사용 권고
-    * 관련 python package: [pycryptodomex](https://pypi.org/project/pycryptodomex/)
+    * 관련 python package
+        * [pycryptodomex](https://pypi.org/project/pycryptodomex/)
 ### 챗봇(Chatbot)
 1. 주요 정보
 1. 사용자(User) 검증
