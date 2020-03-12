@@ -4,6 +4,11 @@
 > 연동 대상에 따라 정보보호 요건이 존재함.
 ## 연동 대상 
 ### 공통
+1. Database Table
+    1. 타겟(target_list)
+        > TASK를 수행할 원격지 관리 테이블
+    1. TASK 정보(task_info)
+        > TASK 정보 관리 테이블
 1. 정보보호
     1. 대상 정보
         1. Infra 정보

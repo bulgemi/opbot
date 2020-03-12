@@ -89,3 +89,8 @@
     1. 생성된 Image PDF append
     1. PDF 생성
     1. PDF 파일 Slack 전달
+1. Template 설계
+    1. CPU 사용률
+    ![CPU 사용률](https://github.com/bulgemi/opbot/blob/master/doc/501reportcpu.png)
+    1. MEMORY 사용률
+    ![MEMORY 사용률](https://github.com/bulgemi/opbot/blob/master/doc/501reportmemory.png)

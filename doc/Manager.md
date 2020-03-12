@@ -13,7 +13,7 @@
     * 2011년부터 2025년까지 112bit 이상 보안강도 사용 권고
     * 관련 python package: pycryptodomex
 ### 사용자(그룹) 관리
-1. 주요 정보
+1. Database Table
     1. 사용자(user_info)
         > 사용자 정보 테이블
         * user_code: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
@@ -89,7 +89,7 @@
             * 삭제
                 1. 등록된 사용자 삭제
 ### TASK 관리
-1. 주요 정보
+1. Database Table
     > 기존 테이블 수정 필수!
     1. TASK(task_info)
         > TASK 정의 테이블
@@ -132,11 +132,15 @@
     > K8s, SSH, (Ansible) 연동일 경우
     * Web Editor(관련 라이브러리: [CodeMirror](https://codemirror.net/index.html)) 기반 Script 작성 기능 제공
     * 등록
-        1. Tasktype 선택(Radio 버튼: OPMATE, K8s, SSH: Command, SSH: Sell Script)
+        1. Tasktype 선택(Select Box: OPMATE, K8s, SSH: Command, SSH: Sell Script)
+        1. Actiontype 선택(Select Box: 분석, 조치)
         1. Taskname 입력
             * Tasktype OPMATE일 경우, OPMATE Master에서 TASK 리스트 조회하여 Redis 데이터 적재 자동완성 처리
             * Tasktype OPMATE 아닐 경우, 사용자가 Taskname 수동입력(자동 중복체크)
+        1. 등록 사유(cause) 입력
         1. Tasktype[K8s, SSH: Command, SSH: Sell Script]일 경우, Web Editor 인터페이스 제공
+            * Script 입력
+            * Target 입력
     * 수정
         1. Tasktype, Taskname 수정
         1. Script 내용 수정
