@@ -93,4 +93,4 @@
     1. CPU 사용률
     ![CPU 사용률](https://github.com/bulgemi/opbot/blob/master/doc/501reportcpu.png)
     1. MEMORY 사용률
-    ![MEMORY 사용률](https://github.com/bulgemi/opbot/blob/master/doc/501reportmemory.png)
+    ![MEMORY 사용률](https://github.com/bulgemi/opbot/blob/master/doc/502reportmemory.png)
