@@ -26,6 +26,7 @@
         1. Slack 작업 Channel을 통해 TASK 관련 요청 수신
         1. 요청한 사용자 email 확인(작업 channel에 등록되어 있다는 것으로 요청 권한은 있는 것으로 판단)
         1. 사용자 email을 이용하여 Database user_info table에 존재여부 확인
+        1. 인증 URL 발송(email)을 통한 인증 처리(URL 인증 확인시 유한적 인증 유지)
     1. 권한
         > TASK 수행권한 유무, 그룹(Group) 소속 유무 확인
         1. 그룹(Group) 파악
@@ -85,6 +86,7 @@
     1. 표준 출력 결과 PDF 생성
     1. PDF 파일 slack 전달
 1. System 기본 정보 결과
+    > !System 기본 정보 제공 주기 및 단위 기준 협의 필요
     1. Splunk 결과 Matplotlib 이용하여 Chart Image 생성
     1. 생성된 Image PDF append
     1. PDF 생성
