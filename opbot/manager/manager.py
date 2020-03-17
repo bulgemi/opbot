@@ -8,6 +8,10 @@ app, manager = create_app()
 
 @manager.command
 def seed():
+    """
+    init db data.
+    :return:
+    """
     print("Add seed data to the database.")
     ChannelInfo.query.delete()
 
