@@ -20,4 +20,8 @@ def create_app():
     manager = Manager(app)
     manager.add_command('db', MigrateCommand)
 
+    # register blueprint
+    from .bp import register_bp
+    register_bp(app)
+
     return app, manager
