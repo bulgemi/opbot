@@ -4,13 +4,47 @@
     <div class="xlarge-100 large-100 medium-100 small-100 tiny-100">
         <article>
             <header>
-                <h1 class="push-left">사용자 생성</h1>
-                <p class="push-right">OOO(xxx@xxx.com)님 환영합니다. 접속일: <time pubdate="pubdate">2009-10-09</time></p>
+<!--                <h1 class="push-left">사용자 생성</h1>-->
             </header>
         </article>
     </div>
 </section>
 {% endblock %}
 {% block content %}
-<summary>But being in a great hurry to resume scolding the man in the purple Shirt, who was waiting for it in the entry, and seeming to hear nothing but the word "clam," Mrs. Hussey hurried towards an open door leading to the kitchen, and bawling out "clam for two," disappeared.</summary>
+<form action="#" class="ink-form column-group gutters">
+    <fieldset class="all-33 small-100 tiny-100">
+    </fieldset>
+    <fieldset class="all-33 small-100 tiny-100">
+        <legend>사용자 생성</legend>
+        <div class="control-group required">
+            <label for="name">이름</label>
+            <div class="control">
+                <input type="text" id="name">
+            </div>
+        </div>
+        <div class="control-group required">
+            <label for="email">이메일 주소</label>
+            <div class="control">
+                <input type="text" id="email">
+            </div>
+        </div>
+        <div class="control-group required">
+            <label for="password">패스워드</label>
+            <div class="control">
+                <input type="password" id="password">
+            </div>
+        </div>
+        <div class="control-group required">
+            <label for="password2">패스워드 확인</label>
+            <div class="control">
+                <input type="password" id="password2">
+            </div>
+        </div>
+        <div class="control-group push-right">
+            <button class="ink-button black">생성</button>
+        </div>
+    </fieldset>
+    <fieldset class="all-33 small-100 tiny-100">
+    </fieldset>
+</form>
 {% endblock %}
