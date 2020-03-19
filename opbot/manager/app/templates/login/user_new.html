@@ -1,14 +1,14 @@
 {% extends 'common/manu.html' %}
 {% block header %}
-<section class="column-group gutters article">
-    <div class="xlarge-100 large-100 medium-100 small-100 tiny-100">
-        <article>
-            <header>
+<!--<section class="column-group gutters article">-->
+<!--    <div class="xlarge-100 large-100 medium-100 small-100 tiny-100">-->
+<!--        <article>-->
+<!--            <header>-->
 <!--                <h1 class="push-left">사용자 생성</h1>-->
-            </header>
-        </article>
-    </div>
-</section>
+<!--            </header>-->
+<!--        </article>-->
+<!--    </div>-->
+<!--</section>-->
 {% endblock %}
 {% block content %}
 <form action="#" class="ink-form column-group gutters">
@@ -24,8 +24,11 @@
         </div>
         <div class="control-group required">
             <label for="email">이메일 주소</label>
-            <div class="control">
-                <input type="text" id="email">
+            <div class="control prepend-symbol">
+                <span>
+                    <input type="text" id="email">
+                    <i class="fa fa-envelope-o"></i>
+                </span>
             </div>
         </div>
         <div class="control-group required">

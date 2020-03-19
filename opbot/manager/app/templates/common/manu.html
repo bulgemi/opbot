@@ -106,6 +106,7 @@
                 </nav>
             </div>
             <div class="ink-grid vertical-space">
+            {% block header %}{% endblock %}
                 <div class="ink-alert basic" role="alert">
                     <button class="ink-dismiss">&times;</button>
                     <p>Flash alert!</p>
@@ -116,7 +117,6 @@
                     <p>{{ message }}</p>
                 </div>
                 {% endfor %}
-            {% block header %}{% endblock %}
             {% block content %}{% endblock %}
             </div>
         </div>
