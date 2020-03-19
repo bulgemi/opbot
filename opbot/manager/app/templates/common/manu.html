@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html lang="kr">
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sticky footer</title>
+        <title>OPBOT MANAGER</title>
         <meta name="description" content="">
         <meta name="author" content="kim dong-hun">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-
         <!-- Place favicon.ico and apple-touch-icon(s) here  -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
-
         <!-- load Ink's CSS -->
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ink-flex.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
-
         <!-- load Ink's CSS for IE8 -->
         <!--[if lt IE 9 ]>
             <link rel="stylesheet" href="{{ url_for('static', filename='css/ink-ie.min.css') }}" type="text/css" media="screen" title="no title" charset="utf-8">
         <![endif]-->
-
         <!-- test browser flexbox support and load legacy grid if unsupported -->
         <script type="text/javascript" src="{{ url_for('static', filename='js/modernizr.js') }}"></script>
         <script type="text/javascript">
@@ -32,12 +27,10 @@
               nope : '../css/ink-legacy.min.css'
             });
         </script>
-
         <!-- load Ink's javascript files -->
         <script type="text/javascript" src="{{ url_for('static', filename='js/holder.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/ink-all.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/autoload.js') }}"></script>
-
         <style type="text/css">
             html, body {
                 height: 100%;
@@ -66,9 +59,7 @@
             }
         </style>
     </head>
-
     <body>
-
         <!--[if lt IE 9 ]>
         <div class="ink-grid">
             <div class="ink-alert basic">
@@ -80,65 +71,64 @@
             </div>
         </div>
         <![endif]-->
-
         <!-- Add your site or application content here -->
-
         <div class="wrap">
-            <header>
-                <nav class="ink-navigation">
+            <div class="top-menu">
+                <nav class="ink-navigation ink-grid ie7">
                     <ul class="menu horizontal black push-left medium-push-center small-push-center tiny-push-center">
                         <li class="hide-all show-tiny show-small show-medium"><button class="fa fa-bars left-drawer-trigger"></button></li>
                         <li class="logoPlaceholder"><a href="/" class="logoPlaceholder">OPBOT MANAGER</a></li>
                     </ul>
                     <ul class="menu horizontal black">
                         <li class="active">
-                            <a href="#">Task 관리</a>
+                            <a href="#">태스크 관리</a>
                             <ul class="submenu">
-                                <li><a href="/task/new">Task 등록</a></li>
-                                <li><a href="/task/list">Task 조회</a></li>
+                                <li><a href="/task/new">태스크 등록</a></li>
+                                <li><a href="/task/list">태스크 조회</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">Group 관리</a>
+                            <a href="#">그룹 관리</a>
                             <ul class="submenu">
-                                <li><a href="/group/new">Group 등록</a></li>
-                                <li><a href="/group/list">Group 조회</a></li>
+                                <li><a href="/group/new">그룹 등록</a></li>
+                                <li><a href="/group/list">그룹 조회</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">Admin 기능</a>
+                            <a href="#">관리자 기능</a>
                             <ul class="submenu">
-                                <li><a href="/admin/user">User</a></li>
-                                <li><a href="/admin/group">Group</a></li>
-                                <li><a href="/admin/task">Task</a></li>
+                                <li><a href="/admin/user">사용자</a></li>
+                                <li><a href="/admin/group">그룹</a></li>
+                                <li><a href="/admin/task">태스크</a></li>
                             </ul>
-                        </li>
-                        <li class="disabled">
-                            <a href="#">About</a>
                         </li>
                     </ul>
                 </nav>
-            </header>
-            <div class="column-group gutters">
-                {% for message in get_flashed_messages() %}
-                <div class="flash">{{ message }}</div>
-                {% endfor %}
             </div>
+            <div class="ink-grid vertical-space">
+                <div class="ink-alert basic" role="alert">
+                    <button class="ink-dismiss">&times;</button>
+                    <p>Flash alert!</p>
+                </div>
+                {% for message in get_flashed_messages() %}
+                <div class="ink-alert basic" role="alert">
+                    <button class="ink-dismiss">&times;</button>
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
             {% block header %}{% endblock %}
             {% block content %}{% endblock %}
+            </div>
         </div>
-
         <footer class="clearfix">
             <div class="ink-grid">
                 <ul class="unstyled inline half-vertical-space">
-                    <li class="active"><a href="#">About</a></li>
-                    <li><a href="#">Sitemap</a></li>
-                    <li><a href="#">Contacts</a></li>
+                    <li class="active"><a href="/footer/about">About</a></li>
+                    <li><a href="/footer/sitemap">Sitemap</a></li>
+                    <li><a href="/footer/contacts">Contacts</a></li>
                 </ul>
-                <p class="note">Identification of the owner of the copyright, either by name, abbreviation, or other designation by which it is generally known.</p>
+                <p class="note">&copy; Copyright 2020, kim dong-hun and opbot-dev team. Created using <a href="http://ink.sapo.pt/">INK</a> 3.1.10.</p>
             </div>
         </footer>
-
     </body>
-
 </html>
