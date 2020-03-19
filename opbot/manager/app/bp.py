@@ -9,6 +9,13 @@ def register_bp(app):
     :param app:
     :return:
     """
+    # footer
+    from .footer.render_about import footer_bp as about
+    from .footer.render_sitemap import footer_bp as sitemap
+    from .footer.render_contacts import footer_bp as contacts
+    app.register_blueprint(about)
+    app.register_blueprint(sitemap)
+    app.register_blueprint(contacts)
     # login
     from .login.render_login import login_bp as login
     from .login.render_new import login_bp as user_new
