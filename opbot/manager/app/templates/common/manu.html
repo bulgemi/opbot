@@ -27,6 +27,8 @@
               nope : '../css/ink-legacy.min.css'
             });
         </script>
+        <!-- load jquery-3.4.1 -->
+<!--        <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>-->
         <!-- load Ink's javascript files -->
         <script type="text/javascript" src="{{ url_for('static', filename='js/holder.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/ink-all.min.js') }}"></script>
@@ -106,18 +108,14 @@
                 </nav>
             </div>
             <div class="ink-grid vertical-space">
-            {% block header %}{% endblock %}
-                <div class="ink-alert basic" role="alert">
-                    <button class="ink-dismiss">&times;</button>
-                    <p>Flash alert!</p>
-                </div>
+                {% block header %}{% endblock %}
                 {% for message in get_flashed_messages() %}
                 <div class="ink-alert basic" role="alert">
                     <button class="ink-dismiss">&times;</button>
                     <p>{{ message }}</p>
                 </div>
                 {% endfor %}
-            {% block content %}{% endblock %}
+                {% block content %}{% endblock %}
             </div>
         </div>
         <footer class="clearfix">

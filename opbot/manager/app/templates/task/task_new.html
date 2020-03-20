@@ -1,5 +1,84 @@
 {% extends 'common/manu.html' %}
 {% block header %}
+<!-- load codemirror-5.52.0 -->
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/lib/codemirror.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/3024-day.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/3024-night.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/abcdef.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/ambiance.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/ayu-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/ayu-mirage.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/base16-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/bespin.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/base16-light.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/blackboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/cobalt.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/colorforth.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/dracula.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/duotone-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/duotone-light.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/eclipse.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/elegant.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/erlang-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/gruvbox-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/hopscotch.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/icecoder.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/isotope.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/lesser-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/liquibyte.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/lucario.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/material.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/material-darker.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/material-palenight.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/material-ocean.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/mbo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/mdn-like.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/midnight.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/monokai.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/moxer.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/neat.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/neo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/night.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/nord.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/oceanic-next.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/panda-syntax.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/paraiso-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/paraiso-light.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/pastel-on-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/railscasts.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/rubyblue.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/seti.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/shadowfox.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/solarized.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/the-matrix.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/tomorrow-night-bright.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/tomorrow-night-eighties.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/ttcn.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/twilight.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/vibrant-ink.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/xq-dark.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/xq-light.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/yeti.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/idea.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/darcula.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/yonce.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='codemirror-5.52.0/theme/zenburn.css') }}">
+<script src="{{ url_for('static', filename='codemirror-5.52.0/lib/codemirror.js') }}"></script>
+<script src="{{ url_for('static', filename='codemirror-5.52.0/mode/javascript/javascript.js') }}"></script>
+<script src="{{ url_for('static', filename='codemirror-5.52.0/addon/selection/active-line.js') }}"></script>
+<script src="{{ url_for('static', filename='codemirror-5.52.0/addon/edit/matchbrackets.js') }}"></script>
+<style>
+    .CodeMirror {border: 1px solid black; font-size:13px}
+</style>
+<!-- load jsgrid-1.5.3  -->
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid.min.css') }}" />
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid-theme.min.css') }}" />
+
+<script type="text/javascript" src="{{ url_for('static', filename='jsgrid-1.5.3/external/jquery/jquery-1.8.3.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid.min.js') }}"></script>
+<!-- for test -->
+<script src="{{ url_for('static', filename='jsgrid-1.5.3/demos/db.js') }}"></script>
+
 <section class="column-group gutters article">
     <div class="xlarge-100 large-100 medium-100 small-100 tiny-100">
         <article>
@@ -50,6 +129,153 @@
                 <textarea id="desc"></textarea>
             </div>
         </div>
+        <div class="control-group required gutters">
+            <label>스크립트</label>
+            <textarea id="code" name="code">
+function findSequence(goal) {
+  function find(start, history) {
+    if (start == goal)
+      return history;
+    else if (start > goal)
+      return null;
+    else
+      return find(start + 5, "(" + history + " + 5)") ||
+             find(start * 3, "(" + history + " * 3)");
+  }
+  return find(1, "1");
+}
+            </textarea>
+        </div>
+        <div class="control-group push-right">
+            <p class="label">테마 선택: <select onchange="selectTheme()" id=select>
+                <option selected>default</option>
+                <option>3024-day</option>
+                <option>3024-night</option>
+                <option>abcdef</option>
+                <option>ambiance</option>
+                <option>ayu-dark</option>
+                <option>ayu-mirage</option>
+                <option>base16-dark</option>
+                <option>base16-light</option>
+                <option>bespin</option>
+                <option>blackboard</option>
+                <option>cobalt</option>
+                <option>colorforth</option>
+                <option>darcula</option>
+                <option>dracula</option>
+                <option>duotone-dark</option>
+                <option>duotone-light</option>
+                <option>eclipse</option>
+                <option>elegant</option>
+                <option>erlang-dark</option>
+                <option>gruvbox-dark</option>
+                <option>hopscotch</option>
+                <option>icecoder</option>
+                <option>idea</option>
+                <option>isotope</option>
+                <option>lesser-dark</option>
+                <option>liquibyte</option>
+                <option>lucario</option>
+                <option>material</option>
+                <option>material-darker</option>
+                <option>material-palenight</option>
+                <option>material-ocean</option>
+                <option>mbo</option>
+                <option>mdn-like</option>
+                <option>midnight</option>
+                <option>monokai</option>
+                <option>moxer</option>
+                <option>neat</option>
+                <option>neo</option>
+                <option>night</option>
+                <option>nord</option>
+                <option>oceanic-next</option>
+                <option>panda-syntax</option>
+                <option>paraiso-dark</option>
+                <option>paraiso-light</option>
+                <option>pastel-on-dark</option>
+                <option>railscasts</option>
+                <option>rubyblue</option>
+                <option>seti</option>
+                <option>shadowfox</option>
+                <option>solarized dark</option>
+                <option>solarized light</option>
+                <option>the-matrix</option>
+                <option>tomorrow-night-bright</option>
+                <option>tomorrow-night-eighties</option>
+                <option>ttcn</option>
+                <option>twilight</option>
+                <option>vibrant-ink</option>
+                <option>xq-dark</option>
+                <option>xq-light</option>
+                <option>yeti</option>
+                <option>yonce</option>
+                <option>zenburn</option>
+            </select></p>
+        </div>
+    </fieldset>
+    <fieldset class="all-100 small-100 tiny-100">
+        <div class="control-group required gutters">
+            <label>스크립트 수행 목적지</label>
+            <div id="targetList"></div>
+        </div>
+        <div class="control-group push-right">
+            <button class="ink-button black">등록</button>
+        </div>
+    </fieldset>
+    <fieldset class="all-100 small-100 tiny-100">
+        <div class="control-group gutters">
+        </div>
+        <!-- bottom buffer -->
     </fieldset>
 </form>
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true
+  });
+  var input = document.getElementById("select");
+  function selectTheme() {
+    var theme = input.options[input.selectedIndex].textContent;
+    editor.setOption("theme", theme);
+    location.hash = "#" + theme;
+  }
+  var choice = (location.hash && location.hash.slice(1)) ||
+               (document.location.search &&
+                decodeURIComponent(document.location.search.slice(1)));
+  if (choice) {
+    input.value = choice;
+    editor.setOption("theme", choice);
+  }
+  CodeMirror.on(window, "hashchange", function() {
+    var theme = location.hash.slice(1);
+    if (theme) { input.value = theme; selectTheme(); }
+  });
+
+$(function() {
+    $("#targetList").jsGrid({
+        height: "auto",
+        width: "100%",
+        filtering: true,
+        editing: true,
+        inserting: true,
+        sorting: true,
+        paging: true,
+        autoload: true,
+        pageSize: 15,
+        pageButtonCount: 5,
+        deleteConfirm: "Do you really want to delete the client?",
+        controller: db,
+        fields: [
+            { name: "Name", type: "text", width: 150 },
+            { name: "Age", type: "number", width: 50 },
+            { name: "Address", type: "text", width: 200 },
+            { name: "Country", type: "select", items: db.countries, valueField: "Id", textField: "Name" },
+            { name: "Married", type: "checkbox", title: "Is Married", sorting: false },
+            { type: "control" }
+        ]
+    });
+});
+</script>
 {% endblock %}
