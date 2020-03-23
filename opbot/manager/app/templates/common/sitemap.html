@@ -11,5 +11,34 @@
 </section>
 {% endblock %}
 {% block content %}
-<summary>But being in a great hurry to resume scolding the man in the purple Shirt, who was waiting for it in the entry, and seeming to hear nothing but the word "clam," Mrs. Hussey hurried towards an open door leading to the kitchen, and bawling out "clam for two," disappeared.</summary>
+<form action="#" class="ink-form column-group gutters">
+    <fieldset class="all-33 small-100 tiny-100">
+        <legend>태스크 관리</legend>
+        <div class="example">
+            <ul>
+                <li><a href="/task/new">태스크 등록</a></li>
+                <li><a href="/task/list">태스크 조회</a></li>
+            </ul>
+        </div>
+    </fieldset>
+    <fieldset class="all-33 small-100 tiny-100">
+        <legend>그룹 관리</legend>
+        <div class="example">
+            <ul>
+                <li><a href="/group/new">그룹 등록</a></li>
+                <li><a href="/group/list">그룹 조회</a></li>
+            </ul>
+        </div>
+    </fieldset>
+    <fieldset class="all-33 small-100 tiny-100">
+        <legend>관리자 기능</legend>
+        <div class="example">
+            <ul>
+                <li><a href="/admin/user">사용자</a></li>
+                <li><a href="/admin/group">그룹</a></li>
+                <li><a href="/admin/task">태스크</a></li>
+            </ul>
+        </div>
+    </fieldset>
+</form>
 {% endblock %}
