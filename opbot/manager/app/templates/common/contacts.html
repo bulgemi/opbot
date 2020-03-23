@@ -11,5 +11,65 @@
 </section>
 {% endblock %}
 {% block content %}
-<summary>But being in a great hurry to resume scolding the man in the purple Shirt, who was waiting for it in the entry, and seeming to hear nothing but the word "clam," Mrs. Hussey hurried towards an open door leading to the kitchen, and bawling out "clam for two," disappeared.</summary>
+<!-- load jsgrid-1.5.3  -->
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid.min.css') }}" />
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid-theme.min.css') }}" />
+
+<script type="text/javascript" src="{{ url_for('static', filename='jsgrid-1.5.3/external/jquery/jquery-1.8.3.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid.min.js') }}"></script>
+<style>
+    .client-photo { float: left; margin: 0 20px 0 10px; }
+    .client-photo img { border-radius: 50%; border: 1px solid #ddd; }
+    .client-info { margin-top: 10px; }
+    .client-info p { line-height: 25px; }
+</style>
+<form action="#" class="ink-form column-group gutters">
+    <fieldset class="all-30 small-100 tiny-100">
+        <summary>Easy and Simple.</summary>
+    </fieldset>
+    <fieldset class="all-70 small-100 tiny-100">
+        <div id="contacts"></div>
+    </fieldset>
+</form>
+<script>
+        $(function() {
+
+            $("#contacts").jsGrid({
+                height: "auto",
+                width: "100%",
+                autoload: true,
+                paging: true,
+                controller: {
+                    loadData: function() {
+                        var deferred = $.Deferred();
+
+                        deferred.resolve([
+                        {"name": {"kr": "김동훈", "en": "kim dong-hun"},
+                         "picture": {"large": "{{ url_for('static', filename='img/contacts/kimdonghun_128x128.jpg') }}"},
+                         "email": "donghun_kim@sk.com"},
+                         ]);
+                        return deferred.promise();
+                    }
+                },
+                rowRenderer: function(item) {
+                    var user = item;
+                    var $photo = $("<div>").addClass("client-photo").append($("<img>").attr("src", user.picture.large));
+                    var $info = $("<div>").addClass("client-info")
+                        .append($("<p>").append($("<strong>").text(user.name.kr + " (" + user.name.en + ")")))
+                        .append($("<p>").text("Email: " + user.email))
+
+                    return $("<tr>").append($("<td>").append($photo).append($info));
+                },
+                fields: [
+                    { title: "Contracts" }
+                ]
+            });
+
+
+            String.prototype.capitalize = function() {
+                return this.charAt(0).toUpperCase() + this.slice(1);
+            };
+
+        });
+</script>
 {% endblock %}
