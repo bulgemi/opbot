@@ -79,7 +79,7 @@
 <!-- for test -->
 <script src="{{ url_for('static', filename='jsgrid-1.5.3/demos/db.js') }}"></script>
 
-<section class="column-group gutters article">
+<section class="column-group article">
     <div class="xlarge-100 large-100 medium-100 small-100 tiny-100">
         <article>
             <header>
@@ -120,13 +120,13 @@
         <div class="control-group required column-group gutters">
             <label for="task_name" class="all-10">태스크 이름</label>
             <div class="control all-90">
-                <input type="text" id="task_name">
+                <input type="text" id="task_name" placeholder="Please input some text">
             </div>
         </div>
         <div class="control-group required column-group gutters">
             <label for="desc" class="all-10">등록 사유</label>
             <div  class="control all-90">
-                <textarea id="desc"></textarea>
+                <textarea id="desc" placeholder="Please input some text"></textarea>
             </div>
         </div>
         <div class="control-group required gutters">
