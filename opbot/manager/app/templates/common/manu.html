@@ -117,12 +117,28 @@
             </div>
             <div class="ink-grid vertical-space">
                 {% block header %}{% endblock %}
-                {% for message in get_flashed_messages() %}
-                <div class="ink-alert basic" role="alert">
-                    <button class="ink-dismiss">&times;</button>
-                    <p>{{ message }}</p>
+                <div class="ink-sticky">
+                    {% for message in get_flashed_messages() %}
+                    <div class="ink-alert basic" role="alert">
+                        <button class="ink-dismiss">&times;</button>
+                        <p><b>Warning:</b> {{ message }}</p>
+                    </div>
+                    <!--
+                    <div class="ink-alert basic success" role="alert">
+                        <button class="ink-dismiss">&times;</button>
+                        <p><b>Done:</b> Process completed successfully</p>
+                    </div>
+                    <div class="ink-alert basic info" role="alert">
+                        <button class="ink-dismiss">&times;</button>
+                        <p><b>Note:</b> You have 5 minutes to leave, before self-destruction</p>
+                    </div>
+                    <div class="ink-alert basic error" role="alert">
+                        <button class="ink-dismiss">&times;</button>
+                        <p><b>Error:</b> The system has failed</p>
+                    </div>
+                    -->
+                    {% endfor %}
                 </div>
-                {% endfor %}
                 {% block content %}{% endblock %}
             </div>
         </div>
@@ -137,4 +153,10 @@
             </div>
         </footer>
     </body>
+<style>
+.ink-sticky .ink-alert {
+    /* Remove the ink-alert's margins to keep it really on the top of the screen */
+    margin: 0;
+}
+</style>
 </html>
