@@ -11,7 +11,7 @@
 1. 주요 데이터 암호화
     * AES-256(보안강도: 256bit)
     * 2011년부터 2025년까지 112bit 이상 보안강도 사용 권고
-    * 관련 python package: pycryptodomex
+    * 관련 python package: [pycryptodomex](https://pypi.org/project/pycryptodomex/)
 ### 사용자(그룹) 관리
 1. Database Table
     1. 사용자(user_info)
