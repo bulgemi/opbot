@@ -14,20 +14,22 @@
 {% block content %}
 <form action="#" class="ink-form column-group gutters">
     <fieldset class="all-100 small-100 tiny-100">
-        <div class="control-group required column-group gutters">
-            <label for="group_name" class="all-10">그룹 이름</label>
-            <div class="control all-90">
+        <div class="control-group required gutters">
+            <label for="group_name">그룹 이름</label>
+            <div class="control">
                 <input type="text" id="group_name" placeholder="Please input some text">
             </div>
-            <label for="group_member" class="all-10">그룹 멤버</label>
-            <div class="control all-90 append-button">
+        </div>
+        <div class="control-group required gutters">
+            <label for="group_member">그룹 멤버</label>
+            <div class="control append-button">
                 <span><input type="text" name="group_member" id="group_member" placeholder="Please input some text"></span>
                 <button class="ink-button black">Add</button>
             </div>
-            <div class="all-10">
-            </div>
+        </div>
+        <div class="control-group required gutters">
 <!--            <div class="column-group all-90" style="overflow-y:scroll; height:150px; background:white">-->
-            <div class="column-group all-90" style="overflow-y:scroll; height:150px;border: 1px solid;">
+            <div class="column-group" style="overflow-y:scroll; height:150px;border: 1px solid;">
                 <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
                 <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
                 <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
@@ -50,8 +52,10 @@
                 <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
                 <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
             </div>
-            <label for="group_task" class="all-10">태스크 선택</label>
-            <div class="column-group all-90" id="group_task" style="overflow-y:scroll; height:150px;border: 1px dotted;">
+        </div>
+        <div class="control-group required gutters">
+            <label for="group_task">태스크 선택</label>
+            <div class="column-group" id="group_task" style="overflow-y:scroll; height:150px;border: 1px dotted;">
                 <ul class="ink-tree-view">
                     <li data-open="false">
                         <a href="#">그룹 멤버</a>
@@ -90,10 +94,10 @@
                     </li>
                 </ul>
             </div>
-            <div class="all-10">
-            </div>
+        </div>
+        <div class="control-group required gutters">
 <!--            <div class="column-group all-90" style="overflow-y:scroll; height:150px; background:white">-->
-            <div class="column-group all-90" style="overflow-y:scroll; height:150px;border: 1px solid;">
+            <div class="column-group" style="overflow-y:scroll; height:150px;border: 1px solid;">
                 <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
                 <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
                 <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
