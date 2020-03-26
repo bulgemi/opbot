@@ -16,7 +16,7 @@
 1. Database Table
     1. 사용자(user_info)
         > 사용자 정보 테이블
-        * user_code: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
+        * user_id: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
         * user_name: VARCHAR2(128), NotNull, 한글/영문, 공백불허
         * email: VARCHAR2(128), PK, NotNull, e-mail(xxx@xxx.xxx), 공백불허
         * password: VARCHAR2(512), NotNull, 최소 8자리이상 소문자/대문자/숫자/특수문자 조합, 공백불허
@@ -39,20 +39,20 @@
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
     1. 그룹(group_info)
         > 그룹 정보 테이블
-        * group_code: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리), 자동생성
+        * group_id: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리), 자동생성
         * group_name: VARCHAR2(256), PK, NotNull, 한글/영문/숫자/'-'/'_', 공백불허
-        * owner_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+        * owner_id: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
             > 수정하는 user_code update
     1. 그룹관리(group_management)
         > 그룹 관리 테이블
-        * user_code: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
-        * group_code: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리), 자동생성
+        * user_id: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
+        * group_id: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리), 자동생성
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
-        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+        * audit_id: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
             > 수정하는 user_code update
 1. 공통
     * 모든 데이터 처리시 create_time, update_time 갱신
@@ -93,34 +93,34 @@
     > 기존 테이블 수정 필수!
     1. TASK(task_info)
         > TASK 정의 테이블
-        * task_code: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리), 자동생성
+        * task_id: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리), 자동생성
         * task_name: VARCHAR2(512), PK, NotNull, 한글/영문/숫자/'-'/'_', 공백불허
         * task_type: INT, NotNull, 0(OPMATE)/1(K8s)/2(SSH: Command)/3(SSH: Sell Script)/4(Ansible), 공백불허
-        * owner_code: VARCHAR2(64), PK, NotNull, 'u_' or 'g_' + UUID(32자리)
+        * owner_id: VARCHAR2(64), PK, NotNull, 'u_' or 'g_' + UUID(32자리)
         * action_type: VARCHAR(1), NotNull, 'A'(분석)/'S'(조치), 공백불허
         * status_code: INT, NotNull, 0(abnormal)/1(normal)/2(lock), default: 0, 공백불허
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
-        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+        * audit_id: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
             > 수정하는 user_code update
     1. TASK Playbook(task_playbook)
         > task_type 1/2/3/4일 경우, Script 관리 테이블
-        * task_code: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리)
+        * task_id: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리)
         * task_seq: INT, PK, NotNull, default: 0, 공백불허
         * contents: TEXT, NotNull, Command/Shell/K8s/Ansible Script
         * cause: VARCHAR(256), Nullable
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
-        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+        * audit_id: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
             > 수정하는 user_code update
     1. TASK Management(task_management)
         > 사용자(그룹)별 TASK 관리 테이블 
-        * owner_code: VARCHAR2(64), PK, NotNull, 'u_' or 'g_' + UUID(32자리)
-        * task_code: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리)
+        * owner_id: VARCHAR2(64), PK, NotNull, 'u_' or 'g_' + UUID(32자리)
+        * task_id: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리)
         * owner_type: INT, NotNull, 0(user)/1(group)
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
-        * audit_code: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
+        * audit_id: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
             > 수정하는 user_code update
 1. 공통
     * 모든 데이터 처리시 create_time, update_time, audit_code 갱신
