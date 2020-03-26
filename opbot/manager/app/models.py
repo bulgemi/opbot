@@ -4,6 +4,9 @@ from . import db
 
 
 class EventHistory(db.Model):
+    """
+    inbound 채널(swing)에서 발생한 이벤트 관리 테이블
+    """
     event_uid = db.Column(db.String(256), primary_key=True)
     event_msg = db.Column(db.Text, nullable=False)
     channel_id = db.Column(db.String(256), nullable=False)
@@ -15,6 +18,11 @@ class EventHistory(db.Model):
 
 
 class ChannelInfo(db.Model):
+    """
+    특정 채널에서 발생한 이벤트를 어떤 채널을 통해 출력할지 관리.
+    - 이벤트가 들어오는 inbound 채널(swing)과 이벤트를 출력할 outbound 채널(slack) 관리테이블
+    - Slack 채널 ID 별 outbound 채널 설정
+    """
     in_channel_id = db.Column(db.String(256), primary_key=True)
     out_channel_type = db.Column(db.String(1), primary_key=True)
     out_channel_id = db.Column(db.String(256), primary_key=True)
@@ -26,11 +34,14 @@ class ChannelInfo(db.Model):
 
 
 class TargetList(db.Model):
-    task_id = db.Column(db.String(256), primary_key=True)
-    host = db.Column(db.String(126), primary_key=True)
-    port = db.Column(db.Integer, nullable=False)
-    user = db.Column(db.String(126), nullable=False)
-    passwd = db.Column(db.String(512), nullable=False)
+    """
+    Task 수행할 타겟 서버정보 관리 테이블.
+    """
+    task_id = db.Column(db.String(64), primary_key=True)
+    host = db.Column(db.String(126), primary_key=True)  # enc
+    port = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(126), primary_key=True)  # enc
+    passwd = db.Column(db.String(512), nullable=False)  # enc
     out_channel_id = db.Column(db.String(256), primary_key=True)
     adapter_type = db.Column(db.Integer, nullable=False)
 
@@ -39,50 +50,75 @@ class TargetList(db.Model):
                % (self.task_id, self.host, self.out_channel_id)
 
 
+class TaskList(db.Model):
+    """
+    Task 별 outbound 채널(slack) 관리 테이블.
+    !현재 사용 안함.!
+    """
+    outbound_task_id = db.Column(db.String(64), primary_key=True)
+    outbound_channel_id = db.Column(db.String(64), primary_key=True)
+
+    def __repr__(self):
+        return '<outbound_task_id %r, outbound_channel__id %r>' \
+               % (self.outbound_task_id, self.outbound_channel_id)
+
+
 class TaskInfo(db.Model):
-    task_code = db.Column(db.String(64), primary_key=True)
+    """
+    Task 기본 정보 관리 테이블.
+    """
+    task_id = db.Column(db.String(64), primary_key=True)
     task_name = db.Column(db.String(512), primary_key=True)
     task_type = db.Column(db.Integer, nullable=False)
-    owner_code = db.Column(db.String(64), nullable=False)
+    owner_id = db.Column(db.String(64), nullable=False)
     action_type = db.Column(db.String(1), nullable=False)
     status_code = db.Column(db.Integer, nullable=False)
     create_time = db.Column(db.String(16), nullable=False)
     update_time = db.Column(db.String(16), nullable=False)
-    audit_code = db.Column(db.String(64), nullable=False)
+    audit_id = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
-        return '<task_code %r, task_name %r>' \
-               % (self.task_code, self.task_name)
+        return '<task_id %r, task_name %r>' \
+               % (self.task_id, self.task_name)
 
 
 class TaskPlaybook(db.Model):
-    task_code = db.Column(db.String(64), primary_key=True)
+    """
+    Task 상세 정보 관리 테이블.
+    """
+    task_id = db.Column(db.String(64), primary_key=True)
     task_seq = db.Column(db.Integer, primary_key=True)
     contents = db.Column(db.Text, nullable=False)
     cause = db.Column(db.String(256), nullable=True)
     create_time = db.Column(db.String(16), nullable=False)
     update_time = db.Column(db.String(16), nullable=False)
-    audit_code = db.Column(db.String(64), nullable=False)
+    audit_id = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
-        return '<task_code %r, task_seq %r>' \
-               % (self.task_code, self.task_seq)
+        return '<task_id %r, task_seq %r>' \
+               % (self.task_id, self.task_seq)
 
 
 class TaskManagement(db.Model):
-    owner_code = db.Column(db.String(64), primary_key=True)
-    task_code = db.Column(db.String(64), primary_key=True)
+    """
+    Task별 User 관리 테이블.
+    """
+    owner_id = db.Column(db.String(64), primary_key=True)
+    task_id = db.Column(db.String(64), primary_key=True)
     owner_type = db.Column(db.Integer, nullable=False)
     create_time = db.Column(db.String(16), nullable=False)
     update_time = db.Column(db.String(16), nullable=False)
-    audit_code = db.Column(db.String(64), nullable=False)
+    audit_id = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
-        return '<owner_code %r, task_code %r>' \
-               % (self.owner_code, self.task_code)
+        return '<owner_id %r, task_id %r>' \
+               % (self.owner_id, self.task_id)
 
 
 class WorkHistory(db.Model):
+    """
+    이벤트별 작업 이력 관리 테이블.
+    """
     event_uid = db.Column(db.String(256), primary_key=True)
     outbound_task_id = db.Column(db.String(256), primary_key=True)
     exec_type = db.Column(db.String(1), nullable=True)
@@ -94,6 +130,9 @@ class WorkHistory(db.Model):
 
 
 class RecommendBaseInfo(db.Model):
+    """
+    추천 정보 테이블.
+    """
     pattern_id = db.Column(db.String(126), primary_key=True)
     message_pattern = db.Column(db.Text, nullable=False)
     outbound_task_id = db.Column(db.String(256), nullable=False)
@@ -106,10 +145,13 @@ class RecommendBaseInfo(db.Model):
 
 
 class UserInfo(db.Model):
-    user_code = db.Column(db.String(64), primary_key=True)
+    """
+    사용자 정보 관리 테이블.
+    """
+    user_id = db.Column(db.String(64), primary_key=True)
     user_name = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(128), primary_key=True)
-    password = db.Column(db.String(512), nullable=False)
+    email = db.Column(db.String(128), primary_key=True)  # enc
+    password = db.Column(db.String(512), nullable=False)  # enc
     status_code = db.Column(db.Integer, nullable=False)
     role_code = db.Column(db.Integer, nullable=False)
     slack_id = db.Column(db.String(128), nullable=True)
@@ -117,30 +159,36 @@ class UserInfo(db.Model):
     update_time = db.Column(db.String(16), nullable=False)
 
     def __repr__(self):
-        return '<user_code %r, email %r>' \
-               % (self.user_code, self.email)
+        return '<user_id %r, email %r>' \
+               % (self.user_id, self.email)
 
 
 class GroupInfo(db.Model):
-    group_code = db.Column(db.String(64), primary_key=True)
+    """
+    그룹 정보 관리 테이블.
+    """
+    group_id = db.Column(db.String(64), primary_key=True)
     group_name = db.Column(db.String(256), primary_key=True)
-    owner_code = db.Column(db.String(64), nullable=False)
+    owner_id = db.Column(db.String(64), nullable=False)
     create_time = db.Column(db.String(16), nullable=False)
     update_time = db.Column(db.String(16), nullable=False)
-    audit_code = db.Column(db.String(64), nullable=False)
+    audit_id = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
-        return '<group_code %r, group_name %r>' \
-               % (self.group_code, self.group_name)
+        return '<group_id %r, group_name %r>' \
+               % (self.group_id, self.group_name)
 
 
 class GroupManagement(db.Model):
-    user_code = db.Column(db.String(64), primary_key=True)
-    group_code = db.Column(db.String(64), primary_key=True)
+    """
+    그룹 멤버 관리 테이블.
+    """
+    user_id = db.Column(db.String(64), primary_key=True)
+    group_id = db.Column(db.String(64), primary_key=True)
     create_time = db.Column(db.String(16), nullable=False)
     update_time = db.Column(db.String(16), nullable=False)
-    audit_code = db.Column(db.String(64), nullable=False)
+    audit_id = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
-        return '<user_code %r, group_code %r>' \
-               % (self.user_code, self.group_code)
+        return '<user_id %r, group_id %r>' \
+               % (self.user_id, self.group_id)
