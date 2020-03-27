@@ -38,10 +38,10 @@ class TargetList(db.Model):
     Task 수행할 타겟 서버정보 관리 테이블.
     """
     task_id = db.Column(db.String(64), primary_key=True)
-    host = db.Column(db.String(126), primary_key=True)  # enc
+    host = db.Column(db.String(200), primary_key=True)  # enc
     port = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.String(126), primary_key=True)  # enc
-    passwd = db.Column(db.String(512), nullable=False)  # enc
+    user = db.Column(db.String(200), primary_key=True)  # enc
+    passwd = db.Column(db.String(200), nullable=False)  # enc
     out_channel_id = db.Column(db.String(256), primary_key=True)
     adapter_type = db.Column(db.Integer, nullable=False)
 
@@ -150,8 +150,8 @@ class UserInfo(db.Model):
     """
     user_id = db.Column(db.String(64), primary_key=True)
     user_name = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(128), primary_key=True)  # enc
-    password = db.Column(db.String(512), nullable=False)  # enc
+    email = db.Column(db.String(200), primary_key=True)  # enc
+    password = db.Column(db.String(200), nullable=False)  # enc
     status_code = db.Column(db.Integer, nullable=False)
     role_code = db.Column(db.Integer, nullable=False)
     slack_id = db.Column(db.String(128), nullable=True)
