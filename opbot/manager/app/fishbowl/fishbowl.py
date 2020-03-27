@@ -1,5 +1,6 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'kim dong-hun'
+import argparse
 from Crypto.PublicKey import RSA
 from Crypto import Random
 
@@ -32,7 +33,37 @@ class FishBowl(object):
             raise e
         return True
 
+    def do_enc(self):
+        import sys
+        import os
+        sys.path.append(os.getenv('OPBOT_HOME'))
+        from manager.app.fishbowl.moss import Moss
+        from manager.app.config import Config
+
+        try:
+            p = input('Enter characters to encrypt: ')
+            m = Moss()
+            m.load_public_key(Config.PUBLIC_KEY)
+            e = m.enc(p)
+            print("plain data:(%d)[%s]" % (len(p), p))
+            print("Encrypted data:(%d)[%s]" % (len(e), e))
+        except Exception as e:
+            print(e)
+            return False
+        return True
+
 
 if __name__ == "__main__":
     fishbowl = FishBowl()
-    fishbowl.gen_key()
+    parser = argparse.ArgumentParser(prog='enc_tool.sh')
+
+    parser.add_argument('-k', '--keygen', action='store_true', help='generate a RSA key(PUBLIC/PRIVATE)')
+    parser.add_argument('-e', '--enc', action='store_true', help='Encrypt plain text.')
+    args = parser.parse_args()
+
+    if args.keygen is True:
+        fishbowl.gen_key()
+    elif args.enc is True:
+        fishbowl.do_enc()
+    else:
+        pass
