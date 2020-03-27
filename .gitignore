@@ -9,3 +9,4 @@ event.pick
 celerybeat-schedule
 celerybeat.pid
 chatbot/test/tdd_fabric.py
+*.pem
