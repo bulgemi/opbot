@@ -24,4 +24,15 @@ def create_app():
     from .bp import register_bp
     register_bp(app)
 
+    # RSA
+    from .fishbowl.moss import Moss
+    from .fishbowl.scraper import Scraper
+    moss = Moss()
+    moss.load_public_key(Config.PUBLIC_KEY)
+    scraper = Scraper()
+    scraper.load_private_key(Config.PRIVATE_KEY)
+
+    app.config['MOSS'] = moss
+    app.config['SCRAPER'] = scraper
+
     return app, manager
