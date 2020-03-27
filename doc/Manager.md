@@ -19,7 +19,7 @@
         * user_id: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
         * user_name: VARCHAR2(128), NotNull, 한글/영문, 공백불허
         * email: VARCHAR2(128), PK, NotNull, e-mail(xxx@xxx.xxx), 공백불허
-        * password: VARCHAR2(512), NotNull, 최소 8자리이상 소문자/대문자/숫자/특수문자 조합, 공백불허
+        * passwd: VARCHAR2(512), NotNull, 최소 8자리이상 소문자/대문자/숫자/특수문자 조합, 공백불허
         * status_code: INT, NotNull, 0(inactive)/1(active), default: 0
         * role_code: INT, NotNull, 0(admin)/1(leader)/2(user)
             * 0(admin): 관리자
