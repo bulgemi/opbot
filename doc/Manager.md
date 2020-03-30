@@ -9,8 +9,8 @@
     * UI: [INK](http://ink.sapo.pt/)
     * Grid: [jsGrid](http://js-grid.com/)
 1. 주요 데이터 암호화
-    * AES-256(보안강도: 256bit)
-    * 2011년부터 2025년까지 112bit 이상 보안강도 사용 권고
+    * 공개키 암호 알고리즘(보안강도: 128bit)
+    * 암호 알고리즘 안전성 유지기간: 2030년이후
     * 관련 python package: [pycryptodomex](https://pypi.org/project/pycryptodomex/)
 ### 사용자(그룹) 관리
 1. Database Table
