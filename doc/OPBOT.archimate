@@ -200,11 +200,12 @@ Origin CSV를 기반으로 RECOMMEND_INFO 정보 갱신.
       <property key="SW_INSTANCE_TYPE" value="VARCHAR2(16)"/>
     </element>
     <element xsi:type="archimate:DataObject" name="CHANNEL_INFO" id="5317d529-f8d2-4076-a05b-cf17583417a9">
-      <documentation>채널 ID 별 outbound 채널 설정</documentation>
-      <property key="IN_CHANNEL_ID" value="VARCHAR2(256), 인 채널 아이디, PK"/>
-      <property key="OUT_CHANNEL_TYPE" value="CHAR(1), 아웃 채널 타입('B' or 'C'), PK"/>
-      <property key="OUT_CHANNEL_ID" value="VARCHAR2(256), 아웃 채널 아이디, PK"/>
-      <property key="OUT_CHANNEL_NAME" value="VARCHAR2(512), 아웃 채널 이름"/>
+      <documentation>- 이벤트가 들어오는 inbound 채널과 이벤트를 출력할 outbound 채널 관리테이블
+- Slack 채널 ID 별 outbound 채널 설정</documentation>
+      <property key="IN_CHANNEL_ID" value="VARCHAR2(256), 인 채널 아이디, PK, 지능화 대상 채널 정보(예, swing) "/>
+      <property key="OUT_CHANNEL_TYPE" value="CHAR(1), 아웃 채널 타입('B' or 'C'), PK, 'B':공유(Broadcast)채널, 'C':작업(Chatbot)채널"/>
+      <property key="OUT_CHANNEL_ID" value="VARCHAR2(256), 아웃 채널 아이디, PK, '#' + slack 채널명(예, '#swing')"/>
+      <property key="OUT_CHANNEL_NAME" value="VARCHAR2(512), 아웃 채널 이름, 채널명칭(예, 'SWING OPBOT')"/>
     </element>
     <element xsi:type="archimate:ApplicationFunction" name="channel_read" id="6319eb7e-f92c-4302-aa40-8cff45ee3afa">
       <documentation>CHANNEL_INFO 정보 조회</documentation>
