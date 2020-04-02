@@ -1,0 +1,13 @@
+{{ user.name }} 님,
+
+OPBOT에 가입해주셔서 감사합니다!
+
+계정 확인을 위해 아래 링크를 눌러주세요.
+
+링크: {{ user.url }}
+
+Sincerely,
+
+The opbot-dev Team
+
+Note: 이 이메일 주소에 대한 회신은 모니터링되지 않습니다.
