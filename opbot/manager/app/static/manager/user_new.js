@@ -25,7 +25,7 @@ $(document).ready(function(){
                 },
                 dataType: 'JSON',
                 success: function(data) {
-                    console.log(data.result);
+//                    console.log(data.result);
                     res = data.result;
 
                     if (res.result === true) {
@@ -61,7 +61,7 @@ $(document).ready(function(){
                 },
                 dataType: 'JSON',
                 success: function(data) {
-                    console.log(data.result);
+//                    console.log(data.result);
                     res = data.result;
 
                     if (res.result === true) {
@@ -97,7 +97,7 @@ $(document).ready(function(){
                 },
                 dataType: 'JSON',
                 success: function(data) {
-                    console.log(data.result);
+//                    console.log(data.result);
                     res = data.result;
 
                     if (res.result === true) {
