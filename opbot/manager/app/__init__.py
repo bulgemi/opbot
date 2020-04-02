@@ -7,10 +7,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
+from flask_mail import Mail
 from .config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
+mail = Mail()
 
 
 def create_app():
@@ -22,6 +24,7 @@ def create_app():
     migrate.init_app(app, db)
     manager = Manager(app)
     manager.add_command('db', MigrateCommand)
+    mail.init_app(app)
 
     # register blueprint
     from .bp import register_bp
