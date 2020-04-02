@@ -30,6 +30,7 @@
         <!-- load jquery-3.4.1 -->
 <!--        <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>-->
         <!-- load Ink's javascript files -->
+        <script type="text/javascript" src="{{ url_for('static', filename='jsgrid-1.5.3/external/jquery/jquery-1.8.3.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/holder.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/ink-all.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/autoload.js') }}"></script>
@@ -118,10 +119,12 @@
             <div class="ink-grid vertical-space">
                 {% block header %}{% endblock %}
                 <div class="ink-sticky">
-                    {% for message in get_flashed_messages() %}
-                    <div class="ink-alert basic" role="alert">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                    <div class="ink-alert basic {{ category }}" role="alert">
                         <button class="ink-dismiss">&times;</button>
-                        <p><b>Warning:</b> {{ message }}</p>
+                        <p>{{ message }}</p>
                     </div>
                     <!--
                     <div class="ink-alert basic success" role="alert">
@@ -137,7 +140,9 @@
                         <p><b>Error:</b> The system has failed</p>
                     </div>
                     -->
-                    {% endfor %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
                 </div>
                 {% block content %}{% endblock %}
             </div>
