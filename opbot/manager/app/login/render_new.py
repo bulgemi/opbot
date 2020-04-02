@@ -80,13 +80,13 @@ def create_user():
     result['result'] = True
 
     c, e = check({'name': name})
-    r, d = set_detail_result(c, '잘봇된 이름 형식입니다! (최소: 2자, 최대 32자)')
+    r, d = set_detail_result(c, '잘봇된 형식입니다! (최소: 2자, 최대 32자)')
 
     result['result'] = r if r is False else result['result']
     detail['name'] = d
 
     c, e = check({'email': email})
-    r, d = set_detail_result(c, '잘못된 이메일 형식입니다! (최소 5자, 최대 150자)')
+    r, d = set_detail_result(c, '잘못된 형식입니다! (최소 5자, 최대 150자)')
 
     result['result'] = r if r is False else result['result']
     detail['email'] = d
@@ -138,7 +138,7 @@ def check_username():
     c, e = check({'name': name})
     result['result'] = True
 
-    r, d = set_detail_result(c, '잘봇된 이름 형식입니다! (최소: 2자, 최대 32자)')
+    r, d = set_detail_result(c, '잘봇된 형식입니다! (최소: 2자, 최대 32자)')
 
     result['result'] = r if r is False else result['result']
     detail['name'] = d
@@ -162,7 +162,7 @@ def check_email():
     c, e = check({'email': email})
     result['result'] = True
 
-    r, d = set_detail_result(c, '잘못된 이메일 형식입니다! (최소 5자, 최대 150자)')
+    r, d = set_detail_result(c, '잘못된 형식입니다! (최소 5자, 최대 150자)')
 
     result['result'] = r if r is False else result['result']
     detail['email'] = d
