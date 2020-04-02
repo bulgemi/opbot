@@ -13,7 +13,7 @@ class Config(object):
     PUBLIC_KEY = '/home/donghun/PycharmProjects/opbot/opbot/manager/pem/opbot_public.pem'
     PRIVATE_KEY = '/home/donghun/PycharmProjects/opbot/opbot/manager/pem/opbot_private.pem'
     # logging
-    LOG_DIR_MANAGER = '/home/donghun/PycharmProjects/manager/logs'
+    LOG_DIR_MANAGER = '/home/donghun/PycharmProjects/opbot/opbot/manager/logs'
     LOG_FORMAT_MANAGER = '%(levelname)s|%(asctime)s[%(filename)s:%(funcName)s(%(lineno)d) %(message)s'
     LOG_LEVEL_MANAGER = DEBUG  # DEBUG, INFO, WARNING, ERROR, CRITICAL
     LOG_FILE_MANAGER = 'manager.log'
