@@ -32,10 +32,28 @@
                     if (res.result === true) {
                         window.location.href = res.url;
                     } else {
-                        c = res.detail.password.class;
-                        $('#password_group').addClass(c[0]);
-                        t = res.detail.password.tip;
-                        $('#password_tip').text(t[0]);
+                        var detail = res.detail;
+
+                        if ('name' in detail) {
+                            c = detail.name.class;
+                            $('#name_group').addClass(c[0]);
+                            t = detail.name.tip;
+                            $('#name_tip').text(t[0]);
+                        }
+
+                        if ('email' in detail) {
+                            c = detail.email.class;
+                            $('#email_group').addClass(c[0]);
+                            t = detail.email.tip;
+                            $('#email_tip').text(t[0]);
+                        }
+
+                        if ('password' in detail) {
+                            c = detail.password.class;
+                            $('#password_group').addClass(c[0]);
+                            t = detail.password.tip;
+                            $('#password_tip').text(t[0]);
+                        }
                     }
                 },
                 error: function(xtr, status, error) {
