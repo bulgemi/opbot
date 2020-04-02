@@ -1,5 +1,6 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'kim dong-hun'
+from uuid import uuid1
 from logging.handlers import RotatingFileHandler
 from logging import Formatter
 import os
@@ -17,6 +18,8 @@ mail = Mail()
 
 def create_app():
     app = Flask(__name__)
+    # SECRET_KEY
+    app.config['SECRET_KEY'] = str(uuid1()) + str(uuid1())
     # charset=utf8 설정 중요!
     app.config['SQLALCHEMY_DATABASE_URI'] = Config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
