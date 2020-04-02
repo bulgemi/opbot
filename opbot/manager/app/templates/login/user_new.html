@@ -11,40 +11,79 @@
 <!--</section>-->
 {% endblock %}
 {% block content %}
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+    $(function() {
+        $('#create').bind('click', function() {
+             $.ajax({
+                type: 'POST',
+                url: $SCRIPT_ROOT + '/_create_user',
+                data: {
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data.result);
+                    res = data.result;
+
+                    if (res.result === true) {
+                        window.location.href = res.url;
+                    } else {
+                        c = res.detail.password.class;
+                        $('#password_group').addClass(c[0]);
+                        t = res.detail.password.tip;
+                        $('#password_tip').text(t[0]);
+                    }
+                },
+                error: function(xtr, status, error) {
+                    console.log(xtr +":"+status+":"+error);
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='manager/user_new.js') }}"></script>
 <form action="#" class="ink-form column-group gutters">
     <fieldset class="all-33 small-100 tiny-100">
     </fieldset>
     <fieldset class="all-33 small-100 tiny-100">
         <legend>사용자 생성</legend>
-        <div class="control-group required">
+        <div class="control-group required" id="name_group">
             <label for="name">이름</label>
             <div class="control">
                 <input type="text" id="name">
+                <p class="tip" id="name_tip">&nbsp;</p>
             </div>
         </div>
-        <div class="control-group required">
+        <div class="control-group required" id="email_group">
             <label for="email">이메일 주소</label>
             <div class="control prepend-symbol">
                 <span>
                     <input type="text" id="email">
                     <i class="fa fa-envelope-o"></i>
                 </span>
+                <p class="tip" id="email_tip">&nbsp;</p>
             </div>
         </div>
-        <div class="control-group required">
+        <div class="control-group required" id="password_group">
             <label for="password">패스워드</label>
             <div class="control">
                 <input type="password" id="password">
             </div>
+            <p class="tip" id="password_tip">&nbsp;</p>
         </div>
-        <div class="control-group required">
+        <div class="control-group required" id="password2_group">
             <label for="password2">패스워드 확인</label>
             <div class="control">
                 <input type="password" id="password2">
             </div>
+            <p class="tip" id="password2_tip">&nbsp;</p>
         </div>
         <div class="control-group push-right">
-            <button class="ink-button black">생성</button>
+            <button class="ink-button black" id="create">생성</button>
         </div>
     </fieldset>
     <fieldset class="all-33 small-100 tiny-100">
