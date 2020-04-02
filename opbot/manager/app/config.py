@@ -1,12 +1,12 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'kim dong-hun'
 from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
-"""
-Manager 환경 설정 파일.
-"""
 
 
 class Config(object):
+    """
+    Manager 환경 설정 파일.
+    """
     LOG_LEVEL = 'debug'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://opbot_appl:apbot_appl26#!@localhost/opbot_db?charset=utf8'
     # RSA KEY
@@ -17,3 +17,6 @@ class Config(object):
     LOG_FORMAT_MANAGER = '%(levelname)s|%(asctime)s[%(filename)s:%(funcName)s(%(lineno)d) %(message)s'
     LOG_LEVEL_MANAGER = DEBUG  # DEBUG, INFO, WARNING, ERROR, CRITICAL
     LOG_FILE_MANAGER = 'manager.log'
+    # email
+    MAIL_SUBJECT_PREFIX = "[OPBOT]"
+    MAIL_SENDER = "OPBOT Admin <admin@opbot.com>"

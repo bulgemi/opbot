@@ -20,6 +20,10 @@ def create_app():
     # charset=utf8 설정 중요!
     app.config['SQLALCHEMY_DATABASE_URI'] = Config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # email
+    app.config['MAIL_SUBJECT_PREFIX'] = Config.MAIL_SUBJECT_PREFIX
+    app.config['MAIL_SENDER'] = Config.MAIL_SENDER
+
     db.init_app(app)
     migrate.init_app(app, db)
     manager = Manager(app)
