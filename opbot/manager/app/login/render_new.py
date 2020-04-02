@@ -76,19 +76,20 @@ def create_user():
     email = request.form['email']
     password = request.form['password']
     result = dict()
+    detail = dict()
     result['result'] = True
 
     c, e = check({'name': name})
     r, d = set_detail_result(c, '잘봇된 이름 형식입니다! (최소: 2자, 최대 32자)')
 
     result['result'] = r if r is False else result['result']
-    result['detail'] = {'name': d}
+    detail['name'] = d
 
     c, e = check({'email': email})
     r, d = set_detail_result(c, '잘못된 이메일 형식입니다! (최소 5자, 최대 150자)')
 
     result['result'] = r if r is False else result['result']
-    result['detail'] = {'email': d}
+    detail['email'] = d
 
     # 2.DB 존재 여부 확인.
     if result['result'] is True:
@@ -97,13 +98,17 @@ def create_user():
         if user is not None:
             r, d = set_detail_result(False, '존재하는 이메일입니다! (최소 5자, 최대 150자)')
             result['result'] = r if r is False else result['result']
-            result['detail'] = {'email': d}
+            detail['email'] = d
 
     c, e = check({'password': password})
     r, d = set_detail_result(c, '잘못된 형식입니다! (특수문자/문자/숫자 포함, 최소 8자, 최대 15자)')
 
     result['result'] = r if r is False else result['result']
-    result['detail'] = {'password': d}
+    detail['password'] = d
+
+    result['detail'] = detail
+
+    current_app.logger.debug("detail=<%r>" % result['detail'])
 
     if result['result'] is True:
         try:
@@ -127,6 +132,7 @@ def check_username():
     :return:
     """
     result = dict()
+    detail = dict()
     name = request.form['name']
     # 1.형식 검사.
     c, e = check({'name': name})
@@ -135,7 +141,8 @@ def check_username():
     r, d = set_detail_result(c, '잘봇된 이름 형식입니다! (최소: 2자, 최대 32자)')
 
     result['result'] = r if r is False else result['result']
-    result['detail'] = {'name': d}
+    detail['name'] = d
+    result['detail'] = detail
 
     return jsonify(result=result)
 
@@ -149,6 +156,7 @@ def check_email():
     :return:
     """
     result = dict()
+    detail = dict()
     email = request.form['email']
     # 1.형식 검사.
     c, e = check({'email': email})
@@ -157,7 +165,8 @@ def check_email():
     r, d = set_detail_result(c, '잘못된 이메일 형식입니다! (최소 5자, 최대 150자)')
 
     result['result'] = r if r is False else result['result']
-    result['detail'] = {'email': d}
+    detail['email'] = d
+    result['detail'] = detail
     # 2.DB 존재 여부 확인.
     if result['result'] is True:
         user = UserInfo.query.filter_by(email=email).first()
@@ -165,7 +174,8 @@ def check_email():
         if user is not None:
             r, d = set_detail_result(False, '존재하는 이메일입니다! (최소 5자, 최대 150자)')
             result['result'] = r if r is False else result['result']
-            result['detail'] = {'email': d}
+            detail['email'] = d
+            result['detail'] = detail
 
     return jsonify(result=result)
 
@@ -178,6 +188,7 @@ def check_password():
     :return:
     """
     result = dict()
+    detail = dict()
     password = request.form['password']
     # 1.형식 검사.
     c, e = check({'password': password})
@@ -186,6 +197,7 @@ def check_password():
     r, d = set_detail_result(c, '잘못된 형식입니다! (특수문자/문자/숫자 포함, 최소 8자, 최대 15자)')
 
     result['result'] = r if r is False else result['result']
-    result['detail'] = {'password': d}
+    detail['password'] = d
+    result['detail'] = detail
 
     return jsonify(result=result)
