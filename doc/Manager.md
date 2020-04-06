@@ -98,7 +98,7 @@
         * task_type: INT, NotNull, 0(OPMATE)/1(K8s)/2(SSH: Command)/3(SSH: Sell Script)/4(Ansible), 공백불허
         * owner_id: VARCHAR2(64), PK, NotNull, 'u_' or 'g_' + UUID(32자리)
         * action_type: VARCHAR(1), NotNull, 'A'(분석)/'S'(조치), 공백불허
-        * status_code: INT, NotNull, 0(abnormal)/1(normal)/2(lock), default: 0, 공백불허
+        * status_code: INT, NotNull, 0(abnormal)/1(normal)/2(lock)/3(temporary), default: 0, 공백불허
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * audit_id: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
