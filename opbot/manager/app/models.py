@@ -88,8 +88,8 @@ class TaskPlaybook(db.Model):
     """
     task_id = db.Column(db.String(64), primary_key=True)
     task_seq = db.Column(db.Integer, primary_key=True)
-    contents = db.Column(db.LargeBinary, nullable=False)  # enc
-    cause = db.Column(db.String(256), nullable=True)
+    contents = db.Column(db.LargeBinary, nullable=True)  # enc
+    cause = db.Column(db.String(256), nullable=False)
     create_time = db.Column(db.String(16), nullable=False)
     update_time = db.Column(db.String(16), nullable=False)
     audit_id = db.Column(db.String(64), nullable=False)
