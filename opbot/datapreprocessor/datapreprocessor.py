@@ -11,7 +11,10 @@ class DataPreprocessor(object):
         self.measure = False
         self.s_close = False
         self.contents = []
+        self.time_stamp = None
         self.key_map = {"통합품질감시": 0, "장애의심": 1, "상황": 2, "장애": 3}
+        self.fp = None
+        self.csv_fp = None
 
     def __del__(self):
         pass
