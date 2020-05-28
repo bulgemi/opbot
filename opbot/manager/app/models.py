@@ -194,7 +194,7 @@ class GroupManagement(db.Model):
                % (self.user_id, self.group_id)
 
 
-class DataPreprocessor(db.Model):
+class PreprocessData(db.Model):
     """
     데이터 전처리 테이블.
     """
