@@ -61,10 +61,10 @@ class Step1(DataPreprocessor):
 
         if self.measure is True and f_msg.find("상황종료") != -1:
             self.s_close = True
-            print("=" * 50)
-            print("type: %s" % self.type)
-            print("key: %s" % self.key_value)
-            print("contents: <%r>" % self.contents)
+            # print("=" * 50)
+            # print("type: %s" % self.type)
+            # print("key: %s" % self.key_value)
+            # print("contents: <%r>" % self.contents)
             self.save_data()
         return
 
