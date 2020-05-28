@@ -1430,10 +1430,14 @@ DB 경합 없어야 함.
         <sourceConnection xsi:type="archimate:Connection" id="a0d91f07-21be-45b9-a8cc-876e82a7f520" source="0a84f2ea-c9f5-42d4-a4b0-ec11a88d4440" target="26e8d383-c234-44fa-8df7-33b85628ebda" archimateRelationship="ef91f0b3-770f-449e-a1de-f5460f5f4b18"/>
       </child>
       <child xsi:type="archimate:DiagramObject" id="26e8d383-c234-44fa-8df7-33b85628ebda" targetConnections="4480f75c-bfb9-4cad-a420-30dd0f3aab0d 6cab17b2-1279-44bd-8fa0-7639239f1a24 a0d91f07-21be-45b9-a8cc-876e82a7f520" fillColor="#729fcf" archimateElement="de8a7615-1253-4423-abce-a6c8a203230a">
-        <bounds x="576" y="288" width="181" height="73"/>
+        <bounds x="576" y="288" width="181" height="121"/>
         <sourceConnection xsi:type="archimate:Connection" id="cf2be7d4-b9b9-4da5-a75f-ffd2c875119d" source="26e8d383-c234-44fa-8df7-33b85628ebda" target="e00f6d14-2d39-4a47-ab94-a3d7963703d5" archimateRelationship="57e2123f-57e7-42ca-b1b0-620ec4170730"/>
+        <sourceConnection xsi:type="archimate:Connection" id="911d0a6c-ba02-4b8d-aaa0-5d0f15dbf88b" source="26e8d383-c234-44fa-8df7-33b85628ebda" target="76e5b0df-cc5a-4035-88ba-05ac5caa2325" archimateRelationship="324d1116-e2c2-4b6a-9381-d6a144885b00"/>
         <child xsi:type="archimate:DiagramObject" id="e00f6d14-2d39-4a47-ab94-a3d7963703d5" targetConnections="cf2be7d4-b9b9-4da5-a75f-ffd2c875119d" archimateElement="30d3ad3b-9edb-408e-a8ef-fb0ee30b9dd5">
           <bounds x="12" y="29" width="157" height="32"/>
+        </child>
+        <child xsi:type="archimate:DiagramObject" id="76e5b0df-cc5a-4035-88ba-05ac5caa2325" targetConnections="911d0a6c-ba02-4b8d-aaa0-5d0f15dbf88b" archimateElement="5cad4e93-9fce-472b-a3de-1ccdd7130257">
+          <bounds x="12" y="72" width="157" height="37"/>
         </child>
       </child>
     </element>
