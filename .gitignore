@@ -6,6 +6,7 @@ manager/migrations/
 event.pick
 *.log
 *.csv
+*.xls
 celerybeat-schedule
 celerybeat.pid
 chatbot/test/tdd_fabric.py
