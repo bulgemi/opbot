@@ -54,4 +54,6 @@ EXCEL
     1. DB 데이터 존재시 result column에 데이터 추가.
     
 ## 아키텍처 
+![Fig. 1. 데이터전처리기 구조](/doc/DataPreprocessor.png "데이터전처리기 구조")
+
 ## 결론
