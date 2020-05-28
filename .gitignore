@@ -7,6 +7,7 @@ event.pick
 *.log
 *.csv
 *.xls
+*.xlsx
 celerybeat-schedule
 celerybeat.pid
 chatbot/test/tdd_fabric.py
