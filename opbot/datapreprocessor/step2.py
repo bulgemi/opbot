@@ -87,7 +87,7 @@ class Step2(DataPreprocessor):
 
     def create_csv(self):
         import os
-        self.fp = open(os.getenv('OPBOT_HOME') + "/datapreprocessor/data/preprocess_data.csv", 'w')
+        self.fp = open(os.getenv('OPBOT_HOME') + "/datapreprocessor/data/Rims_result.csv", 'w')
         self.csv_fp = csv.writer(self.fp, delimiter=',')
 
     def close_csv(self):
