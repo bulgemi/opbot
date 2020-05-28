@@ -193,15 +193,3 @@ class GroupManagement(db.Model):
         return '<user_id %r, group_id %r>' \
                % (self.user_id, self.group_id)
 
-
-class PreprocessData(db.Model):
-    """
-    데이터 전처리 테이블.
-    """
-    d_type = db.Column(db.Integer, primary_key=True)
-    d_key = db.Column(db.String(512), primary_key=True)
-    contents = db.Column(db.Text, nullable=False)
-
-    def __repr__(self):
-        return '<d_type %r, d_key %r>' \
-               % (self.d_type, self.d_key)
