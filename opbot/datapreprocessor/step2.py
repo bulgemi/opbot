@@ -7,9 +7,14 @@ from .datapreprocessor import DataPreprocessor
 
 class Step2(DataPreprocessor):
     def do_type0(self, f_msg, o_msg):
+        if f_msg.find("●서버:") != -1:
+            l_tmp = f_msg.split("●서버:")
+            self.key_value = self.data_filter(l_tmp[1])
+
         if f_msg.find("●메시지:") != -1:
             l_tmp = f_msg.split("●메시지:")
-            self.key_value = self.data_filter(l_tmp[1])
+            self.key_value += self.data_filter(l_tmp[1])
+
         self.contents.append(o_msg)
         return
 
