@@ -7,22 +7,27 @@ from .datapreprocessor import DataPreprocessor
 
 class Step1(DataPreprocessor):
     def do_type0(self, f_msg, o_msg):
+        if f_msg.find("●서버:") != -1:
+            l_tmp = f_msg.split("●서버:")
+            self.key_value = self.data_filter(l_tmp[1])
+
         if f_msg.find("●메시지:") != -1:
             l_tmp = f_msg.split("●메시지:")
-            self.key_value = self.data_filter(l_tmp[1])
+            self.key_value += self.data_filter(l_tmp[1])
 
         if f_msg.find("●조치") != -1:
             self.measure = True
 
         self.contents.append(o_msg)
 
-        if self.measure is True and f_msg.find("상황종료") != -1:
-            self.s_close = True
-            # print("=" * 50)
-            # print("type: %s" % self.type)
-            # print("key: %s" % self.key_value)
-            # print("contents: <%r>" % self.contents)
-            self.save_data()
+        if self.measure is True:
+            if f_msg.find("상황종료") != -1 or f_msg.find("장애종료") != -1:
+                self.s_close = True
+                # print("=" * 50)
+                # print("type: %s" % self.type)
+                # print("key: %s" % self.key_value)
+                # print("contents: <%r>" % self.contents)
+                self.save_data()
         return
 
     def do_type2(self, f_msg, o_msg):
@@ -35,13 +40,14 @@ class Step1(DataPreprocessor):
 
         self.contents.append(o_msg)
 
-        if self.measure is True and f_msg.find("상황종료") != -1:
-            self.s_close = True
-            # print("=" * 50)
-            # print("type: %s" % self.type)
-            # print("key: %s" % self.key_value)
-            # print("contents: <%r>" % self.contents)
-            self.save_data()
+        if self.measure is True:
+            if f_msg.find("상황종료") != -1 or f_msg.find("장애종료") != -1:
+                self.s_close = True
+                # print("=" * 50)
+                # print("type: %s" % self.type)
+                # print("key: %s" % self.key_value)
+                # print("contents: <%r>" % self.contents)
+                self.save_data()
         return
 
     def do_type3(self, f_msg, o_msg):
@@ -59,13 +65,14 @@ class Step1(DataPreprocessor):
 
         self.contents.append(o_msg)
 
-        if self.measure is True and f_msg.find("상황종료") != -1:
-            self.s_close = True
-            # print("=" * 50)
-            # print("type: %s" % self.type)
-            # print("key: %s" % self.key_value)
-            # print("contents: <%r>" % self.contents)
-            self.save_data()
+        if self.measure is True:
+            if f_msg.find("상황종료") != -1 or f_msg.find("장애종료") != -1:
+                self.s_close = True
+                # print("=" * 50)
+                # print("type: %s" % self.type)
+                # print("key: %s" % self.key_value)
+                # print("contents: <%r>" % self.contents)
+                self.save_data()
         return
 
     def read_xls(self):
