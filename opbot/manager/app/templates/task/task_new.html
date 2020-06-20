@@ -75,9 +75,12 @@
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid-theme.min.css') }}" />
 
 <script type="text/javascript" src="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid.min.js') }}"></script>
-<!-- for test -->
-<script src="{{ url_for('static', filename='jsgrid-1.5.3/demos/db.js') }}"></script>
+<script src="{{ url_for('static', filename='task/task_new_db.js') }}"></script>
 
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='task/task_new.js') }}"></script>
 <section class="column-group article">
     <div class="xlarge-100 large-100 medium-100 small-100 tiny-100">
         <article>
@@ -91,15 +94,28 @@
 {% endblock %}
 {% block content %}
 <form action="#" class="ink-form column-group gutters">
+    <input type="hidden" id="task_uid" value="">
     <fieldset class="all-50 small-100 tiny-100">
         <div class="control-group required">
             <label for="type1">연동 유형</label>
             <div class="control-group">
                 <ul class="control unstyled" id="type1">
-                    <li><input type="radio" id="rb11" name="rb1" value=""><label for="rb11">OPMATE</label></li>
-                    <li><input type="radio" id="rb12" name="rb1" value=""><label for="rb12">K8s</label></li>
-                    <li><input type="radio" id="rb13" name="rb1" value=""><label for="rb13">Command</label></li>
-                    <li><input type="radio" id="rb14" name="rb1" value=""><label for="rb14">Shell Script</label></li>
+                    <li>
+                        <input type="radio" id="rb11" name="rb1" value="0" checked>
+                        <label for="rb11">OPMATE</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="rb12" name="rb1" value="1">
+                        <label for="rb12">K8s</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="rb13" name="rb1" value="2">
+                        <label for="rb13">Command</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="rb14" name="rb1" value="3">
+                        <label for="rb14">Shell Script</label>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -109,28 +125,36 @@
             <label for="type2">처리 유형</label>
             <div class="control-group">
                 <ul class="control unstyled" id="type2">
-                    <li><input type="radio" id="rb21" name="rb2" value=""><label for="rb21">분석</label></li>
-                    <li><input type="radio" id="rb22" name="rb2" value=""><label for="rb22">조치</label></li>
+                    <li>
+                        <input type="radio" id="rb21" name="rb2" value="A" checked>
+                        <label for="rb21">분석</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="rb22" name="rb2" value="S">
+                        <label for="rb22">조치</label>
+                    </li>
                 </ul>
             </div>
         </div>
     </fieldset>
     <fieldset class="all-100 small-100 tiny-100">
-        <div class="control-group required column-group gutters">
+        <div class="control-group required column-group gutters" id="task_name_group">
             <label for="task_name" class="all-10">태스크 이름</label>
             <div class="control all-90">
-                <input type="text" id="task_name" placeholder="Please input some text">
+                <input type="text" id="task_name">
+                <p class="tip" id="task_name_tip">&nbsp;</p>
             </div>
         </div>
-        <div class="control-group required column-group gutters">
+        <div class="control-group required column-group gutters" id="desc_group">
             <label for="desc" class="all-10">등록 사유</label>
             <div  class="control all-90">
-                <textarea id="desc" placeholder="Please input some text"></textarea>
+                <textarea id="desc"></textarea>
+                <p class="tip" id="desc_tip">&nbsp;</p>
             </div>
         </div>
-        <div class="control-group required gutters">
+        <div class="control-group required gutters" id="script_group">
             <label>스크립트</label>
-            <textarea id="code" name="code">
+            <!--
 function findSequence(goal) {
   function find(start, history) {
     if (start == goal)
@@ -143,9 +167,11 @@ function findSequence(goal) {
   }
   return find(1, "1");
 }
-            </textarea>
+            -->
+            <textarea id="task_script" name="task_script"></textarea>
+            <p class="tip" id="script_tip">&nbsp;</p>
         </div>
-        <div class="control-group push-right">
+        <div class="control-group push-right" id="script_theme_group">
             <p class="label">테마 선택: <select onchange="selectTheme()" id=select>
                 <option selected>default</option>
                 <option>3024-day</option>
@@ -214,12 +240,12 @@ function findSequence(goal) {
         </div>
     </fieldset>
     <fieldset class="all-100 small-100 tiny-100">
-        <div class="control-group required gutters">
+        <div class="control-group required gutters" id="target_list_group">
             <label>스크립트 수행 목적지</label>
             <div id="targetList"></div>
         </div>
         <div class="control-group push-right">
-            <button class="ink-button black">태스크 등록</button>
+            <button class="ink-button black" id="create">태스크 등록</button>
         </div>
     </fieldset>
     <fieldset class="all-100 small-100 tiny-100">
@@ -229,34 +255,79 @@ function findSequence(goal) {
     </fieldset>
 </form>
 <script>
-  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+// CodeMirror
+var editor = CodeMirror.fromTextArea(document.getElementById("task_script"), {
     lineNumbers: true,
     styleActiveLine: true,
     matchBrackets: true
-  });
-  var input = document.getElementById("select");
-  function selectTheme() {
+});
+// check script contents
+editor.on("blur", function() {
+    initValidationMessage('#script_group');
+    taskUid = $('#task_uid').val();
+    desc = $('#desc').val();
+    console.log("---task_uid=[" + taskUid + "]");
+
+    if (taskUid.length === 0) {
+        $('#script_group').addClass("validation error");
+        $('#script_tip').text("태스크 이름을 확인하세요!");
+    } else {
+      $.ajax({
+          type: 'POST',
+          url: $SCRIPT_ROOT + '/task/_check_script',
+          data: {
+              task_uid: taskUid,
+              desc: desc,
+              script: editor.getValue()
+          },
+          dataType: 'JSON',
+          success: function(data) {
+              console.log(data.result);
+              res = data.result;
+
+              if (res.result === true) {
+                  tip = res.detail.script.tip;
+                  $('#script_tip').text(tip);
+              } else {
+                  c = res.detail.script.class;
+                  $('#script_group').addClass(c[0]);
+                  t = res.detail.script.tip;
+                  $('#script_tip').text(t[0]);
+              }
+          },
+          error: function(xtr, status, error) {
+              console.log(xtr +":"+status+":"+error);
+          }
+      });
+    }
+});
+
+var input = document.getElementById("select");
+
+function selectTheme() {
     var theme = input.options[input.selectedIndex].textContent;
     editor.setOption("theme", theme);
     location.hash = "#" + theme;
-  }
-  var choice = (location.hash && location.hash.slice(1)) ||
-               (document.location.search &&
-                decodeURIComponent(document.location.search.slice(1)));
-  if (choice) {
+}
+
+var choice = (location.hash && location.hash.slice(1)) ||
+             (document.location.search && decodeURIComponent(document.location.search.slice(1)));
+
+if (choice) {
     input.value = choice;
     editor.setOption("theme", choice);
-  }
-  CodeMirror.on(window, "hashchange", function() {
+}
+
+CodeMirror.on(window, "hashchange", function() {
     var theme = location.hash.slice(1);
     if (theme) { input.value = theme; selectTheme(); }
-  });
-
+});
+// jsGrid
 $(function() {
     $("#targetList").jsGrid({
         height: "auto",
         width: "100%",
-        filtering: true,
+        filtering: false,
         editing: true,
         inserting: true,
         sorting: true,
@@ -264,14 +335,14 @@ $(function() {
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
-        deleteConfirm: "Do you really want to delete the client?",
+        deleteConfirm: "해당 목적지를 삭제하시겠습니까?",
+        noDataContent: "목적지 정보가 없습니다.",
         controller: db,
         fields: [
-            { name: "Name", type: "text", width: 150 },
-            { name: "Age", type: "number", width: 50 },
-            { name: "Address", type: "text", width: 200 },
-            { name: "Country", type: "select", items: db.countries, valueField: "Id", textField: "Name" },
-            { name: "Married", type: "checkbox", title: "Is Married", sorting: false },
+            { name: "Ip", title: "아이피(호스트명)", type: "text", width: 200, validate: "required" },
+            { name: "Port", title: "포트", type: "number", width: 100, validate: "required" },
+            { name: "Id", title: "아이디", type: "text", width: 150, validate: "required" },
+            { name: "Password", title: "패스워드", type: "text", width: 150, validate: "required" },
             { type: "control" }
         ]
     });
