@@ -20,3 +20,5 @@ class Config(object):
     # email
     MAIL_SUBJECT_PREFIX = "[OPBOT]"
     MAIL_SENDER = "OPBOT Admin <admin@opbot.com>"
+    # 금지 명령어, 정규표현식 사용
+    FORBIDDEN_INSTRUCTION = ['rm', 'kill', 'reboot']  # 'rm', 'kill', 'reboot'

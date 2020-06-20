@@ -65,5 +65,6 @@ def create_app():
 
     app.config['MOSS'] = moss
     app.config['SCRAPER'] = scraper
+    app.config['FORBIDDEN_INSTRUCTION'] = Config.FORBIDDEN_INSTRUCTION
 
     return app, manager
