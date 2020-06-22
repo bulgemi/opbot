@@ -220,8 +220,6 @@ def submit():
     """
     global masking
     result = dict()
-    rdata = dict()
-    detail = dict()
 
     result['result'] = True
     data = request.get_json()
