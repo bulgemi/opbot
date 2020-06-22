@@ -2,12 +2,13 @@
 __author__ = 'kim dong-hun'
 from flask import (render_template, Blueprint, request, jsonify, current_app, flash, redirect, url_for)
 # OPBOT manager module
-from ..models import TaskInfo
+from ..models import TaskInfo, TargetList
 from .save_task import NewTask
 from ..validator.checker import check, check_forbidden_instruction
 from ..common.set_resp_msg import set_detail_result
 
 task_bp = Blueprint('task_new', __name__, url_prefix='/task')
+masking = "******"
 
 
 @task_bp.route('/new', methods=('GET', 'POST'))
@@ -186,28 +187,25 @@ def load_target_list():
     스크립트 수행 목적지 출력.
     :return:
     """
-    current_app.logger.debug("form=%r" % request.form)
+    global masking
+    target_list = list()
+    data = request.get_json()
+    current_app.logger.debug("data=%r" % data)
+    task_uid = data['task_uid']
 
-    target_list = [
-        {
-            "Ip": "0.0.0.0",
-            "Port": 3333,
-            "Id": "id1234",
-            "Password": "******",
-        },
-        {
-            "Ip": "0.0.0.1",
-            "Port": 4444,
-            "Id": "id5678",
-            "Password": "******",
-        },
-        {
-            "Ip": "http://tttt.com",
-            "Port": 5555,
-            "Id": "id5678",
-            "Password": "******",
-        }
-    ]
+    try:
+        result = TargetList.query.filter(TargetList.task_id == task_uid).all()
+
+        for target in result:
+            tmp = dict()
+            tmp['Ip'] = target.host
+            tmp['Port'] = str(target.port)
+            tmp['Id'] = str(target.user)
+            tmp['Password'] = masking
+
+            target_list.append(tmp)
+    except Exception as e:
+        current_app.logger.error("!%s!" % e)
 
     return jsonify(result=target_list)
 
@@ -220,6 +218,7 @@ def submit():
     2.상태 변경
     :return:
     """
+    global masking
     result = dict()
     rdata = dict()
     detail = dict()
@@ -237,7 +236,8 @@ def submit():
     # 1.타겟 리스트 저장
     try:
         for target in target_list:
-            task.update_target_list(task_uid, target['Ip'], target['Port'], target['Id'], target['Password'])
+            if target['Password'] != masking:
+                task.update_target_list(task_uid, target['Ip'], target['Port'], target['Id'], target['Password'])
     except Exception as e:
         current_app.logger.error("!%s!" % e)
         flash('태스크 등록 처리에 실패하였습니다! 관리자에게 문의하세요!', 'error')
@@ -249,8 +249,4 @@ def submit():
         current_app.logger.error("!%s!" % e)
         flash('태스크 등록 처리에 실패하였습니다! 관리자에게 문의하세요!', 'error')
         result['result'] = False
-
-    if result['result'] is False:
-        return jsonify(result=result)
-    else:
-        return redirect(url_for('task_list.render'))
+    return jsonify(result=result)
