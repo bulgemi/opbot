@@ -144,18 +144,17 @@ $(document).ready(function() {
                 url: $SCRIPT_ROOT + '/task/_submit',
                 type: 'POST',
                 contentType: "application/json",
+                dataType: 'JSON',
                 data: JSON.stringify({
                     task_uid: taskUid,
                     target_list: tl
                 }),
-                dataType: 'JSON',
                 success: function(data) {
                     console.log(data.result);
                     res = data.result;
 
                     if (res.result === true) {
-                        tip = res.detail.script.tip;
-                        $('#script_tip').text(tip);
+                        window.location.href = $SCRIPT_ROOT + "/task/list";
                     } else {
                         c = res.detail.script.class;
                         $('#script_group').addClass(c[0]);
