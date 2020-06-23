@@ -21,17 +21,23 @@
 
             return d.promise();
         },
-        insertItem: function(insertingTarget) {
-            console.log("insertingTarget=", insertingTarget);
-            var tl = $("#targetList").jsGrid("option", "data");
+        insertItem: function(insertingTask) {
+            console.log("insertingTask=", insertingTask);
         },
-        updateItem: function(updatingTarget) {
-            console.log("updatingTarget=", updatingTarget)
-            var tl = $("#targetList").jsGrid("option", "data");
+        updateItem: function(updatingTask) {
+            console.log("updatingTask=", updatingTask)
         },
-        deleteItem: function(deletingTarget) {
-            console.log("deletingTarget=", deletingTarget)
-            var tl = $("#targetList").jsGrid("option", "data");
+        deleteItem: function(deletingTask) {
+            console.log("deletingTask=", deletingTask)
+            $.ajax({
+                url: $SCRIPT_ROOT + '/task/_delete_task',
+                type: 'POST',
+                contentType: "application/json",
+                dataType: "JSON",
+                data: JSON.stringify(deletingTask),
+            }).done(function(response) {
+                console.log("response=", response);
+            });
         }
     };
 
