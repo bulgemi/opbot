@@ -3,6 +3,7 @@ __author__ = 'kim dong-hun'
 from flask import (render_template, Blueprint, request, jsonify, current_app, flash)
 from sqlalchemy import desc
 # OPBOT manager module
+from app import db
 from ..models import TaskInfo, UserInfo
 
 task_bp = Blueprint('task_list', __name__, url_prefix='/task')
@@ -141,3 +142,20 @@ def search_task_list():
         })
     current_app.logger.debug("task_list=%r" % task_list)
     return jsonify(result=task_list)
+
+
+@task_bp.route('/_delete_task', methods=['POST'])
+def delete_task_list():
+    result = dict()
+    data = request.get_json()
+    current_app.logger.debug("data=%r" % data)
+    result['result'] = True
+
+    try:
+        TaskInfo.query.filter(TaskInfo.task_name == data['task_name'].strip()).delete()
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.error("!%s!" % e)
+        flash('태스크 삭제 처리에 실패하였습니다! 관리자에게 문의하세요!', 'error')
+        result['result'] = False
+    return jsonify(result=result)
