@@ -159,3 +159,19 @@ def delete_task_list():
         flash('태스크 삭제 처리에 실패하였습니다! 관리자에게 문의하세요!', 'error')
         result['result'] = False
     return jsonify(result=result)
+
+
+@task_bp.route('/_select_task', methods=['POST'])
+def select_task():
+    """
+    태스크 화면 로딩.
+    :return:
+    """
+    result = dict()
+    task_name = request.form['task_name']
+    current_app.logger.debug("task_name: %s" % task_name)
+    row = TaskInfo.query.filter(TaskInfo.task_name == task_name).first()
+    result['result'] = True
+    result['url'] = '/task/new/{}'.format(row.task_id)
+    current_app.logger.debug("url: %s" % result['url'])
+    return jsonify(result=result)
