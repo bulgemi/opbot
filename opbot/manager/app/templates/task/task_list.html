@@ -72,6 +72,14 @@
             deleteConfirm: "태스크를 삭제하시겠습니까?",
             noDataContent: "태스크 정보가 없습니다.",
             controller: db,
+            rowDoubleClick: function(args) {
+                getdata = args.item;
+                $.post("/task/_select_task", {
+                    task_name: getdata['task_name']
+                }, function(response) {
+                    window.location.href = $SCRIPT_ROOT + response.result['url'];
+                })
+            },
             fields: [
                 { name: "task_name", title: "TASK 명", type: "text", width: 150 },
                 { name: "task_type", title: "연동유형", type: "text", width: 70 },
