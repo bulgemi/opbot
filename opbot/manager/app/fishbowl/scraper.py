@@ -38,4 +38,4 @@ class Scraper(object):
             offset += enc_block_len
             piece = self.private_key.decrypt(enc_block)
             dec_data += piece
-        return dec_data
+        return dec_data.decode('utf-8')
