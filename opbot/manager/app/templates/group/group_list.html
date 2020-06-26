@@ -51,8 +51,9 @@
     </fieldset>
 </form>
 <script>
+// 상단 메뉴 활성화.
+$("#top_menu").children().eq(1).addClass('active');
         $(function() {
-
             $("#groupList").jsGrid({
                 height: "auto",
                 width: "100%",
