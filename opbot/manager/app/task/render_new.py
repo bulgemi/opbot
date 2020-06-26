@@ -2,7 +2,7 @@
 __author__ = 'kim dong-hun'
 from flask import (render_template, Blueprint, request, jsonify, current_app, flash, redirect, url_for)
 # OPBOT manager module
-from ..models import TaskInfo, TargetList
+from ..models import TaskInfo, TaskPlaybook, TargetList
 from .save_task import NewTask
 from ..validator.checker import check, check_forbidden_instruction
 from ..common.set_resp_msg import set_detail_result
@@ -14,6 +14,39 @@ masking = "******"
 @task_bp.route('/new', methods=('GET', 'POST'))
 def render():
     return render_template('task/task_new.html')
+
+
+@task_bp.route('/new/<uid>', methods=['GET'])
+def edit(uid):
+    """
+    태스크 정의 수정.
+    :param uid:
+    :return:
+    """
+    current_app.logger.debug("uid=<%r>" % uid)
+
+    # 복호화
+    sc = current_app.config['SCRAPER']
+    # Todo: login 처리 후 login_id 사용하도록 수정 필요, add 2020.04.22. kim dong-hun
+    owner_id = 'u_425690ee-6fff-11ea-8634-d0abd5335702'
+    ti = TaskInfo.query.filter_by(task_id=uid).first()
+    tp = TaskPlaybook.query.filter_by(task_id=uid).first()
+
+    current_app.logger.debug("ti=<%r, %r, %r, %r>"
+                             % (ti.task_name, ti.task_type, ti.action_type, ti.status_code))
+    contents = sc.dec(tp.contents) if tp.contents is not None else ''
+    current_app.logger.debug("tp=<(%r)%r, %r>"
+                             % (type(contents), contents, tp.cause))
+
+    form = dict()
+    form['uid'] = uid
+    form['task_name'] = ti.task_name
+    form['task_type'] = ti.task_type
+    form['action_type'] = ti.action_type
+    form['status_code'] = ti.status_code
+    form['contents'] = contents
+    form['cause'] = tp.cause
+    return render_template('task/task_new.html', form=form)
 
 
 @task_bp.route('/_check_task_name', methods=['POST'])
