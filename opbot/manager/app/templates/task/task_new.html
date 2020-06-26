@@ -94,26 +94,44 @@
 {% endblock %}
 {% block content %}
 <form action="#" class="ink-form column-group gutters">
-    <input type="hidden" id="task_uid" value="">
+    <input type="hidden" id="task_uid" value="{% if form is defined %}{{ form.uid }}{% endif %}">
     <fieldset class="all-50 small-100 tiny-100">
         <div class="control-group required">
             <label for="type1">연동 유형</label>
             <div class="control-group">
                 <ul class="control unstyled" id="type1">
                     <li>
-                        <input type="radio" id="rb11" name="rb1" value="0" checked>
+                        <input type="radio" id="rb11" name="rb1" value="0"{% if form is defined %}
+                               {% if form.task_type == 0  %}
+                               checked
+                               {% endif %}
+                               {% else %}
+                               checked
+                               {% endif %}>
                         <label for="rb11">OPMATE</label>
                     </li>
                     <li>
-                        <input type="radio" id="rb12" name="rb1" value="1">
+                        <input type="radio" id="rb12" name="rb1" value="1"{% if form is defined %}
+                               {% if form.task_type == 1  %}
+                               checked
+                               {% endif %}
+                               {% endif %}>
                         <label for="rb12">K8s</label>
                     </li>
                     <li>
-                        <input type="radio" id="rb13" name="rb1" value="2">
+                        <input type="radio" id="rb13" name="rb1" value="2"{% if form is defined %}
+                               {% if form.task_type == 2  %}
+                               checked
+                               {% endif %}
+                               {% endif %}>
                         <label for="rb13">Command</label>
                     </li>
                     <li>
-                        <input type="radio" id="rb14" name="rb1" value="3">
+                        <input type="radio" id="rb14" name="rb1" value="3"{% if form is defined %}
+                               {% if form.task_type == 3  %}
+                               checked
+                               {% endif %}
+                               {% endif %}>
                         <label for="rb14">Shell Script</label>
                     </li>
                 </ul>
@@ -126,11 +144,21 @@
             <div class="control-group">
                 <ul class="control unstyled" id="type2">
                     <li>
-                        <input type="radio" id="rb21" name="rb2" value="A" checked>
+                        <input type="radio" id="rb21" name="rb2" value="A"{% if form is defined %}
+                               {% if form.action_type == 'A'  %}
+                               checked
+                               {% endif %}
+                               {% else %}
+                               checked
+                               {% endif %}>
                         <label for="rb21">분석</label>
                     </li>
                     <li>
-                        <input type="radio" id="rb22" name="rb2" value="S">
+                        <input type="radio" id="rb22" name="rb2" value="S"{% if form is defined %}
+                               {% if form.action_type == 'S'  %}
+                               checked
+                               {% endif %}
+                               {% endif %}>
                         <label for="rb22">조치</label>
                     </li>
                 </ul>
@@ -141,34 +169,20 @@
         <div class="control-group required column-group gutters" id="task_name_group">
             <label for="task_name" class="all-10">태스크 이름</label>
             <div class="control all-90">
-                <input type="text" id="task_name">
+                <input type="text" id="task_name" {% if form is defined %}value="{{ form.task_name }}"{% endif %}>
                 <p class="tip" id="task_name_tip">&nbsp;</p>
             </div>
         </div>
         <div class="control-group required column-group gutters" id="desc_group">
             <label for="desc" class="all-10">등록 사유</label>
             <div  class="control all-90">
-                <textarea id="desc"></textarea>
+                <textarea id="desc">{% if form is defined %}{{ form.cause }}{% endif %}</textarea>
                 <p class="tip" id="desc_tip">&nbsp;</p>
             </div>
         </div>
         <div class="control-group required gutters" id="script_group">
             <label>스크립트</label>
-            <!--
-function findSequence(goal) {
-  function find(start, history) {
-    if (start == goal)
-      return history;
-    else if (start > goal)
-      return null;
-    else
-      return find(start + 5, "(" + history + " + 5)") ||
-             find(start * 3, "(" + history + " * 3)");
-  }
-  return find(1, "1");
-}
-            -->
-            <textarea id="task_script" name="task_script"></textarea>
+            <textarea id="task_script" name="task_script">{% if form is defined %}{{ form.contents }}{% endif %}</textarea>
             <p class="tip" id="script_tip">&nbsp;</p>
         </div>
         <div class="control-group push-right" id="script_theme_group">
@@ -255,6 +269,9 @@ function findSequence(goal) {
     </fieldset>
 </form>
 <script>
+// 상단 메뉴 활성화.
+$("#top_menu").children().eq(0).addClass('active');
+
 // CodeMirror
 var editor = CodeMirror.fromTextArea(document.getElementById("task_script"), {
     lineNumbers: true,
