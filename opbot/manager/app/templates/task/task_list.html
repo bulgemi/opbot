@@ -56,6 +56,8 @@
 </form>
 <script>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    // 상단 메뉴 활성화.
+    $("#top_menu").children().eq(0).addClass('active');
 
     $(function() {
         $("#taskList").jsGrid({
