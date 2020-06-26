@@ -1,10 +1,11 @@
 (function() {
     var db = {
         loadData: function(filter) {
-            console.log("filter=", filter);
-
             taskUid = $('#task_uid').val();
             var d = $.Deferred();
+
+            console.log("filter=", filter);
+            console.log("task_uid=", taskUid);
 
             $.ajax({
                 url: $SCRIPT_ROOT + '/task/_load_target_list',
@@ -15,8 +16,12 @@
                     task_uid: taskUid,
                     filter: filter
                 }),
-            }).done(function(response) {
-                d.resolve(response.result);
+                success: function(response) {
+                    d.resolve(response.result);
+                },
+                error: function(xtr, status, error) {
+                    console.log(xtr +":"+status+":"+error);
+                }
             });
 
             return d.promise();
