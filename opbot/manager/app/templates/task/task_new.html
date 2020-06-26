@@ -78,7 +78,7 @@
 <script src="{{ url_for('static', filename='task/task_new_db.js') }}"></script>
 
 <script type=text/javascript>
-    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='task/task_new.js') }}"></script>
 <section class="column-group article">
