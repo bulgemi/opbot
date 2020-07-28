@@ -36,5 +36,5 @@ class DataPreprocessor(object):
 
     def data_filter(self, row):
         import re
-        f_row = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》{}_]', '', row)
+        f_row = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》{}_●]', '', row)
         return f_row
