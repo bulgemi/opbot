@@ -17,7 +17,7 @@ class TfIdf(object):
 
     def do(self):
         """
-
+        tf-idf 처리.
         :return:
         """
         tfidf_vectorizer = TfidfVectorizer(min_df=10)
@@ -26,6 +26,14 @@ class TfIdf(object):
         idf = tfidf_vectorizer.idf_
         print("text(%r): %r" % (len(text), text))
         print("idf(%r): %r" % (len(idf), idf))
+
+    def save(self):
+        """
+        save matrix
+        :return:
+        """
+        with open('data/tfidf_matrix.pickle', 'wb') as f:
+            pickle.dump(self.tfidf_matrix, f, pickle.HIGHEST_PROTOCOL)
 
     def similarity(self, index):
         """
@@ -46,3 +54,4 @@ if __name__ == '__main__':
     tf_idf = TfIdf("data/tokenized_text.pickle")
     tf_idf.do()
     tf_idf.similarity(2578)
+    tf_idf.save()
