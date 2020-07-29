@@ -8,7 +8,7 @@
 * sklearn.model_selection.GridSearchCV
 ## 평가 지표
 ### 목표
-* 
+* 장애 상황 발생시 IT 운영자가 장소와 시간에 제약없이 신속하게 장애 원인을 분석 가능하도록 도와주는 플랫폼을 제공한다.
 ### 오차 행렬(confusion matrix)
 > scikit-learn confusion_matrix 사용.
 
