@@ -26,7 +26,7 @@
 * sklearn.metrics.confusion_matrix
     * TP(True Positive): 모델이 정답(Positive)을 맞추었을 때
     * TN(True Negative): 모델이 오답(Negative)을 맞추었을 때
-    * FP(False Postive): 모델이 오답(Negative)을 정답(Positive)으로 잘못 예측했을 때
+    * FP(False Positive): 모델이 오답(Negative)을 정답(Positive)으로 잘못 예측했을 때
     * FN(False Negative): 모델이 정답(Positive)을 오답(Negative)으로 잘못 예측했을 때
 ### Precision & Recall
 > 데이터 특성상 모든 데이터는 장애 상황 SMS이고 전 장애 상황 SMS에 대한 식별이 중요하므로 Recall에 정확도가 중요.
