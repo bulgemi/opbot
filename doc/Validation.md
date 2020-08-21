@@ -13,7 +13,7 @@
 > 장애 상황 SMS 특성상 최초 SMS는 내용이 별로 없어 정확도가 낮을 가능성 높고, 장애 상황이 진행되고 SMS 내용이 구체화되면 정확도가 높아진다.
 
 $$
-Accuracy=TP+TN/TP+TN+FP+FN
+Accuracy = {TP+TN+FP+FN \over TP+TN}
 $$
 * 전체 장애 상황 SMS 대상: 60%
 * 최종 장애 해결 직전 장애 상황 SMS 대상: 90%
