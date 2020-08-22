@@ -23,9 +23,12 @@ class StopWord(object):
             r'\d{1,4}[년]\s\d{1,2}[월]\s\d{1,2}[일]',
             r'\d{1,2}[월]\s\d{1,2}[일]',
             r'\d{1,2}[월]\d{1,2}[일]',
-            r'IT종합상황실 상황관리자'
+            r'IT종합상황실 상황관리자',
+            r'Ontune',
+            r'AnyCatcher',
         ]
         self.fp = open(os.getenv('OPBOT_HOME') + "/datapreprocessor/data/Rims_stopword.csv", 'w')
+        self.len_list = list()
 
     def __del__(self):
         self.fp.close()
@@ -52,6 +55,7 @@ class StopWord(object):
     def data_info(self):
         print(self.data.shape)
         print("%r" % self.stat_map)
+        print("최장 문자 길자=%d, 평균 문자 길이=%d" % (max(self.len_list), sum(self.len_list)/len(self.len_list)))
 
     def read_column(self):
         csv_fp = csv.writer(self.fp, delimiter=',')
@@ -61,14 +65,16 @@ class StopWord(object):
             # print("%r=%r" % (i, r[2]))
             row = self.do_stopword(r[2])
             rsc = self.remove_special_characters(row)
+            self.len_list.append(len(rsc))
             # print("%r" % rsc)
             # print("%r=%r" % (i, r[3]))
+
             if pd.isnull(r[3]):
-                csv_fp.writerow([r[0], rsc, r[3]])
+                csv_fp.writerow([r[0], rsc.lower(), r[3]])
             else:
                 result_row = self.do_stopword(r[3])
                 result_rsc = self.remove_special_characters(result_row)
-                csv_fp.writerow([r[0], rsc, result_rsc])
+                csv_fp.writerow([r[0], rsc.lower(), result_rsc.lower()])
                 # print("%r" % r[2])
                 # print("%r" % rsc)
 
