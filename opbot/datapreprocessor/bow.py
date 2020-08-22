@@ -102,7 +102,7 @@ class Bow(object):
         plt.show()
 
     def nor_info(self):
-        print("최대 형태소 건수: %d, 편균 형태소 건수: %d" % (max(self.tok_len_list),
+        print("형태소 최대 갯수: %d, 평균 갯수: %d" % (max(self.tok_len_list),
                                                 sum(self.tok_len_list)/len(self.tok_len_list)))
 
 
