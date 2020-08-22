@@ -6,6 +6,7 @@
 1. 군집별 매핑된 분석 Task를 제공한다.
     * Task는 유사한 유형의 장애 상황 SMS에서 운영자가 많이 사용한 Task 수행 이력을 기반으로 랭킹 리스트 제공
     * Task 수행 이력이 없을 경우 Task 리스트 제공
+    ![Fig. 1. 군집화 랭킹](/doc/clustering_rank.png "군집화 랭킹")
 ## 평가 지표
 > 장애 상황 SMS는 상황이 진행되면서 더 많은 정보가 추가되고 유사한 장애라도 장애 원인이 동일하지 않을 수 있어 정확한 답을 작성하기 어렵다는 특성이 있다.
 > 하지만 기존 작성된 정답지를 이용해 정확도를 평가한다.
@@ -22,7 +23,7 @@
 #### 오차 행렬(confusion matrix)
 > scikit-learn confusion_matrix 사용.
 
-![Fig. 1. 오차 행렬](/doc/confusion_matrix.jpg "confusion matrix")
+![Fig. 2. 오차 행렬](/doc/confusion_matrix.jpg "confusion matrix")
 * sklearn.metrics.confusion_matrix
     * TP(True Positive): 모델이 정답(Positive)을 맞추었을 때
     * TN(True Negative): 모델이 오답(Negative)을 맞추었을 때
