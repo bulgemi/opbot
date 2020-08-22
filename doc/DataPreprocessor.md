@@ -172,7 +172,11 @@
 ![Fig. 2. LDA](/doc/lda.png "LDA")
 
 ### TF-IDF(Term Frequency-Inverse Document Frequency)
-> 자주 나타나는 단어에 높은 가중치를 주는 방법
+> 장애 상황 SMS내 단어의 중요도를 구하기 위해 사용.
+> 해당 기법을 선정한 이유는 TF-IDF의 서에서 자주 등장하는 단어는 중요도가 낮다고 판단하며,
+> 특정 문서에서만 자주 등장하는 단어는 중요도가 높다고 판단하는 특성 때문이다.
+> DTM(Document-Term Matrix, scikit-learn: CountVectorizer)을 사용할 경우 단순 단어 빈도 수 기번 접근이어서 장애 상황 SMS 특성상 자주 사용되나 중요도가 떨어지는 
+> 단어가 불용어 처리에서 누락될 경우 모델 정확도가 떨어질 위험이 있다.
 1. TfidfVectorizer 사용
     * scikit-learn
     * tfidf matrix 추출
