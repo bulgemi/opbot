@@ -180,7 +180,8 @@
 1. TfidfVectorizer 사용
     * scikit-learn
     * tfidf matrix 추출
-2. cosine similarity 측정
+1. 데이터(pickle) 저장 
+1. cosine similarity 측정
 <pre>
 similarity:  0.8447320746327309
 skt 심각도3경과it종합상황실 내용 운전면허증 kait 진위확인 시 불가 영향 운전면허증 kait 진위확인 시 간헐적 불가 주민등록증 정상 3사 공통 원인 대외기관 경찰청 측 시스템 장애 발생 시간 점검 현황 ap pl 확인 중 network 관련 없음 보안 관련 없음 서버스토리지 관련 없 구분 대외기관 장애 kait 경찰청 담당 부서 고객 상품unit
