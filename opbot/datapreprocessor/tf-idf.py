@@ -14,6 +14,7 @@ class TfIdf(object):
         with open(pickle_file, 'rb') as f:
             self.data = pickle.load(f)
         self.tfidf_matrix = None
+        self.tfidf_dict = dict()
 
     def do(self):
         """
@@ -24,6 +25,10 @@ class TfIdf(object):
         self.tfidf_matrix = tfidf_vectorizer.fit_transform(self.data)
         text = tfidf_vectorizer.get_feature_names()
         idf = tfidf_vectorizer.idf_
+
+        for i, t in enumerate(text):
+            self.tfidf_dict[t] = idf[i]
+
         print("text(%r): %r" % (len(text), text))
         print("idf(%r): %r" % (len(idf), idf))
 
@@ -34,6 +39,9 @@ class TfIdf(object):
         """
         with open('data/tfidf_matrix.pickle', 'wb') as f:
             pickle.dump(self.tfidf_matrix, f, pickle.HIGHEST_PROTOCOL)
+
+        with open('data/tfidf_dict.pickle', 'wb') as f:
+            pickle.dump(self.tfidf_dict, f, pickle.HIGHEST_PROTOCOL)
 
     def similarity(self, index):
         """
@@ -49,9 +57,19 @@ class TfIdf(object):
                 print(self.data[index])
                 print(self.data[i])
 
+    def print_info(self):
+        """
+        tfidf 정보 출력
+        :return:
+        """
+        print("%r" % self.tfidf_matrix)
+        for tf in self.tfidf_dict:
+            print("%r: %r" % (tf, self.tfidf_dict[tf]))
+
 
 if __name__ == '__main__':
     tf_idf = TfIdf("data/tokenized_text.pickle")
     tf_idf.do()
     tf_idf.similarity(2578)
     tf_idf.save()
+    tf_idf.print_info()
