@@ -123,7 +123,7 @@
 ### BOW(Bag Of Words)
 > soynlp(https://github.com/lovit/soynlp):
 > 학습데이터를 이용하지 않으면서 데이터에 존재하는 단어를 찾거나, 문장을 단어열로 분해, 혹은 품사 판별을 할 수 있는 비지도학습 접근법을 지향.
-> 말뭉치를 기반으로 학습된 품사 판별기 / 형태소 분석기는 학습하지 못한 단어를(새로운 단어) 제대로 인식하지 못하는 미등록단어 문제 (out of vocabulry, OOV)가 발생
+> 말뭉치를 기반으로 학습된 품사 판별기/형태소 분석기는 학습하지 못한 단어를(새로운 단어) 제대로 인식하지 못하는 미등록단어 문제 (out of vocabulry, OOV)가 발생
 1. Why
     * 장애 문자를 단어로 분해하고 특징을 추출하여 클러스터링을 위한 코드워드 생성
 1. 토큰화(tokenization)
@@ -137,7 +137,8 @@
         [('법인정보조회화면', ('법인', '정보', '조회', '화면')), ('법인정보조회장애현상', ('법인', '정보', '조회', '장애', '현상')), ('네트워크장안고객센터', ('네트워크', '장안', '고객센터')), ('스위치Standby', ('스위치', 'Standby')),', '화면')), ('KAIT진위확인처리', ('KAIT', '진위확인', '처리')), ('2호기Standby', ('2호기', 'Standby')), ('주민등록증운전면허증', ('주민등록증', '운전면허증')), ('없음Failover', ('없음', 'Failover'))]
         </pre>
     * 단어 추출(Cohesion score, Branching Entropy, Accessor Variety)
-        > https://lovit.github.io/nlp/2018/04/09/branching_entropy_accessor_variety/
+        > [Cohesion score](https://lovit.github.io/nlp/2018/04/09/cohesion_ltokenizer/)
+        > [Branching Entropy&Accessor Variety](https://lovit.github.io/nlp/2018/04/09/branching_entropy_accessor_variety/)
         * Cohesion score: 단어를 구성하는 글자들이 얼마나 함께 자주 등장하는지의 정보로도 단어의 경계를 판단
         * Branching Entropy: 말뭉치에서 단어를 추출하는 기법, 단어 내부에서는 불확실성(uncertainty), 엔트로피(entropy)가 줄어들고, 경계에서는 증가하는 현상을 모델링한 것
         * Accessor Variety: 단어 경계에서의 불확실성을 단어 경계 다음에 등장한 글자의 종류로 정의
