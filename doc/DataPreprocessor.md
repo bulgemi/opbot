@@ -137,7 +137,7 @@
         [('법인정보조회화면', ('법인', '정보', '조회', '화면')), ('법인정보조회장애현상', ('법인', '정보', '조회', '장애', '현상')), ('네트워크장안고객센터', ('네트워크', '장안', '고객센터')), ('스위치Standby', ('스위치', 'Standby')),', '화면')), ('KAIT진위확인처리', ('KAIT', '진위확인', '처리')), ('2호기Standby', ('2호기', 'Standby')), ('주민등록증운전면허증', ('주민등록증', '운전면허증')), ('없음Failover', ('없음', 'Failover'))]
         </pre>
     * 단어 추출(Cohesion score, Branching Entropy, Accessor Variety)
-        > [Cohesion score](https://lovit.github.io/nlp/2018/04/09/cohesion_ltokenizer/)
+        > [Cohesion score](https://lovit.github.io/nlp/2018/04/09/cohesion_ltokenizer/), 
         > [Branching Entropy&Accessor Variety](https://lovit.github.io/nlp/2018/04/09/branching_entropy_accessor_variety/)
         * Cohesion score: 단어를 구성하는 글자들이 얼마나 함께 자주 등장하는지의 정보로도 단어의 경계를 판단
         * Branching Entropy: 말뭉치에서 단어를 추출하는 기법, 단어 내부에서는 불확실성(uncertainty), 엔트로피(entropy)가 줄어들고, 경계에서는 증가하는 현상을 모델링한 것
