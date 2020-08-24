@@ -144,7 +144,7 @@
         * Accessor Variety: 단어 경계에서의 불확실성을 단어 경계 다음에 등장한 글자의 종류로 정의
         * 어휘 사전 구축
         ![Fig. 1. 명사 빈도수](/doc/noun_frequency.png "명사 빈도수")
-    * Tokenizer(LTokenizer, MaxScoreTokenizer, RegexTokenizer)
+    * Tokenizer(LTokenizer)
         > 단어의 경계를 따라 문장을 단어열로 분해, 한국어 어절의 구조를 "명사 + 조사" 처럼 "L + [R]" 로 생각.
         > L parts 에는 명사/동사/형용사/부사가 위치. 어절에서 L 만 잘 인식한다면 나머지 부분이 R parts.
         * LTokenizer 사용
