@@ -188,7 +188,7 @@
 > 특정 문서에서만 자주 등장하는 단어는 중요도가 높다고 판단하는 특성 때문이다.
 > DTM(Document-Term Matrix, scikit-learn: CountVectorizer)을 사용할 경우 단순 단어 빈도 수 기번 접근이어서 장애 상황 SMS 특성상 자주 사용되나 중요도가 떨어지는 
 > 단어가 불용어 처리에서 누락될 경우 모델 정확도가 떨어질 위험이 있다.
-1. TfidfVectorizer 사용
+* TfidfVectorizer 사용
     * scikit-learn
     * tfidf matrix 추출
 <pre>
@@ -202,8 +202,8 @@
 '부서': 3.0961284604648505
 ...
 </pre>
-1. 데이터(pickle) 저장 
-1. cosine similarity 측정
+* 데이터(pickle) 저장 
+* cosine similarity 측정
 <pre>
 ...
 similarity:  0.8447320746327309
