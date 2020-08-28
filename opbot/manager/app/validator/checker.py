@@ -59,6 +59,10 @@ def check(document):
                        'empty': False,
                        'minlength': 10,
                        'maxlength': 100},
+        'group': {'type': 'string',
+                  'empty': False,
+                  'minlength': 5,
+                  'maxlength': 100},
     }
 
     v = Validator(schema)
