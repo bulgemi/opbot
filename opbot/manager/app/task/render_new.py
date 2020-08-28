@@ -1,7 +1,7 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'kim dong-hun'
-from flask import (render_template, Blueprint, request, jsonify, current_app, flash, redirect, url_for)
-# OPBOT manager module
+from flask import (render_template, Blueprint, request, jsonify, current_app, flash)
+# manager module
 from ..models import TaskInfo, TaskPlaybook, TargetList
 from .save_task import NewTask
 from ..validator.checker import check, check_forbidden_instruction
@@ -28,7 +28,7 @@ def edit(uid):
     # 복호화
     sc = current_app.config['SCRAPER']
     # Todo: login 처리 후 login_id 사용하도록 수정 필요, add 2020.04.22. kim dong-hun
-    owner_id = 'u_425690ee-6fff-11ea-8634-d0abd5335702'
+    # owner_id = 'u_425690ee-6fff-11ea-8634-d0abd5335702'
     ti = TaskInfo.query.filter_by(task_id=uid).first()
     tp = TaskPlaybook.query.filter_by(task_id=uid).first()
 
