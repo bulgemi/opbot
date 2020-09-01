@@ -63,6 +63,10 @@ def check(document):
                   'empty': False,
                   'minlength': 5,
                   'maxlength': 100},
+        'member_info': {'type': 'string',
+                        'empty': False,
+                        'minlength': 2,
+                        'maxlength': 5},
     }
 
     v = Validator(schema)
