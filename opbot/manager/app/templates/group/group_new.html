@@ -22,37 +22,19 @@
                 <p class="tip" id="group_name_tip">&nbsp;</p>
             </div>
         </div>
-        <div class="control-group required gutters">
+        <div class="control-group required gutters" id="group_member_name">
             <label for="group_member">그룹 멤버</label>
             <div class="control append-button">
                 <span><input type="text" name="group_member" id="group_member" placeholder="그룹 멤버 이름을 입력하세요."></span>
-                <button class="ink-button black">Add</button>
+                <button class="ink-button black" id="add_member">Add</button>
             </div>
             <p class="tip" id="group_member_tip">&nbsp;</p>
         </div>
         <div class="control-group required gutters">
-            <div class="column-group" style="overflow-y:scroll; height:150px;border: 1px solid;">
+            <div class="column-group" style="overflow-y:scroll; height:150px;border: 1px solid;" id="member_list">
+                <!--
                 <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">OOO</button></div>
+                -->
             </div>
         </div>
         <div class="control-group required gutters">
@@ -61,65 +43,25 @@
                 <ul class="ink-tree-view">
                     <li data-open="false">
                         <a href="#">그룹 멤버</a>
-                        <ul>
-                            <li>
-                                <a href="#">멤버01</a>
-                                <ul>
-                                    <li><a href="#">TASK11</a></li>
-                                    <li><a href="#">TASK12</a></li>
-                                    <li><a href="#">TASK13</a></li>
-                                    <li><a href="#">TASK14</a></li>
-                                    <li><a href="#">TASK15</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">멤버02</a>
-                                <ul>
-                                    <li><a href="#">TASK21</a></li>
-                                    <li><a href="#">TASK22</a></li>
-                                    <li><a href="#">TASK23</a></li>
-                                    <li><a href="#">TASK24</a></li>
-                                    <li><a href="#">TASK25</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">멤버03</a>
-                                <ul>
-                                    <li><a href="#">TASK31</a></li>
-                                    <li><a href="#">TASK32</a></li>
-                                    <li><a href="#">TASK33</a></li>
-                                    <li><a href="#">TASK34</a></li>
-                                    <li><a href="#">TASK35</a></li>
-                                </ul>
-                            </li>
+                        <ul id="tasks_info">
+<!--                            <li>-->
+<!--                                <a href="#">멤버01</a>-->
+<!--                                <ul>-->
+<!--                                    <li><a href="#">TASK11</a></li>-->
+<!--                                    <li><a href="#">TASK12</a></li>-->
+<!--                                    <li><a href="#">TASK13</a></li>-->
+<!--                                    <li><a href="#">TASK14</a></li>-->
+<!--                                    <li><a href="#">TASK15</a></li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="control-group required gutters">
-            <div class="column-group" style="overflow-y:scroll; height:150px;border: 1px solid;">
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
-                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>
+            <div class="column-group" style="overflow-y:scroll; height:150px;border: 1px solid;" id="task_list">
+<!--                <div class="align-center right-padding top-padding"><button class="ink-button">TASK</button></div>-->
             </div>
         </div>
         <div class="control-group push-right">
