@@ -13,7 +13,7 @@
 {% endblock %}
 {% block content %}
 <script type="text/javascript" src="{{ url_for('static', filename='group/group_new.js') }}"></script>
-<form class="ink-form column-group gutters" id="formid">
+<form class="ink-form column-group gutters" id="formid" method="post">
     <fieldset class="all-100 small-100 tiny-100">
         <div class="control-group required gutters" id="group_name_group">
             <label for="group_name">그룹 이름</label>
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="control-group push-right">
-            <button class="ink-button black">그룹 등록</button>
+            <button class="ink-button black" onclick="save_group()">그룹 등록</button>
         </div>
     </fieldset>
     <fieldset class="all-100 small-100 tiny-100">
