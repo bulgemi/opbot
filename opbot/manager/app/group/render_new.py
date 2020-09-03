@@ -71,6 +71,7 @@ def check_group_member():
     result['result'] = True
     member_info = request.form['member_info']
     member_info = member_info.strip()  # 좌/우 공백 제거.
+
     current_app.logger.debug("member_info=[%s]" % member_info)
 
     # 1.형식 검사.
@@ -101,6 +102,12 @@ def check_group_member():
                                 'email': user.email,
                                 'task_info': task_info})
             detail['members'] = members
+
+            current_app.logger.debug("len(users)=<%r>" % len(users))
+            if len(users) == 0:
+                r, d = set_detail_result(False, '멤버 정보가 없습니다!')
+                result['result'] = r if r is False else result['result']
+                detail['member_infos'] = d
 
             current_app.logger.debug("members=<%r>" % members)
         except Exception as e:
