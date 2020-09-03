@@ -26,6 +26,12 @@ function del_task(id) {
     $(del_id).remove();
     return false;
 };
+// save group
+function save_group() {
+    event.preventDefault();
+    console.log("------------>save_group");
+    return false;
+};
 // get click event(task)
 function add_task(t, n) {
     console.log(t, n);
