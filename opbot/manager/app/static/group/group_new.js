@@ -11,14 +11,17 @@ function initValidationMessage(group) {
 };
 // get click event(members)
 function del_member(id) {
+    event.preventDefault();
     del_id = "#" + id;
     del_tree = "#t_" + id;
     $(del_id).remove();
     $(del_tree).remove();
+    $("#task_list").children("div").remove();
     return false;
 };
 // get click event(task)
 function del_task(id) {
+    event.preventDefault();
     del_id = "#" + id;
     $(del_id).remove();
     return false;
@@ -32,6 +35,13 @@ function add_task(t, n) {
 };
 // '그룹 등록' button 처리
 $(document).ready(function() {
+    $('#formid').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
     // 그룹 이름 유효성 검증.
     var group_name = $('#group_name');
     group_name.blur(function() {
@@ -68,10 +78,10 @@ $(document).ready(function() {
             });
         }
     });
-    // get click event(group member)
-    $('#add_member').click(function(e) {
+     // 그룹 멤버 정보 조회
+    var member_info = $('#group_member');
+    member_info.blur(function() {
         initValidationMessage('#group_member_name');
-        var member_info = $('#group_member');
 
         if (member_info.val().length == 0) {
             $('#group_member_name').addClass("validation error");
@@ -81,6 +91,7 @@ $(document).ready(function() {
                 type: 'POST',
                 url: $SCRIPT_ROOT + '/group/_check_group_member',
                 data: {
+                    group_name: $('#group_name').val(),
                     member_info: member_info.val()
                 },
                 dataType: 'JSON',
@@ -104,8 +115,8 @@ $(document).ready(function() {
                             tr_el_fmt = "<li class=\"parent open\" data-open=\"true\" id=\"t_member_"+ i +"\"><i class=\"fa fa-minus-circle\"></i><a href=\"#\">"+ el_val['name'] +"</a>";
                             tr_el_fmt += "<ul class>";
                             for (var l=0; l < tasks.length; l++) {
-                                var task = tasks[l];
-                                tr_el_fmt += "<li><a href=\"#\" onclick=\"add_task('"+ task['task_id'] +"', '"+ task['task_name'] +"')\">"+ task['task_name'] +"</a></li>";
+                            var task = tasks[l];
+                              tr_el_fmt += "<li><a href=\"#\" onclick=\"add_task('"+ task['task_id'] +"', '"+ task['task_name'] +"')\">"+ task['task_name'] +"</a></li>";
                             }
                             tr_el_fmt += "</ul>";
                             tr_el_fmt += "</li>";
