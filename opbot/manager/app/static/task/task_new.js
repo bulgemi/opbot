@@ -30,12 +30,12 @@ $(document).ready(function() {
     controlTaskType();
     // 연동 유형 변경 감지
     $('input[name="rb1"]').change(function() {
-        console.log("change!");
+//        console.log("change!");
         controlTaskType();
     });
     // 처리 유형 변경 감지
     $('input[name="rb2"]').change(function() {
-        console.log("change!");
+//        console.log("change!");
     });
     // 태스크 이름 유효성 검증.
     var task_name = $('#task_name');
@@ -49,7 +49,7 @@ $(document).ready(function() {
             $('#task_name_tip').text("필수 항목입니다!");
         } else {
             taskUid = $('#task_uid').val();
-            console.log("-task_uid=[" + taskUid + "]");
+//            console.log("-task_uid=[" + taskUid + "]");
             $.ajax({
                 type: 'POST',
                 url: $SCRIPT_ROOT + '/task/_check_task_name',
@@ -61,7 +61,7 @@ $(document).ready(function() {
                 },
                 dataType: 'JSON',
                 success: function(data) {
-                    console.log(data.result);
+//                    console.log(data.result);
                     res = data.result;
 
                     if (res.result === true) {
@@ -76,7 +76,8 @@ $(document).ready(function() {
                     }
                 },
                 error: function(xtr, status, error) {
-                    console.log(xtr +":"+status+":"+error);
+//                    console.log(xtr +":"+status+":"+error);
+                    ;
                 }
             });
         }
@@ -85,7 +86,7 @@ $(document).ready(function() {
     var desc = $('#desc');
     desc.blur(function() {
         taskUid = $('#task_uid').val();
-        console.log("--task_uid=[" + taskUid + "]");
+//        console.log("--task_uid=[" + taskUid + "]");
         initValidationMessage('#desc_group');
 
         if (desc.val().length === 0) {
@@ -96,7 +97,7 @@ $(document).ready(function() {
                 $('#desc_group').addClass("validation error");
                 $('#desc_tip').text("태스크 이름을 확인하세요!");
             } else {
-                var rb1 =  $('input[name="rb1"]:checked').val();
+                var rb1 = $('input[name="rb1"]:checked').val();
 
                 $.ajax({
                     type: 'POST',
@@ -108,7 +109,7 @@ $(document).ready(function() {
                     },
                     dataType: 'JSON',
                     success: function(data) {
-                        console.log(data.result);
+//                        console.log(data.result);
                         res = data.result;
 
                         if (res.result === true) {
@@ -122,7 +123,8 @@ $(document).ready(function() {
                         }
                     },
                     error: function(xtr, status, error) {
-                        console.log(xtr +":"+status+":"+error);
+//                        console.log(xtr +":"+status+":"+error);
+                        ;
                     }
                 });
             }
@@ -131,10 +133,9 @@ $(document).ready(function() {
     // '생성' 처리
     $('#create').bind('click', function() {
         taskUid = $('#task_uid').val();
-        console.log("----task_uid=[" + taskUid + "]");
+//        console.log("----task_uid=[" + taskUid + "]");
         var tl = $("#targetList").jsGrid("option", "data");
-
-        console.log('tl=' + tl);
+//        console.log('tl=' + tl);
 
         if (taskUid.length === 0) {
             $('#script_group').addClass("validation error");
@@ -150,7 +151,7 @@ $(document).ready(function() {
                     target_list: tl
                 }),
                 success: function(data) {
-                    console.log(data.result);
+//                    console.log(data.result);
                     res = data.result;
 
                     if (res.result === true) {
@@ -163,7 +164,8 @@ $(document).ready(function() {
                     }
                 },
                 error: function(xtr, status, error) {
-                    console.log(xtr +":"+status+":"+error);
+//                    console.log(xtr +":"+status+":"+error);
+                    ;
                 }
             });
         }
