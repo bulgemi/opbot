@@ -2,7 +2,7 @@
 __author__ = 'kim dong-hun'
 from flask import (render_template, Blueprint, request, jsonify, current_app, flash)
 # manager module
-from ..models import GroupInfo, UserInfo, TaskInfo
+from ..models import GroupInfo, GroupManagement, UserInfo, TaskInfo
 from ..validator.checker import check
 from ..common.set_resp_msg import set_detail_result
 
@@ -115,4 +115,53 @@ def check_group_member():
             flash('그룹 멤버 처리에 실패하였습니다! 관리자에게 문의하세요!', 'error')
             result['result'] = False
     result['detail'] = detail
+    return jsonify(result=result)
+
+
+@group_bp.route('/_submit', methods=['POST'])
+def submit():
+    """
+    그룹 등록 처리
+    1.그룹명 저장
+    2.그룹 멤버/Task 저장
+    :return:
+    """
+    from .save_group import NewGroup
+
+    new_group = NewGroup()
+    result = dict()
+
+    result['result'] = True
+    data = request.get_json()
+    current_app.logger.debug("data=<%r>" % data)
+    group_id = data['group_id']
+    group_name = data['group_name']
+    task_list = data['task_list']
+
+    # Todo: login 처리 후 login_id 사용하도록 수정 필요, add 2020.04.22. kim dong-hun
+    owner_id = 'u_425690ee-6fff-11ea-8634-d0abd5335702'
+
+    # 1.그룹명 저장
+    try:
+        if group_id is None:
+            group_id = new_group.create_new(group_name, owner_id)
+        else:
+            new_group.update_group(group_id, group_name, owner_id)
+    except Exception as e:
+        current_app.logger.error("!%s!" % e)
+        result['result'] = False
+    # 2.그룹 멤버/Task 저장
+    task_infos = list()
+    try:
+        for task in task_list:
+            tmp = dict()
+            tmp['task_id'] = task
+            tmp['user_id'] = new_group.get_task_info(task)
+            task_infos.append(tmp)
+
+        new_group.update_group_management(group_id, task_infos, owner_id)
+    except Exception as e:
+        current_app.logger.error("!%s!" % e)
+        result['result'] = False
+
     return jsonify(result=result)
