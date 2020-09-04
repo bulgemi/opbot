@@ -370,6 +370,7 @@ def seed():
 
     seed_data = GroupManagement(user_id='u_425690ee-6fff-11ea-8634-d0abd5335702',
                                 group_id='g_aa3d71fa-7009-11ea-8634-d0abd5335702',
+                                task_id='t_7983cf08-7001-11ea-8634-d0abd5335702',
                                 create_time='20200327164920',
                                 update_time='20200327164920',
                                 audit_id='u_425690ee-6fff-11ea-8634-d0abd5335702')
