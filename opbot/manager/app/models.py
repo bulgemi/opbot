@@ -185,6 +185,7 @@ class GroupManagement(db.Model):
     """
     user_id = db.Column(db.String(64), primary_key=True)
     group_id = db.Column(db.String(64), primary_key=True)
+    task_id = db.Column(db.String(64), primary_key=True)
     create_time = db.Column(db.String(16), nullable=False)
     update_time = db.Column(db.String(16), nullable=False)
     audit_id = db.Column(db.String(64), nullable=False)
