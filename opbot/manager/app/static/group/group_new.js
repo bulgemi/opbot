@@ -29,7 +29,47 @@ function del_task(id) {
 // save group
 function save_group() {
     event.preventDefault();
-    console.log("------------>save_group");
+    var group_name = $("#group_name").val();
+    var task_list = $("#task_list").find("button");
+    var task_array = [];
+    for (var i=0; i < task_list.length; i++) {
+        var task_el = task_list[i]
+        task_array.push(task_el["id"])
+    }
+    console.log("------------>", group_name);
+    console.log("------------>", task_array);
+
+    if (group_name.length == 0) {
+        $('#group_name_group').addClass("validation error");
+        $('#group_name_tip').text("필수 항목입니다!");
+    } else {
+        $.ajax({
+            url: $SCRIPT_ROOT + '/group/_submit',
+            type: 'POST',
+            contentType: "application/json",
+            dataType: 'JSON',
+            data: JSON.stringify({
+                group_name: group_name,
+                task_list: task_array
+            }),
+            success: function(data) {
+                console.log(data.result);
+                res = data.result;
+
+                if (res.result === true) {
+                    window.location.href = $SCRIPT_ROOT + "/group/list";
+                } else {
+                    c = res.detail.script.class;
+                    $('#group_name_group').addClass(c[0]);
+                    t = res.detail.script.tip;
+                    $('#group_name_tip').text(t[0]);
+                }
+            },
+            error: function(xtr, status, error) {
+                console.log(xtr +":"+status+":"+error);
+            }
+        });
+    }
     return false;
 };
 // get click event(task)
