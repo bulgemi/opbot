@@ -48,8 +48,9 @@
             > 수정하는 user_code update
     1. 그룹관리(group_management)
         > 그룹 관리 테이블
-        * user_id: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리), 자동생성
-        * group_id: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리), 자동생성
+        * user_id: VARCHAR2(64), PK, NotNull, 'u_' + UUID(32자리)
+        * group_id: VARCHAR2(64), PK, NotNull, 'g_' + UUID(32자리)
+        * task_id: VARCHAR2(64), PK, NotNull, 't_' + UUID(32자리)
         * create_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * update_time: VARCHAR2(16), NotNull, YYYYMMDDhhmmss, 공백불허
         * audit_id: VARCHAR2(64), NotNull, 'u_' + UUID(32자리)
