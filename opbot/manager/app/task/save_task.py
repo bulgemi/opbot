@@ -26,7 +26,6 @@ class NewTask(object):
         from uuid import uuid1
 
         task_id = 't_' + str(uuid1())
-        task_name = task_name
         status_code = 3  # 0(abnormal)/1(normal)/2(lock)/3(temporary)
 
         current_time = datetime.now().strftime('%Y%m%d%H%M%S')
