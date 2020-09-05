@@ -5,7 +5,7 @@
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid-theme.min.css') }}" />
 
 <script type="text/javascript" src="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid.min.js') }}"></script>
-<!-- for test -->
+<!-- for task -->
 <script src="{{ url_for('static', filename='task/task_list.js') }}"></script>
 <script src="{{ url_for('static', filename='task/task_list_db.js') }}"></script>
 
@@ -83,15 +83,15 @@
                 })
             },
             fields: [
-                { name: "task_name", title: "TASK 명", type: "text", width: 150 },
-                { name: "task_type", title: "연동유형", type: "text", width: 70 },
-                { name: "action_type", title: "처리유형", type: "text", width: 50 },
-                { name: "owner", title: "소유자", type: "text", width: 150 },
-                { name: "create_time", title: "생성일자", type: "text", width: 60 },
-                { name: "update_time", title: "갱신일자", type: "text", width: 60 },
-                { name: "audit", title: "마지막 수정자", type: "text", width: 150 },
-                { name: "status", title: "상태", type: "text", width: 40 },
-                { type: "control", modeSwitchButton: false, editButton: false }
+                {name: "task_name", title: "TASK 명", type: "text", width: 150},
+                {name: "task_type", title: "연동유형", type: "text", width: 70},
+                {name: "action_type", title: "처리유형", type: "text", width: 50},
+                {name: "owner", title: "소유자", type: "text", width: 150},
+                {name: "create_time", title: "생성일자", type: "text", width: 60},
+                {name: "update_time", title: "갱신일자", type: "text", width: 60},
+                {name: "audit", title: "마지막 수정자", type: "text", width: 150},
+                {name: "status", title: "상태", type: "text", width: 40},
+                {type: "control", modeSwitchButton: false, editButton: false}
             ]
         });
 
