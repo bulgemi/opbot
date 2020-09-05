@@ -2,7 +2,7 @@
 __author__ = 'kim dong-hun'
 from flask import (render_template, Blueprint, request, jsonify, current_app, flash)
 from sqlalchemy import desc
-# OPBOT manager module
+# manager module
 from app import db
 from ..models import TaskInfo, UserInfo
 
@@ -56,7 +56,7 @@ def load_task_list():
         if user_info is None:
             user_val = "N/A"
         else:
-            user_val = "{0}({1})".format(user_info.email, user_info.user_name)
+            user_val = "{0}({1})".format(user_info.user_name, user_info.email)
         task_list.append({
             "task_name": row.task_name,
             "task_type": task_type_map[row.task_type],
@@ -129,7 +129,7 @@ def search_task_list():
         if user_info is None:
             user_val = "N/A"
         else:
-            user_val = "{0}({1})".format(user_info.email, user_info.user_name)
+            user_val = "{0}({1})".format(user_info.user_name, user_info.email)
         task_list.append({
             "task_name": row.task_name,
             "task_type": task_type_map[row.task_type],
