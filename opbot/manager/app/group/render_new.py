@@ -38,7 +38,7 @@ def check_group_name():
     # 2.중복 검사.
     if result['result'] is True:
         try:
-            if GroupInfo.query.filter_by(group_id=group_name).first() is not None:
+            if GroupInfo.query.filter_by(group_name=group_name).first() is not None:
                 r, d = set_detail_result(False, '존재하는 그룹 이름입니다! (최소 5자, 최대 100자)')
                 result['result'] = r if r is False else result['result']
                 detail['group_name'] = d
@@ -134,7 +134,10 @@ def submit():
     result['result'] = True
     data = request.get_json()
     current_app.logger.debug("data=<%r>" % data)
-    group_id = data['group_id']
+    if 'group_id' in data:
+        group_id = data['group_id']
+    else:
+        group_id = None
     group_name = data['group_name']
     task_list = data['task_list']
 
@@ -159,6 +162,7 @@ def submit():
             tmp['user_id'] = new_group.get_task_info(task)
             task_infos.append(tmp)
 
+        current_app.logger.debug("task_infos=<%r>" % task_infos)
         new_group.update_group_management(group_id, task_infos, owner_id)
     except Exception as e:
         current_app.logger.error("!%s!" % e)
