@@ -1,3 +1,7 @@
+/*
+    file: task_list_db.js
+    author: kim dong-hun
+*/
 (function() {
     var db = {
         loadData: function(filter) {
