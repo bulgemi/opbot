@@ -102,8 +102,7 @@ class NewGroup(object):
         current_time = datetime.now().strftime('%Y%m%d%H%M%S')
         # 그룹 멤버/Task 정보 삭제.
         try:
-            group_info = GroupManagement.query.filter_by(group_id=group_id).all()
-            db.session.delete(group_info)
+            GroupManagement.query.filter_by(group_id=group_id).delete()
             db.session.commit()
         except Exception as e:
             current_app.logger.error("!%s!" % e)
