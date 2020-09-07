@@ -3,7 +3,7 @@ __author__ = 'kim dong-hun'
 from flask import current_app
 # manager module
 from app import db
-from ..models import GroupInfo, GroupManagement, TaskInfo
+from ..models import GroupInfo, GroupManagement, TaskInfo, UserInfo
 
 
 class NewGroup(object):
@@ -116,6 +116,55 @@ class NewGroup(object):
                     group_id=group_id,
                     user_id=task_info['user_id'],
                     task_id=task_info['task_id'],
+                    create_time=current_time,
+                    update_time=current_time,
+                    audit_id=audit_id
+                )
+                db.session.add(new_group_management)
+            db.session.commit()
+        except Exception as e:
+            current_app.logger.error("!%s!" % e)
+            db.session.rollback()
+            return False
+        return True
+
+    def get_user_id(self, member_info):
+        """
+        사용자 id 반환.
+        :param member_info:
+        :return:
+        """
+        try:
+            user_info = UserInfo.query.filter_by(email=member_info).first()
+
+            if user_info is None:
+                return False
+            else:
+                return user_info.user_id
+
+        except Exception as e:
+            current_app.logger.error("!%s!" % e)
+            return False
+
+    def update_group_management_member(self, group_id, member_infos, audit_id):
+        """
+        그룹 Task 정보 저장.
+        :param group_id:
+        :param member_infos:
+        :param audit_id:
+        :return:
+        """
+        from datetime import datetime
+
+        current_time = datetime.now().strftime('%Y%m%d%H%M%S')
+
+        # 그룹 멤버/Task 정보 저장.
+        try:
+            for user_id in member_infos:
+                new_group_management = GroupManagement(
+                    group_id=group_id,
+                    user_id=user_id,
+                    task_id="",
                     create_time=current_time,
                     update_time=current_time,
                     audit_id=audit_id
