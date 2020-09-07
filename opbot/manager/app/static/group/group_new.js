@@ -139,13 +139,22 @@ $(document).ready(function() {
     // '생성' 처리
     $('#save_group').bind('click', function() {
         var group_name = $("#group_name").val();
+        var member_list = $("#member_list").find("button");
         var task_list = $("#task_list").find("button");
+        var member_array = [];
         var task_array = [];
+
+        for (var i=0; i < member_list.length; i++) {
+            var member_el = member_list[i]
+            member_array.push(member_el["id"])
+        }
+
         for (var i=0; i < task_list.length; i++) {
             var task_el = task_list[i]
             task_array.push(task_el["id"])
         }
         console.log("------------>", group_name);
+        console.log("------------>", member_array);
         console.log("------------>", task_array);
 
         if (group_name.length == 0) {
@@ -159,6 +168,7 @@ $(document).ready(function() {
                 dataType: 'JSON',
                 data: JSON.stringify({
                     group_name: group_name,
+                    member_list: member_array,
                     task_list: task_array
                 }),
                 success: function(data) {
