@@ -139,7 +139,16 @@ def submit():
     else:
         group_id = None
     group_name = data['group_name']
+    member_list = data['member_list']
     task_list = data['task_list']
+    # user email to user id
+    try:
+        member_list = [new_group.get_user_id(email) for email in member_list]
+    except Exception as e:
+        current_app.logger.error("!%s!" % e)
+        result['result'] = False
+    # member 중복 제거
+    member_list = list(set(member_list))
 
     # Todo: login 처리 후 login_id 사용하도록 수정 필요, add 2020.04.22. kim dong-hun
     owner_id = 'u_425690ee-6fff-11ea-8634-d0abd5335702'
@@ -162,8 +171,22 @@ def submit():
             tmp['user_id'] = new_group.get_task_info(task)
             task_infos.append(tmp)
 
+            try:
+                member_list.remove(tmp['user_id'])
+            except ValueError:
+                pass
+            except Exception as e:
+                current_app.logger.error("!%s!" % e)
+                raise e
+
         current_app.logger.debug("task_infos=<%r>" % task_infos)
         new_group.update_group_management(group_id, task_infos, owner_id)
+    except Exception as e:
+        current_app.logger.error("!%s!" % e)
+        result['result'] = False
+
+    try:
+        new_group.update_group_management_member(group_id, member_list, owner_id)
     except Exception as e:
         current_app.logger.error("!%s!" % e)
         result['result'] = False
