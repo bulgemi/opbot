@@ -34,7 +34,7 @@
         deleteItem: function(deletingGroup) {
             console.log("deletingGroup=", deletingGroup)
             $.ajax({
-                url: $SCRIPT_ROOT + '/task/_delete_group',
+                url: $SCRIPT_ROOT + '/group/_delete_group',
                 type: 'POST',
                 contentType: "application/json",
                 dataType: "JSON",
