@@ -125,9 +125,21 @@
             };
 
             var changeClientsFromDb = function(changeClients, email) {
-                console.log("----->" + changeClients[0] + ", " + email);
-                db = $.map(db, function(client) {
-                    return ($.inArray(client, changeClients) > -1) ? null : client;
+                $.ajax({
+                    url: $SCRIPT_ROOT + '/group/_change_owner',
+                    type: 'POST',
+                    contentType: "application/json",
+                    dataType: "JSON",
+                    data: JSON.stringify({
+                        email: email,
+                        data: changeClients
+                    }),
+                }).done(function(response) {
+                    // console.log("response=", response);
+                    result = response.result.result;
+                    if (result == false) {
+                        location.reload();
+                    }
                 });
             };
         });
