@@ -109,10 +109,13 @@
             };
 
             var changeSelectedItems = function() {
-                if(!selectedItems.length || !confirm("Are you sure?"))
+                if (selectedItems.length == 0) {
+                    alert("선택된 그룹이 없습니다.");
                     return;
+                }
 
-                changeClientsFromDb(selectedItems);
+                var email = prompt("변경할 소유자의 이메일을 입력하세요.");
+                changeClientsFromDb(selectedItems, email);
 
                 var $grid = $("#groupList");
                 $grid.jsGrid("option", "pageIndex", 1);
@@ -121,7 +124,8 @@
                 selectedItems = [];
             };
 
-            var changeClientsFromDb = function(changeClients) {
+            var changeClientsFromDb = function(changeClients, email) {
+                console.log("----->" + changeClients[0] + ", " + email);
                 db = $.map(db, function(client) {
                     return ($.inArray(client, changeClients) > -1) ? null : client;
                 });
