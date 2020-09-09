@@ -144,5 +144,43 @@ def delete_group():
     except Exception as e:
         current_app.logger.error("!%s!" % e)
         flash('그룹 삭제 처리에 실패하였습니다! 관리자에게 문의하세요!', 'error')
+        db.session.rollback()
         result['result'] = False
+    return jsonify(result=result)
+
+
+@group_bp.route('/_change_owner', methods=['POST'])
+def change_owner():
+    """
+    소유자 변경 처리.
+    :return:
+    """
+    result = dict()
+    data = request.get_json()
+    current_app.logger.debug("data=%r" % data)
+    result['result'] = True
+
+    email = data['email']
+    rows = data['data']
+    try:
+        user_info = UserInfo.query.filter(UserInfo.email == email.strip()).first()
+    except Exception as e:
+        current_app.logger.error("!%s!" % e)
+        result['result'] = False
+        flash('소유자 변경 처리에 실패하였습니다! 관리자에게 문의하세요!', 'error')
+        return jsonify(result=result)
+
+    if user_info is not None:
+        for row in rows:
+            try:
+                group_info = GroupInfo.query.filter(GroupInfo.group_name == row['group_name'].strip()).first()
+                group_info.owner_id = user_info.user_id
+                db.session.commit()
+            except Exception as e:
+                current_app.logger.error("!%s!" % e)
+                db.session.rollback()
+                result['result'] = False
+    else:
+        result['result'] = False
+        flash('소유자 이메일이 존재하지 않습니다!', 'error')
     return jsonify(result=result)
