@@ -51,12 +51,20 @@ def load_task_list():
 
     for row in rows:
         user_info = UserInfo.query.filter_by(user_id=row.owner_id).first()
+        audit_info = UserInfo.query.filter_by(user_id=row.audit_id).first()
         create_obj = datetime.strptime(row.create_time, "%Y%m%d%H%M%S")
         update_obj = datetime.strptime(row.update_time, "%Y%m%d%H%M%S")
+
         if user_info is None:
             user_val = "N/A"
         else:
             user_val = "{0}({1})".format(user_info.user_name, user_info.email)
+
+        if audit_info is None:
+            audit_val = "N/A"
+        else:
+            audit_val = "{0}({1})".format(audit_info.user_name, audit_info.email)
+
         task_list.append({
             "task_name": row.task_name,
             "task_type": task_type_map[row.task_type],
@@ -64,7 +72,7 @@ def load_task_list():
             "owner": user_val,
             "create_time": create_obj.strftime("%Y/%m/%d"),
             "update_time": update_obj.strftime("%Y/%m/%d"),
-            "audit": user_val,
+            "audit": audit_val,
             "status": status_map[row.status_code]
         })
 
