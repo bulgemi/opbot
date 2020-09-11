@@ -7,12 +7,6 @@ from app import db
 from ..models import GroupInfo, GroupManagement, UserInfo
 
 group_bp = Blueprint('group_list', __name__, url_prefix='/group')
-status_map = {
-    0: "비정상",
-    1: "정상",
-    2: "잠김",
-    3: "임시"
-}
 
 
 @group_bp.route('/list', methods=('GET', 'POST'))
