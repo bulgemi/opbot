@@ -1,4 +1,3 @@
-</html>
 {% extends 'common/manu.html' %}
 {% block header %}
 <!-- load jsgrid-1.5.3  -->
@@ -6,8 +5,9 @@
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid-theme.min.css') }}" />
 
 <script type="text/javascript" src="{{ url_for('static', filename='jsgrid-1.5.3/dist/jsgrid.min.js') }}"></script>
-<!-- for test -->
-<script src="{{ url_for('static', filename='jsgrid-1.5.3/demos/db.js') }}"></script>
+<!-- for group manage -->
+<script src="{{ url_for('static', filename='admin/group_manage.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/group_manage_db.js') }}"></script>
 
 <section class="column-group article">
     <div class="xlarge-100 large-100 medium-100 small-100 tiny-100">
@@ -27,15 +27,15 @@
             <!-- Prepend button -->
             <div class="control-group">
                 <select onchange="" id="cond1">
-                    <option selected>그룹명</option>
-                    <option>소유자</option>
+                    <option value="g" selected>그룹명</option>
+                    <option value="o">소유자</option>
                 </select>
             </div>
             <!-- Append button -->
             <div class="control-group">
                 <div class="control append-button" role="search">
-                    <span><input type="text" name="name" id="name" placeholder="Please input some text"></span>
-                    <button class="ink-button black">Search</button>
+                    <span><input type="text" id="some" placeholder="Please input some text"></span>
+                    <button class="ink-button black" id="search">Search</button>
                 </div>
             </div>
         </div>
@@ -48,78 +48,97 @@
     </fieldset>
 </form>
 <script>
-// 상단 메뉴 활성화.
-$("#top_menu").children().eq(2).addClass('active');
-        $(function() {
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    // 상단 메뉴 활성화.
+    $("#top_menu").children().eq(2).addClass('active');
 
-            $("#groupList").jsGrid({
-                height: "auto",
-                width: "100%",
-                filtering: false,
-                editing: false,
-                sorting: true,
-                paging: true,
-                autoload: true,
-                pageSize: 15,
-                pageButtonCount: 5,
-                controller: db,
-                fields: [
-                    {
-                        headerTemplate: function() {
-                            return $("<button>").attr("type", "button").text("소유권변경")
-                                    .on("click", function () {
-                                        changeSelectedItems();
-                                    });
-                        },
-                        itemTemplate: function(_, item) {
-                            return $("<input>").attr("type", "checkbox")
-                                    .prop("checked", $.inArray(item, selectedItems) > -1)
-                                    .on("change", function () {
-                                        $(this).is(":checked") ? selectItem(item) : unselectItem(item);
-                                    });
-                        },
-                        align: "center",
-                        width: 60
+    $(function() {
+        $("#groupList").jsGrid({
+            height: "auto",
+            width: "100%",
+            filtering: false,
+            editing: false,
+            sorting: true,
+            paging: true,
+            autoload: true,
+            pageSize: 15,
+            pageButtonCount: 5,
+            deleteConfirm: "그룹을 삭제하시겠습니까?",
+            noDataContent: "그룹 정보가 없습니다.",
+            controller: db,
+            fields: [
+                {headerTemplate: function() {
+                    return $("<button>").attr("type", "button").text("소유권변경")
+                        .on("click", function () {
+                            changeSelectedItems();
+                        });
                     },
-                    { name: "Name", type: "text", width: 140 },
-                    { name: "Age", type: "number", width: 50 },
-                    { name: "Address", type: "text", width: 200 },
-                    { name: "Country", type: "select", items: db.countries, valueField: "Id", textField: "Name" },
-                    { name: "Married", type: "checkbox", title: "Is Married", sorting: false },
-                    { type: "control", modeSwitchButton: false, editButton: false }
-                ]
-            });
-
-            var selectedItems = [];
-
-            var selectItem = function(item) {
-                selectedItems.push(item);
-            };
-
-            var unselectItem = function(item) {
-                selectedItems = $.grep(selectedItems, function(i) {
-                    return i !== item;
-                });
-            };
-
-            var changeSelectedItems = function() {
-                if(!selectedItems.length || !confirm("Are you sure?"))
-                    return;
-
-                changeClientsFromDb(selectedItems);
-
-                var $grid = $("#groupList");
-                $grid.jsGrid("option", "pageIndex", 1);
-                $grid.jsGrid("loadData");
-
-                selectedItems = [];
-            };
-
-            var changeClientsFromDb = function(changeClients) {
-                db = $.map(db, function(client) {
-                    return ($.inArray(client, changeClients) > -1) ? null : client;
-                });
-            };
+                    itemTemplate: function(_, item) {
+                        return $("<input>").attr("type", "checkbox")
+                                .prop("checked", $.inArray(item, selectedItems) > -1)
+                                .on("change", function () {
+                                    $(this).is(":checked") ? selectItem(item) : unselectItem(item);
+                                });
+                    },
+                    align: "center",
+                    width: 60
+                },
+                {name: "group_name", title: "Group 명", type: "text", width: 150},
+                {name: "owner", title: "소유자", type: "number", width: 150},
+                {name: "create_time", title: "생성일자", type: "text", width: 60},
+                {name: "update_time", title: "갱신일자", type: "text", width: 60},
+                {name: "audit", title: "마지막 수정자", type: "text", width: 150},
+                {type: "control", modeSwitchButton: false, editButton: false}
+            ]
         });
+
+        var selectedItems = [];
+
+        var selectItem = function(item) {
+            selectedItems.push(item);
+        };
+
+        var unselectItem = function(item) {
+            selectedItems = $.grep(selectedItems, function(i) {
+                return i !== item;
+            });
+        };
+
+        var changeSelectedItems = function() {
+            if (selectedItems.length == 0) {
+                alert("선택된 그룹이 없습니다.");
+                return;
+            }
+
+
+            var email = prompt("변경할 소유자의 이메일을 입력하세요.");
+            changeClientsFromDb(selectedItems, email);
+
+            var $grid = $("#groupList");
+            $grid.jsGrid("option", "pageIndex", 1);
+            $grid.jsGrid("loadData");
+
+            selectedItems = [];
+        };
+
+        var changeClientsFromDb = function(changeClients, email) {
+            $.ajax({
+                url: $SCRIPT_ROOT + '/admin/_change_owner',
+                type: 'POST',
+                contentType: "application/json",
+                dataType: "JSON",
+                data: JSON.stringify({
+                    email: email,
+                    data: changeClients
+                }),
+            }).done(function(response) {
+                // console.log("response=", response);
+                result = response.result.result;
+                if (result == false) {
+                    location.reload();
+                }
+           });
+        };
+    });
 </script>
 {% endblock %}
