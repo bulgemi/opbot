@@ -155,6 +155,7 @@ def delete_task_list():
     except Exception as e:
         current_app.logger.error("!%s!" % e)
         flash('태스크 삭제 처리에 실패하였습니다! 관리자에게 문의하세요!', 'error')
+        db.session.rollback()
         result['result'] = False
     return jsonify(result=result)
 
