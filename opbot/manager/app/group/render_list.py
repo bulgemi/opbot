@@ -45,6 +45,7 @@ def load_group_list():
         else:
             audit_val = "{0}({1})".format(audit_info.user_name, audit_info.email)
         group_list.append({
+            "group_id": row.group_id,
             "group_name": row.group_name,
             "owner": user_val,
             "create_time": create_obj.strftime("%Y/%m/%d"),
@@ -105,6 +106,7 @@ def search_group_list():
         else:
             audit_val = "{0}({1})".format(audit_info.user_name, audit_info.email)
         group_list.append({
+            "group_id": row.group_id,
             "group_name": row.group_name,
             "owner": user_val,
             "create_time": create_obj.strftime("%Y/%m/%d"),
@@ -177,4 +179,19 @@ def change_owner():
     else:
         result['result'] = False
         flash('소유자 이메일이 존재하지 않습니다!', 'error')
+    return jsonify(result=result)
+
+
+@group_bp.route('/_select_group', methods=['POST'])
+def select_group():
+    """
+    그룹 화면 로딩.
+    :return:
+    """
+    result = dict()
+    group_id = request.form['group_id']
+    current_app.logger.debug("group_id: %s" % group_id)
+    result['result'] = True
+    result['url'] = '/group/new/{}'.format(group_id)
+    current_app.logger.debug("url: %s" % result['url'])
     return jsonify(result=result)
