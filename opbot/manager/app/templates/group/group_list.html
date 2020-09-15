@@ -70,6 +70,14 @@
             deleteConfirm: "그룹을 삭제하시겠습니까?",
             noDataContent: "그룹 정보가 없습니다.",
             controller: db,
+            rowDoubleClick: function(args) {
+                getdata = args.item;
+                $.post("/group/_select_group", {
+                    group_id: getdata['group_id']
+                }, function(response) {
+                    window.location.href = $SCRIPT_ROOT + response.result['url'];
+                })
+            },
             fields: [
                 {headerTemplate: function() {
                     return $("<button>").attr("type", "button").text("소유권변경")
@@ -87,6 +95,7 @@
                     align: "center",
                     width: 60
                 },
+                {name: "group_id", title: "group_id", visible: false, width: 70},
                 {name: "group_name", title: "Group 명", type: "text", width: 150},
                 {name: "owner", title: "소유자", type: "number", width: 150},
                 {name: "create_time", title: "생성일자", type: "text", width: 60},

@@ -14,11 +14,13 @@
 {% block content %}
 <script type="text/javascript" src="{{ url_for('static', filename='group/group_new.js') }}"></script>
 <form class="ink-form column-group gutters" id="formid" method="post">
+    <input type="hidden" id="group_uid" value="{% if form is defined %}{{ form.uid }}{% endif %}">
     <fieldset class="all-100 small-100 tiny-100">
         <div class="control-group required gutters" id="group_name_group">
             <label for="group_name">그룹 이름</label>
             <div class="control">
-                <input type="text" id="group_name" placeholder="그룹명을 입력하세요.">
+                <input type="text" id="group_name" placeholder="그룹명을 입력하세요."
+                       {% if form is defined %}value="{{ form.group_name }}"{% endif %}>
                 <p class="tip" id="group_name_tip">&nbsp;</p>
             </div>
         </div>
@@ -31,6 +33,14 @@
         </div>
         <div class="control-group required gutters">
             <div class="column-group" style="overflow-y:scroll; height:150px;border: 1px solid;" id="member_list">
+                {% if form is defined %}
+                    {% for member in form.member_list %}
+                <div class="align-center right-padding top-padding" id="member_{{ loop.index0 }}">
+                    <button class="ink-button" id="{{ member.email }}" title="{{ member.email }}"
+                            onclick="del_member('member_{{ loop.index0 }}')">{{ member.user_name }}</button>
+                </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <div class="control-group required gutters">
@@ -40,6 +50,22 @@
                     <li data-open="false">
                         <a href="#">그룹 멤버</a>
                         <ul id="tasks_info">
+                            {% if form is defined %}
+                                {% for member in form.member_list %}
+                            <li class="parent open" data-open="true" id="t_member_{{ loop.index0 }}">
+                                <i class="fa fa-minus-circle">
+                                </i>
+                                <a href="#">{{ member.user_name }}</a>
+                                <ul class>
+                                    {% for task in member.task_info %}
+                                    <li>
+                                        <a href="#" onclick="add_task('{{ task.task_id }}', '{{ task.task_name }}')">{{ task.task_name }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                                {% endfor %}
+                            {% endif %}
                         </ul>
                     </li>
                 </ul>
@@ -47,6 +73,14 @@
         </div>
         <div class="control-group required gutters">
             <div class="column-group" style="overflow-y:scroll; height:150px;border: 1px solid;" id="task_list">
+                {% if form is defined %}
+                    {% for task in form.task_list %}
+                <div class="align-center right-padding top-padding" id="div{{ task.task_id }}">
+                    <button class="ink-button" id="{{ task.task_id }}" title="{{ task.task_name }}"
+                            onclick="del_task('div{{ task.task_id }}')">{{ task.task_name }}</button>
+                </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <div class="control-group push-right">
