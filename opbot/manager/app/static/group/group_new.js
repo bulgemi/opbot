@@ -105,14 +105,16 @@ $(document).ready(function() {
                         members = res.detail.members;
 
                         for (i=0; i < members.length; i++) {
+                            var index_num = $("#member_list div").length
+//                            console.log("-------------->", index_num);
                             var el_val = members[i];
-                            var gm_el_fmt = "<div class='align-center right-padding top-padding' id='member_"+ i +"'>"+ "<button class='ink-button' id='"+ el_val['email'] +"' title='"+ el_val['email'] +"' onclick=\"del_member('member_"+ i +"')\">"+ el_val['name'] + "</button></div>";
+                            var gm_el_fmt = "<div class='align-center right-padding top-padding' id='member_"+ index_num +"'>"+ "<button class='ink-button' id='"+ el_val['email'] +"' title='"+ el_val['email'] +"' onclick=\"del_member('member_"+ index_num +"')\">"+ el_val['name'] + "</button></div>";
                             console.log(gm_el_fmt);
                             $("#member_list").append(gm_el_fmt);
 
                             var tasks = el_val['task_info'];
                             console.log("tasks.length=" + tasks.length)
-                            tr_el_fmt = "<li class=\"parent open\" data-open=\"true\" id=\"t_member_"+ i +"\"><i class=\"fa fa-minus-circle\"></i><a href=\"#\">"+ el_val['name'] +"</a>";
+                            tr_el_fmt = "<li class=\"parent open\" data-open=\"true\" id=\"t_member_"+ index_num +"\"><i class=\"fa fa-minus-circle\"></i><a href=\"#\">"+ el_val['name'] +"</a>";
                             tr_el_fmt += "<ul class>";
                             for (var l=0; l < tasks.length; l++) {
                             var task = tasks[l];
@@ -153,9 +155,9 @@ $(document).ready(function() {
             var task_el = task_list[i]
             task_array.push(task_el["id"])
         }
-        console.log("------------>", group_name);
-        console.log("------------>", member_array);
-        console.log("------------>", task_array);
+//        console.log("------------>", group_name);
+//        console.log("------------>", member_array);
+//        console.log("------------>", task_array);
 
         if (group_name.length == 0) {
             $('#group_name_group').addClass("validation error");
