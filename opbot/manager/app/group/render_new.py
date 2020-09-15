@@ -134,10 +134,11 @@ def submit():
     result['result'] = True
     data = request.get_json()
     current_app.logger.debug("data=<%r>" % data)
-    if 'group_id' in data:
-        group_id = data['group_id']
-    else:
+    group_id = data['group_uid']
+
+    if len(group_id) <= 0:
         group_id = None
+
     group_name = data['group_name']
     member_list = data['member_list']
     task_list = data['task_list']
@@ -192,3 +193,60 @@ def submit():
         result['result'] = False
 
     return jsonify(result=result)
+
+
+@group_bp.route('/new/<uid>', methods=['GET'])
+def edit(uid):
+    """
+    그룹 정의 수정.
+    :param uid:
+    :return:
+    """
+    current_app.logger.debug("uid=<%r>" % uid)
+
+    gi = GroupInfo.query.filter_by(group_id=uid).first()
+    gm = GroupManagement.query.filter_by(group_id=uid).all()
+
+    form = dict()
+    form['uid'] = uid
+    form['group_name'] = gi.group_name
+
+    user_list = list()
+    task_list = list()
+
+    for row in gm:
+        user_list.append(row.user_id)
+
+        if len(row.task_id) > 0:
+            task_info = TaskInfo.query.filter_by(task_id=row.task_id).first()
+            task_tmp = {
+                'task_id': task_info.task_id,
+                'task_name': task_info.task_name
+            }
+            task_list.append(task_tmp)
+    form['task_list'] = task_list
+
+    user_list = list(set(user_list))
+    member_list = list()
+
+    for user in user_list:
+        user_info = UserInfo.query.filter_by(user_id=user).first()
+        tasks_tmp = list()
+        tasks = TaskInfo.query.filter_by(owner_id=user_info.user_id).all()
+
+        for t in tasks:
+            tasks_tmp.append({
+                'task_id': t.task_id,
+                'task_name': t.task_name
+            })
+        user_tmp = {
+            'email': user_info.email,
+            'user_id': user_info.user_id,
+            'user_name': user_info.user_name,
+            'task_info': tasks_tmp
+        }
+        member_list.append(user_tmp)
+    form['member_list'] = member_list
+    current_app.logger.debug("form=<%r>" % form)
+
+    return render_template('group/group_new.html', form=form)
