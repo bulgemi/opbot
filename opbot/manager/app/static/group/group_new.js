@@ -140,6 +140,7 @@ $(document).ready(function() {
     });
     // '생성' 처리
     $('#save_group').bind('click', function() {
+        var group_uid = $("#group_uid").val();
         var group_name = $("#group_name").val();
         var member_list = $("#member_list").find("button");
         var task_list = $("#task_list").find("button");
@@ -169,6 +170,7 @@ $(document).ready(function() {
                 contentType: "application/json",
                 dataType: 'JSON',
                 data: JSON.stringify({
+                    group_uid: group_uid,
                     group_name: group_name,
                     member_list: member_array,
                     task_list: task_array
