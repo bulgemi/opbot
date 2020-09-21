@@ -70,10 +70,11 @@ class AsyncIoReceiver(object):
 
         self.logger.debug("=====>(%r)<%r>" % (type(self.channels_list), self.channels_list))
 
-    def call_rest_api(self, channel, text, ts):
+    def call_rest_api(self, channel, text, user, ts):
         api_host = "http://127.0.0.1:9595/api/1/rtms/"
         data = {'channel': channel,
                 'message': text,
+                'user': user,
                 'ts': ts}
 
         self.logger.debug("data=<%r>" % data)
@@ -119,6 +120,7 @@ async def asyncio_recv(end_point, air):
             try:
                 air.call_rest_api(air.channels_list[message_json['channel']],
                                   message_json['text'],
+                                  message_json['user'],
                                   message_json['ts'])
             except requests.exceptions.RequestException as e:
                 pass

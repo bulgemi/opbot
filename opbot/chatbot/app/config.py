@@ -15,3 +15,5 @@ class Config(object):
 
     RECOMMENDER_URI = "http://127.0.0.1:5959/api/1/events/"
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://opbot_appl:apbot_appl26#!@localhost/opbot_db?charset=utf8'
+    # RSA KEY
+    PRIVATE_KEY = '/home/donghun/PycharmProjects/opbot/opbot/manager/pem/opbot_private.pem'

@@ -13,21 +13,23 @@ from slacker import Slacker
 from redis import Redis
 from redis.exceptions import DataError
 sys.path.append(os.getenv('OPBOT_HOME'))
-from manager.app.models import ChannelInfo, EventHistory, TaskInfo
+from manager.app.models import ChannelInfo, EventHistory, TaskInfo, TaskPlaybook, TargetList
 from chatbot.app.config import Config
+from chatbot.app.my_task import MyTask
+from chatbot.app.group_task import GroupTask
 from collector.app.collect import Collector
 
 
 class ChatBot(object):
     def __init__(self, db):
-        token = Config.SLACK_TOKEN
-
-        self.__slack = Slacker(token)
+        self.__slack = Slacker(Config.SLACK_TOKEN)
         self.__client = slack.WebClient(token=Config.SLACK_TOKEN)
         self.__db = db
         self.__r = Redis(host='localhost', port=6389, db=0)
         self.__c = Collector(db)
         self.__recommend_uri = Config.RECOMMENDER_URI
+        self.__mt = MyTask(self.__db, self.__r)
+        self.__gt = GroupTask(db, self.__r)
 
     def __put_out_channel(self, channel, username='opbot', text=None, attachments=None):
         """
@@ -168,7 +170,7 @@ class ChatBot(object):
     def put_chat(self, channel, message=None, tasks=None):
         """
         out channel(slack) 작업 채널에 이벤트를 전송.
-        착업 채널: 이벤트 처리 작업자가 사용하는 패쇄 채팅방
+        작업 채널: 이벤트 처리 작업자가 사용하는 패쇄 채팅방
         :param channel:
         :param message:
         :param tasks:
@@ -241,6 +243,81 @@ class ChatBot(object):
             })
 
         return self.__put_out_channel(channel=channel, attachments=attachments)
+
+    def __put_chat4task(self, usage, channel, user=None, message=None, tasks=None):
+        """
+        out channel(slack) 작업 채널에 이벤트를 전송.
+        작업 채널: 이벤트 처리 작업자가 사용하는 패쇄 채팅방
+        :param usage:
+        :param channel:
+        :param user:
+        :param message:
+        :param tasks:
+        :return:
+        """
+        task_list = list()
+        comments = "*{}님이 수행할 수 있는 작업은 아래와 같습니다.*\n\n".format(user)
+
+        for index, task in enumerate(tasks):
+            tmp = {
+                "type": "mrkdwn",
+                "text": "{}.{} ({})".format(index+1, task[1], "분석" if task[2] == 'A' else "조치"),
+            }
+            task_list.append(tmp)
+
+        attachments = list()
+
+        if message is not None:
+            attachments.append({
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*{}*".format(message),
+                }
+            })
+
+        attachments.append({
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "mrkdwn",
+                        "text": comments
+                    }
+                ]
+            })
+
+        attachments.append({
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": usage,
+        }
+            })
+
+        attachments.append({
+                "type": "divider"
+            })
+
+        attachments.append({
+                "type": "section",
+                "fields": task_list
+            })
+
+        return self.__put_out_channel(channel=channel, attachments=attachments)
+
+    def put_chat4m(self, channel, user=None, message=None, tasks=None):
+        usage = "> 수행방법:\n"\
+                "> `!my task, 번호!`, `!my task, 작업명!`, `!my task, 번호.작업명!`\n"\
+                "> `!mytask, 번호!`, `!mytask, 작업명!`, `!mytask, 번호.작업명!`\n"\
+                "> `!mt, 번호!`, `!mt, 작업명!`, `!mt, 번호.작업명!`\n"
+        return self.__put_chat4task(usage, channel, user=user, message=message, tasks=tasks)
+
+    def put_chat4g(self, channel, user=None, message=None, tasks=None):
+        usage = "> 수행방법:\n"\
+                "> `!group task, 번호!`, `!group task, 작업명!`, `!group task, 번호.작업명!`\n"\
+                "> `!grouptask, 번호!`, `!grouptask, 작업명!`, `!grouptask, 번호.작업명!`\n"\
+                "> `!gt, 번호!`, `!gt, 작업명!`, `!gt, 번호.작업명!`\n"
+        return self.__put_chat4task(usage, channel, user=user, message=message, tasks=tasks)
 
     def put_end(self, channel, message=None):
         """
@@ -323,19 +400,24 @@ class ChatBot(object):
         """
         pass
 
-    def task_execute(self, task_id, out_channel_id):
+    def task_execute(self, task_id, out_channel_id, task_name, task_type, target_list, playbook_contents, exe_type):
         """
         작업자가 요청한 task를 TaskExecutor 에 전송.
         작업 요청은 Celery 기반의 Async task queue 사용.
         :param task_id:
         :param out_channel_id:
+        :param task_name:
+        :param task_type:
+        :param target_list:
+        :param playbook_contents:
+        :param exe_type:
         :return:
         """
         from .task_executor import TaskExecutor
 
         current_app.logger.debug("task_id=<%r>, out_channel_id=<%r>" % (task_id, out_channel_id))
-
-        task_executor = TaskExecutor(task_id, out_channel_id, self.__db)
+        task_executor = TaskExecutor(self.__db, task_id, out_channel_id,
+                                     task_name, task_type, target_list, playbook_contents, exe_type)
         task_executor.run_task()
 
         return True
@@ -408,7 +490,7 @@ class ChatBot(object):
     def task_opinion(self, out_channel_id):
         """
         발생한 event 유형을 분석하고 이에 적합한 분석/조치 task 적합도 제공
-        REST API 를 이용하여 Recommander 로부터 의견 수신
+        REST API 를 이용하여 Recommender 로부터 의견 수신
         :param out_channel_id: OUT 채널 ID
         :return:
         """
@@ -438,7 +520,7 @@ class ChatBot(object):
     def analysis_opinion(self, out_channel_id):
         """
         발생한 event 유형을 분석하고 이에 적합한 분석/조치 의견 제공
-        REST API 를 이용하여 Recommander 로부터 의견 수신
+        REST API 를 이용하여 Recommender 로부터 의견 수신
         :param out_channel_id: OUT 채널 ID
         :return:
         """
@@ -501,15 +583,20 @@ class ChatBot(object):
         event_message = stmt.filter(EventHistory.event_uid == event_uid.strip()).first()
         return event_message[0]
 
-    def __get_task_cause(self, task_id):
+    def __get_task_cause(self, task_name):
         """
         발생 원인 반환.
-        :param task_id:
+        :param task_name:
         :return:
         """
+        # task_info 조회.
         stmt = self.__db.session.query(TaskInfo)
-        stmt = stmt.with_entities(TaskInfo.cause)
-        cause = stmt.filter(TaskInfo.task_id == task_id.strip()).first()
+        stmt = stmt.with_entities(TaskInfo.task_id)
+        task_id = stmt.filter(TaskInfo.task_name == task_name.strip()).first()
+        # task_playbook 조회.
+        stmt2 = self.__db.session.query(TaskPlaybook)
+        stmt2 = stmt2.with_entities(TaskPlaybook.cause)
+        cause = stmt2.filter(TaskPlaybook.task_id == task_id[0]).first()
         return cause[0]
 
     def channel_read(self, in_channel_id):
@@ -553,7 +640,7 @@ class ChatBot(object):
         :return: task list
         """
         # p = re.compile(r"([#])([ㄱ-ㅎ가-핳a-zA-Z0-9]+)([#])")
-        p = re.compile(r"([!][ㄱ-ㅎ가-핳a-zA-Z0-9._/]+[!])")
+        p = re.compile(r"([!][ㄱ-ㅎ가-핳a-zA-Z0-9._/,]+[!])")
 
         if len(msg) <= 0:
             return []
@@ -602,7 +689,6 @@ class ChatBot(object):
             else:
                 for task in task_list:
                     # current_app.logger.debug("====>%s, %s" % (task, tmp))
-
                     if task == tmp:
                         return task
         elif len(command_split) == 2:
@@ -636,3 +722,122 @@ class ChatBot(object):
             username=username,
             file=file,
             title=title)
+
+    def get_mytasks(self, slack_id):
+        """
+        사용자 타스크 리스트 반환.
+        :param slack_id:
+        :return user_name, task_list:
+        """
+        user_info = self.__mt.get_user_id(slack_id)
+        return user_info[1], self.__mt.get_list(user_info[0])
+
+    def set_c_mytasks(self, slack_id, tasks):
+        return self.__mt.set_m_tasks(slack_id, tasks)
+
+    def get_c_mytasks_by_id(self, slack_id, task_index):
+        return self.__mt.get_m_tasks_by_id(slack_id, task_index)
+
+    def get_c_mytasks_index_by_name(self, slack_id, task_name):
+        return self.__mt.get_m_tasks_index_by_name(slack_id, task_name)
+
+    def update_c_mytasks(self, slack_id, task_index):
+        return self.__mt.update_m_tasks(slack_id, task_index)
+
+    def get_c_run_mytasks(self, slack_id):
+        return self.__mt.get_run_m_task(slack_id)
+
+    def reset_c_run_mytasks(self, slack_id):
+        return self.__mt.reset_run_m_task(slack_id)
+
+    def del_c_mytasks(self, slack_id):
+        return self.__mt.del_m_tasks(slack_id)
+
+    def set_c_grouptasks(self, slack_id, tasks):
+        return self.__gt.set_g_tasks(slack_id, tasks)
+
+    def get_c_grouptasks_by_id(self, slack_id, task_index):
+        return self.__gt.get_g_tasks_by_id(slack_id, task_index)
+
+    def get_c_grouptasks_index_by_name(self, slack_id, task_name):
+        return self.__gt.get_g_tasks_index_by_name(slack_id, task_name)
+
+    def update_c_grouptasks(self, slack_id, task_index):
+        return self.__gt.update_g_tasks(slack_id, task_index)
+
+    def get_c_run_grouptasks(self, slack_id):
+        return self.__gt.get_run_g_task(slack_id)
+
+    def reset_c_run_grouptasks(self, slack_id):
+        return self.__gt.reset_run_g_task(slack_id)
+
+    def del_c_grouptasks(self, slack_id):
+        return self.__gt.del_g_tasks(slack_id)
+
+    def get_grouptasks(self, slack_id):
+        """
+        그룹 타스크 리스트 반환.
+        :param slack_id:
+        :return user_name, task_list:
+        """
+        user_info = self.__gt.get_user_id(slack_id)
+        return user_info[1], self.__gt.get_list(user_info[0])
+
+    def set_c_user_name(self, slack_id, user_name):
+        return self.__mt.set_user_name(slack_id, user_name)
+
+    def get_c_user_name(self, slack_id):
+        return self.__mt.get_user_name(slack_id)
+
+    def del_c_user_name(self, slack_id):
+        return self.__mt.del_user_name(slack_id)
+
+    def get_task_info(self, task_id):
+        """
+        task info 반환.
+        :param task_id:
+        :return:
+        """
+        stmt = self.__db.session.query(TaskInfo)
+        stmt = stmt.with_entities(TaskInfo.task_name,
+                                  TaskInfo.task_type)
+        task_info = stmt.filter(and_(TaskInfo.task_id == task_id,
+                                     TaskInfo.status_code == 1)).first()
+        return task_info[0], task_info[1]
+
+    def get_target_list(self, task_id, out_channel_id):
+        """
+        target list 반환.
+        :param task_id:
+        :param out_channel_id:
+        :return:
+        """
+        stmt = self.__db.session.query(TargetList)
+        stmt = stmt.with_entities(TargetList.host,
+                                  TargetList.port,
+                                  TargetList.user,
+                                  TargetList.passwd,
+                                  TargetList.adapter_type)
+        target_info = stmt.filter(and_(TargetList.task_id == task_id,
+                                       TargetList.out_channel_id == out_channel_id)).all()
+        # 복호화
+        sc = current_app.config['SCRAPER']
+        target_list = list()
+        for target in target_info:
+            current_app.logger.debug("target=<%r, %r, %r, %r, %r>" % (target[0], target[1], target[2],
+                                                                      target[3], target[4]))
+            target_list.append([target[0], target[1], target[2], sc.dec(target[3]), target[4]])
+        return target_list
+
+    def get_playbook_contents(self, task_id):
+        """
+        playbook contents 반환.
+        :param task_id:
+        :return:
+        """
+        # 복호화
+        sc = current_app.config['SCRAPER']
+        stmt = self.__db.session.query(TaskPlaybook)
+        stmt = stmt.with_entities(TaskPlaybook.contents)
+        playbook_info = stmt.filter(TaskPlaybook.task_id == task_id).first()
+        return sc.dec(playbook_info[0])

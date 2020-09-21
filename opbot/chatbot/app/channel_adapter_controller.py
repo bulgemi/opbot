@@ -6,4 +6,3 @@ from . import api
 channel_adapter = api.model('ChannelAdapter', {"channel_id": fields.String,
                                                "event_uid": fields.String,
                                                "event_msg": fields.String})
-

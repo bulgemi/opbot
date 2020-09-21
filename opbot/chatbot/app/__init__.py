@@ -53,6 +53,13 @@ def create_app():
     app.logger.setLevel(app.config['LOGGING_LEVEL'])
     app.logger.addHandler(file_handler)
 
+    # RSA
+    from .fishbowl.scraper import Scraper
+    scraper = Scraper()
+    scraper.load_private_key(Config.PRIVATE_KEY)
+
+    app.config['SCRAPER'] = scraper
+
     # app.logger.debug("Start Chatbot.")
     # app.logger.info("Start Chatbot.")
     # app.logger.warning("Start Chatbot.")

@@ -18,14 +18,20 @@ with app.app_context():
 
 
 @celery.task()
-def task_execute(task_id, out_channel_id):
+def task_execute(task_id, out_channel_id, task_name, task_type, target_list, playbook_contents, exe_type=0):
     """
     Task Executor 에게 REST API 요청(Async Task Queue)
     :param task_id:
     :param out_channel_id:
+    :param task_name:
+    :param task_type:
+    :param target_list:
+    :param playbook_contents:
+    :param exe_type:
     :return:
     """
-    return current_app.bot.task_execute(task_id, out_channel_id)
+    return current_app.bot.task_execute(task_id, out_channel_id, task_name, task_type,
+                                        target_list, playbook_contents, exe_type)
 
 
 @celery.task()
