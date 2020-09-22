@@ -267,7 +267,6 @@ class AsyncRtm(Resource):
                                                            task_type, target_list, contents, exe_type=1)
                         result.wait()
                         current_app.bot.reset_c_run_grouptasks(rtm_msg['user'])
-
             elif task == '!no!' or task == '!n!':
                 user_name = current_app.bot.get_c_user_name(rtm_msg['user'])
 
@@ -289,6 +288,42 @@ class AsyncRtm(Resource):
                     message += " 미수행하겠습니다."
                 current_app.bot.reset_c_run_mytasks(rtm_msg['user'])
                 current_app.bot.put_broadcast(channel=rtm_msg['channel'], message=message)
+            elif task.startswith('!cpu,', 0, len('!cpu,')) is True:
+                task = task.replace('!', '')
+                params = task.split(',')
+                user_name = current_app.bot.check_auth(rtm_msg['user'])
+
+                if user_name is None:
+                    message = "수행 권한이 없습니다."
+                    current_app.bot.put_broadcast(channel=rtm_msg['channel'], message=message)
+                elif 1 < len(params) < 7 and params[1] != '':
+                    node_list = params[1:]
+                    result = manage.cpu_execute.delay(rtm_msg['channel'], node_list)
+                    result.wait()
+                else:
+                    if len(params) == 1:
+                        message = "{}님 cpu 노드 인자가 없습니다.".format(user_name)
+                    else:
+                        message = "{}님 cpu 노드 인자는 최대 5개입니다.".format(user_name)
+                    current_app.bot.put_broadcast(channel=rtm_msg['channel'], message=message)
+            elif task.startswith('!mem,', 0, len('!mem,')) is True:
+                task = task.replace('!', '')
+                params = task.split(',')
+                user_name = current_app.bot.check_auth(rtm_msg['user'])
+
+                if user_name is None:
+                    message = "수행 권한이 없습니다."
+                    current_app.bot.put_broadcast(channel=rtm_msg['channel'], message=message)
+                elif 1 < len(params) < 7 and params[1] != '':
+                    node_list = params[1:]
+                    result = manage.mem_execute.delay(rtm_msg['channel'], node_list)
+                    result.wait()
+                else:
+                    if len(params) == 1:
+                        message = "{}님 mem 노드 인자가 없습니다.".format(user_name)
+                    else:
+                        message = "{}님 mem 노드 인자는 최대 5개입니다.".format(user_name)
+                    current_app.bot.put_broadcast(channel=rtm_msg['channel'], message=message)
             else:
                 recommend_tasks = current_app.bot.task_recommend(rtm_msg['channel'])
                 # current_app.logger.debug("recommend_tasks=<%r>" % recommend_tasks)

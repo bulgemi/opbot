@@ -20,10 +20,9 @@ class SysReportGenerator(object):
         else:
             self.__save_dir = ""
 
-    def cpu_report(self, user_id, node_list):
+    def cpu_report(self, node_list):
         """
         노드별 CPU 사용량 반환.
-        :param user_id:
         :param node_list:
         :return file_name:
         """
@@ -73,15 +72,14 @@ class SysReportGenerator(object):
         plt.ylabel("CPU Usage(%)")
         plt.axis([date_list[-1], date_list[0], 0, 100])
         plt.xticks(rotation=90)
-        c_name = "{}{}{}.png".format(self.__save_dir, user_id, str(uuid1()))
+        c_name = "{}cpu{}.png".format(self.__save_dir, str(uuid1()))
         plt.savefig(c_name)
 
         return c_name
 
-    def mem_report(self, user_id, node_list):
+    def mem_report(self, node_list):
         """
         노드별 Memory 사용량 반환.
-        :param user_id:
         :param node_list:
         :return file_name:
         """
@@ -131,15 +129,14 @@ class SysReportGenerator(object):
         plt.ylabel("Memory Usage(%)")
         plt.axis([date_list[-1], date_list[0], 0, 100])
         plt.xticks(rotation=90)
-        m_name = "{}{}{}.png".format(self.__save_dir, user_id, str(uuid1()))
+        m_name = "{}mem{}.png".format(self.__save_dir, str(uuid1()))
         plt.savefig(m_name)
 
         return m_name
 
-    def cpu_table(self, user_id, node_list):
+    def cpu_table(self, node_list):
         """
         CPU 사용량 테이블 생성
-        :param user_id:
         :param node_list:
         :return:
         """
@@ -211,15 +208,14 @@ class SysReportGenerator(object):
         plt.figtext(0.95, 0.05, footer_text, horizontalalignment='right', size=6, weight='light')
         plt.draw()
         fig = plt.gcf()
-        c_name = "{}{}{}.png".format(self.__save_dir, user_id, str(uuid1()))
+        c_name = "{}cpu{}.png".format(self.__save_dir, str(uuid1()))
         plt.savefig(c_name, edgecolor=fig.get_edgecolor(),
                     facecolor=fig.get_facecolor(), dpi=my_dip)
         return c_name
 
-    def mem_table(self, user_id, node_list):
+    def mem_table(self, node_list):
         """
         Memory 사용량 테이블 생성
-        :param user_id:
         :param node_list:
         :return:
         """
@@ -291,7 +287,7 @@ class SysReportGenerator(object):
         plt.figtext(0.95, 0.05, footer_text, horizontalalignment='right', size=6, weight='light')
         plt.draw()
         fig = plt.gcf()
-        m_name = "{}{}{}.png".format(self.__save_dir, user_id, str(uuid1()))
+        m_name = "{}mem{}.png".format(self.__save_dir, str(uuid1()))
         plt.savefig(m_name, edgecolor=fig.get_edgecolor(),
                     facecolor=fig.get_facecolor(), dpi=my_dip)
         return m_name
@@ -299,8 +295,8 @@ class SysReportGenerator(object):
 
 if __name__ == "__main__":
     rg = SysReportGenerator()
-    cu_img = rg.cpu_report('user1', ['n1', 'n2', 'n3'])
-    ct_img = rg.cpu_table('user1', ['n1', 'n2', 'n3'])
+    cu_img = rg.cpu_report(['n1', 'n2', 'n3'])
+    ct_img = rg.cpu_table(['n1', 'n2', 'n3'])
     # print(file_name)
-    # file_name = rg.mem_report('user1', ['n1', 'n2', 'n3'])
+    # file_name = rg.mem_report(['n1', 'n2', 'n3'])
     # print(file_name)
