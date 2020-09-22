@@ -13,7 +13,7 @@ from slacker import Slacker
 from redis import Redis
 from redis.exceptions import DataError
 sys.path.append(os.getenv('OPBOT_HOME'))
-from manager.app.models import ChannelInfo, EventHistory, TaskInfo, TaskPlaybook, TargetList
+from manager.app.models import ChannelInfo, EventHistory, TaskInfo, TaskPlaybook, TargetList, UserInfo
 from chatbot.app.config import Config
 from chatbot.app.my_task import MyTask
 from chatbot.app.group_task import GroupTask
@@ -400,6 +400,34 @@ class ChatBot(object):
         """
         pass
 
+    def cpu_execute(self, out_channel_id, node_list):
+        """
+        cpu 사용량 보고서 생성.
+        :param out_channel_id:
+        :param node_list:
+        :return:
+        """
+        from .sys_executor import SysExecutor
+
+        sys_executor = SysExecutor(self.__db, out_channel_id, node_list)
+        sys_executor.run_cpu_task()
+
+        return True
+
+    def mem_execute(self, out_channel_id, node_list):
+        """
+        Memory 사용량 보고서 생성.
+        :param out_channel_id:
+        :param node_list:
+        :return:
+        """
+        from .sys_executor import SysExecutor
+
+        sys_executor = SysExecutor(self.__db, out_channel_id, node_list)
+        sys_executor.run_mem_task()
+
+        return True
+
     def task_execute(self, task_id, out_channel_id, task_name, task_type, target_list, playbook_contents, exe_type):
         """
         작업자가 요청한 task를 TaskExecutor 에 전송.
@@ -582,6 +610,21 @@ class ChatBot(object):
         stmt = stmt.with_entities(EventHistory.event_msg)
         event_message = stmt.filter(EventHistory.event_uid == event_uid.strip()).first()
         return event_message[0]
+
+    def check_auth(self, slack_id):
+        """
+        slack id 권한 체크
+        :param slack_id:
+        :return:
+        """
+        stmt = self.__db.session.query(UserInfo)
+        stmt = stmt.with_entities(UserInfo.user_name)
+        user_name = stmt.filter(UserInfo.slack_id == slack_id.strip()).first()
+
+        if user_name is None:
+            return None
+        else:
+            return user_name[0]
 
     def __get_task_cause(self, task_name):
         """
