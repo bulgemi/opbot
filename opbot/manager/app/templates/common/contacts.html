@@ -32,7 +32,6 @@
 </form>
 <script>
         $(function() {
-
             $("#contacts").jsGrid({
                 heading: true,
                 height: "auto",
@@ -44,9 +43,27 @@
                         var deferred = $.Deferred();
 
                         deferred.resolve([
-                        { name: { kr: "김동훈", en: "kim dong-hun" },
-                          picture: "{{ url_for('static', filename='img/contacts/kimdonghun_128x128.jpg') }}",
-                          email: "donghun_kim@sk.com" },
+                        {name: {kr: "김원철", en: "kim won-cheol"},
+                         info: "POC 리더, Data Eng., IaaS",
+                         email: "cv99ixt@sk.com"},
+                        {name: { kr: "김동훈", en: "kim dong-hun" },
+                         info: "POC 리더, AI Svc. 개발, Data 분석&ML/DL(비정형)",
+                         email: "donghun_kim@sk.com" },
+                        {name: {kr: "최헌수", en: "choi heon-su"},
+                         info: "AI Svc. 개발",
+                         email: "hschoe@sk.com"},
+                        {name: {kr: "이동우", en: "lee dong-woo"},
+                         info: "Data 분석&ML/DL(비정형)",
+                         email: "leedw416@sk.com"},
+                        {name: {kr: "조용준", en: "cho yong-jun"},
+                         info: "Data 분석&ML/DL(비정형)",
+                         email: "youngjun@sk.com"},
+                        {name: {kr: "박정수", en: "park jeong-su"},
+                         info: "Data 분석&ML/DL(비정형)",
+                         email: "nostalgia@sk.com"},
+                        {name: {kr: "이현민", en: "lee hyun-min"},
+                         info: "AI Svc. 개발, IaaS",
+                         email: "hm_lee@sk.com"},
                          ]);
                         return deferred.promise();
                     }
@@ -57,8 +74,10 @@
                     var $info = $("<div>").addClass("client-info")
                         .append($("<p>").append($("<strong>").text(user.name.kr + " (" + user.name.en + ")")))
                         .append($("<p>").text("Email: " + user.email))
+                        .append($("<p>").text("Info: " + user.info))
 
-                    return $("<tr>").append($("<td>").append($photo).append($info));
+                    // return $("<tr>").append($("<td>").append($photo).append($info));
+                    return $("<tr>").append($("<td>").append($info));
                 },
                 fields: [
                     { title: "Information" }
