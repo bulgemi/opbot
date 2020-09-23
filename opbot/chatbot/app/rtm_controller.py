@@ -144,6 +144,7 @@ class AsyncRtm(Resource):
                     current_app.bot.put_chat(channel=rtm_msg['channel'], message=message, tasks=anal_tasks)
             elif task == '!mytask!' or task == '!mt!':
                 # delete redis data
+                current_app.bot.del_c_grouptasks(rtm_msg['user'])
                 current_app.bot.del_c_mytasks(rtm_msg['user'])
                 current_app.bot.del_c_user_name(rtm_msg['user'])
                 user_name, m_tasks = current_app.bot.get_mytasks(rtm_msg['user'])
@@ -190,6 +191,7 @@ class AsyncRtm(Resource):
                                                message=message, tasks=m_tasks)
             elif task == '!grouptask!' or task == '!gt!':
                 # delete redis data
+                current_app.bot.del_c_mytasks(rtm_msg['user'])
                 current_app.bot.del_c_grouptasks(rtm_msg['user'])
                 current_app.bot.del_c_user_name(rtm_msg['user'])
                 user_name, g_tasks = current_app.bot.get_grouptasks(rtm_msg['user'])
