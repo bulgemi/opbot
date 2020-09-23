@@ -179,12 +179,15 @@ class ChatBot(object):
         task_list = list()
         opinions = "과거 이력을 기반으로 분석한 작업 유효확률는 아래와 같습니다.\n\n"
 
+        msg = ""
         for index, task in enumerate(tasks):
-            tmp = {
-                "type": "mrkdwn",
-                "text": "{}.{}".format(index+1, task),
-            }
-            task_list.append(tmp)
+            msg += "{}.{}\n".format(index+1, task)
+
+        tmp = {
+            "type": "mrkdwn",
+            "text": msg,
+        }
+        task_list.append(tmp)
 
         # 발생한 event 유형을 분석하고 이에 적합한 분석/조치 task에 대한 의견 제공
         for opinion in self.task_opinion(channel):
@@ -258,12 +261,15 @@ class ChatBot(object):
         task_list = list()
         comments = "*{}님이 수행할 수 있는 작업은 아래와 같습니다.*\n\n".format(user)
 
+        msg = ""
         for index, task in enumerate(tasks):
-            tmp = {
-                "type": "mrkdwn",
-                "text": "{}.{} ({})".format(index+1, task[1], "분석" if task[2] == 'A' else "조치"),
-            }
-            task_list.append(tmp)
+            msg += "{}.{} ({})\n".format(index + 1, task[1], "분석" if task[2] == 'A' else "조치")
+
+        tmp = {
+            "type": "mrkdwn",
+            "text": msg,
+        }
+        task_list.append(tmp)
 
         attachments = list()
 
@@ -291,7 +297,7 @@ class ChatBot(object):
                 "text": {
                     "type": "mrkdwn",
                     "text": usage,
-        }
+                }
             })
 
         attachments.append({
