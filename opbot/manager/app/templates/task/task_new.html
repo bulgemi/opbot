@@ -101,22 +101,14 @@ $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             <div class="control-group">
                 <ul class="control unstyled" id="type1">
                     <li>
-                        <input type="radio" id="rb11" name="rb1" value="0"{% if form is defined %}
-                               {% if form.task_type == 0  %}
+                        <input type="radio" id="rb14" name="rb1" value="3"{% if form is defined %}
+                               {% if form.task_type == 3  %}
                                checked
                                {% endif %}
                                {% else %}
                                checked
                                {% endif %}>
-                        <label for="rb11">OPMATE</label>
-                    </li>
-                    <li>
-                        <input type="radio" id="rb12" name="rb1" value="1"{% if form is defined %}
-                               {% if form.task_type == 1  %}
-                               checked
-                               {% endif %}
-                               {% endif %}>
-                        <label for="rb12">K8s</label>
+                        <label for="rb14">Shell Script</label>
                     </li>
                     <li>
                         <input type="radio" id="rb13" name="rb1" value="2"{% if form is defined %}
@@ -126,13 +118,21 @@ $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
                                {% endif %}>
                         <label for="rb13">Command</label>
                     </li>
-                    <li>
-                        <input type="radio" id="rb14" name="rb1" value="3"{% if form is defined %}
-                               {% if form.task_type == 3  %}
+                     <li>
+                        <input type="radio" id="rb12" name="rb1" value="1"{% if form is defined %}
+                               {% if form.task_type == 1  %}
                                checked
                                {% endif %}
                                {% endif %}>
-                        <label for="rb14">Shell Script</label>
+                        <label for="rb12">K8s</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="rb11" name="rb1" value="0"{% if form is defined %}
+                               {% if form.task_type == 0  %}
+                               checked
+                               {% endif %}
+                               {% endif %}>
+                        <label for="rb11">OPMATE</label>
                     </li>
                 </ul>
             </div>
