@@ -96,3 +96,10 @@
     ![CPU 사용률](https://github.com/bulgemi/opbot/blob/master/doc/501reportcpu.png)
     1. MEMORY 사용률
     ![MEMORY 사용률](https://github.com/bulgemi/opbot/blob/master/doc/502reportmemory.png)
+1. 산출물
+    1. 사용자(User) TASK
+        * ![사용자(User) TASK](https://github.com/bulgemi/opbot/blob/master/doc/12_chatbot_mt.png)
+    1. 그룹(Group) TASK
+        * ![그룹(Group) TASK](https://github.com/bulgemi/opbot/blob/master/doc/13_chatbot_gt.png)
+    1. System 상태
+        * ![System 상태](https://github.com/bulgemi/opbot/blob/master/doc/14_chatbot_cpu.png)
