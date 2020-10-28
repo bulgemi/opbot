@@ -199,23 +199,23 @@
         ![Task 관리](https://github.com/bulgemi/opbot/blob/master/doc/203admintaskmanage.png)
 1. 산출물
     1. 로그인
-        ![로그인 화면](https://github.com/bulgemi/opbot/blob/master/doc/00_login.png)
+        * ![로그인 화면](https://github.com/bulgemi/opbot/blob/master/doc/00_login.png)
     1. 사용자 생성
-        ![사용자 생성 화면](https://github.com/bulgemi/opbot/blob/master/doc/01_join.png)
+        * ![사용자 생성 화면](https://github.com/bulgemi/opbot/blob/master/doc/01_join.png)
     1. Task
         1. Task 등록
-            ![Task 등록 화면](https://github.com/bulgemi/opbot/blob/master/doc/03_task.png)
+            * ![Task 등록 화면](https://github.com/bulgemi/opbot/blob/master/doc/03_task.png)
         1. Task 조회
-            ![Task 조회 화면](https://github.com/bulgemi/opbot/blob/master/doc/02_task_list.png)
+            * ![Task 조회 화면](https://github.com/bulgemi/opbot/blob/master/doc/02_task_list.png)
     1. Group
         1. Group 등록
-            ![Group 등록 화면](https://github.com/bulgemi/opbot/blob/master/doc/05_group.png)
+            * ![Group 등록 화면](https://github.com/bulgemi/opbot/blob/master/doc/05_group.png)
         1. Group 조회
-            ![Group 조회 화면](https://github.com/bulgemi/opbot/blob/master/doc/04_group_list.png)
+            * ![Group 조회 화면](https://github.com/bulgemi/opbot/blob/master/doc/04_group_list.png)
     1. Admin
         1. User 관리
-            ![User 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/08_admin_user.png)
+            * ![User 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/08_admin_user.png)
         1. Group 관리
-            ![Group 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/07_admin_group.png)
+            * ![Group 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/07_admin_group.png)
         1. Task 관리
-            ![Task 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/06_admin_task.png)
+            * ![Task 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/06_admin_task.png)
