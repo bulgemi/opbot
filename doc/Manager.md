@@ -218,4 +218,4 @@
         1. Group 관리
         ![Group 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/07_admin_group.png)
         1. Task 관리
-        ![Task 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/06_admin_task.png)       
+        ![Task 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/06_admin_task.png)
