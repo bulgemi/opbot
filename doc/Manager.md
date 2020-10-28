@@ -203,7 +203,7 @@
     1. 사용자 생성
     ![사용자 생성 화면](https://github.com/bulgemi/opbot/blob/master/doc/01_join.png)
     1. Task
-         1. Task 등록
+        1. Task 등록
         ![Task 등록 화면](https://github.com/bulgemi/opbot/blob/master/doc/03_task.png)
         1. Task 조회
         ![Task 조회 화면](https://github.com/bulgemi/opbot/blob/master/doc/02_task_list.png)
