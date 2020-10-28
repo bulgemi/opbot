@@ -219,3 +219,10 @@
             * ![Group 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/07_admin_group.png)
         1. Task 관리
             * ![Task 관리 화면](https://github.com/bulgemi/opbot/blob/master/doc/06_admin_task.png)
+    1. license
+        * ![라이선스 화면](https://github.com/bulgemi/opbot/blob/master/doc/09_license.png)
+    1. sitemap
+        * ![사이트맵 화면](https://github.com/bulgemi/opbot/blob/master/doc/11_sitemap.png)
+    1. contacts
+        * ![연락처 화면](https://github.com/bulgemi/opbot/blob/master/doc/10_contacts.png)
+         
