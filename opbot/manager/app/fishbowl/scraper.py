@@ -1,6 +1,7 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'kim dong-hun'
 from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
 
 
 class Scraper(object):
@@ -14,7 +15,8 @@ class Scraper(object):
         :return:
         """
         try:
-            self.private_key = RSA.importKey(open(key_path).read())
+            key = RSA.importKey(open(key_path).read())
+            self.private_key = PKCS1_OAEP.new(key)
         except OSError as e:
             raise e
         except Exception as e:

@@ -1,12 +1,13 @@
 # _*_ coding: utf-8 _*_
 __author__ = 'kim dong-hun'
 from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
 
 
 class Moss(object):
     def __init__(self):
         self.public_key = None
-        self.read_size = 127
+        self.read_size = 86
 
     def load_public_key(self, key_path):
         """
@@ -15,7 +16,8 @@ class Moss(object):
         :return:
         """
         try:
-            self.public_key = RSA.importKey(open(key_path).read())
+            key = RSA.importKey(open(key_path).read())
+            self.public_key = PKCS1_OAEP.new(key)
         except OSError as e:
             raise e
         except Exception as e:
@@ -41,7 +43,7 @@ class Moss(object):
         enc_data = b""
 
         for tmp in enc_blocks:
-            piece = self.public_key.encrypt(tmp, 32)[0]
+            piece = self.public_key.encrypt(tmp)
             ln = "{:03d}".format(len(piece))
             buf = ln.encode('utf-8') + piece
             enc_data += buf
