@@ -57,8 +57,8 @@ def test_enc_dec_short():
         "01234567890123456789012345678901234567890123456789",
         "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
     ]
-    private_key_path = "/home/donghun/PycharmProjects/opbot/opbot/manager/test/opbot_private.pem"
-    public_key_path = "/home/donghun/PycharmProjects/opbot/opbot/manager/test/opbot_public.pem"
+    private_key_path = "/home/donghun/PycharmProjects/opbot_new/opbot/manager/test/opbot_private.pem"
+    public_key_path = "/home/donghun/PycharmProjects/opbot_new/opbot/manager/test/opbot_public.pem"
 
     assert scraper.load_private_key(private_key_path) is True
     assert moss.load_public_key(public_key_path) is True
@@ -143,8 +143,8 @@ def test_enc_dec_long_kor():
 5명의 소설가들은 상상력을 발휘해 이 뒤에 이어질 이야기를 쓴 5개의 속편을 내놓는다.
     """
 
-    private_key_path = "/home/donghun/PycharmProjects/opbot/opbot/manager/test/opbot_private.pem"
-    public_key_path = "/home/donghun/PycharmProjects/opbot/opbot/manager/test/opbot_public.pem"
+    private_key_path = "/home/donghun/PycharmProjects/opbot_new/opbot/manager/test/opbot_private.pem"
+    public_key_path = "/home/donghun/PycharmProjects/opbot_new/opbot/manager/test/opbot_public.pem"
 
     assert scraper.load_private_key(private_key_path) is True
     assert moss.load_public_key(public_key_path) is True
@@ -192,8 +192,8 @@ After reading it, you will be able to read and write Python modules and programs
 and you will be ready to learn more about the various Python library modules described in The Python Standard Library.
     """
 
-    private_key_path = "/home/donghun/PycharmProjects/opbot/opbot/manager/test/opbot_private.pem"
-    public_key_path = "/home/donghun/PycharmProjects/opbot/opbot/manager/test/opbot_public.pem"
+    private_key_path = "/home/donghun/PycharmProjects/opbot_new/opbot/manager/test/opbot_private.pem"
+    public_key_path = "/home/donghun/PycharmProjects/opbot_new/opbot/manager/test/opbot_public.pem"
 
     assert scraper.load_private_key(private_key_path) is True
     assert moss.load_public_key(public_key_path) is True
@@ -203,18 +203,3 @@ and you will be ready to learn more about the various Python library modules des
     print("enc=(%d)[%s]" % (len(enc_result), enc_result))
     dec_result = scraper.dec(enc_result)
     print("dec=(%d)[%s]" % (len(dec_result), dec_result))
-
-
-def test_enc_to_dec():
-    """
-    암호화 문자열 복호화 테스트
-    :return:
-    """
-    from manager.app.fishbowl.scraper import Scraper
-    scraper = Scraper()
-    private_key_path = "/home/donghun/PycharmProjects/opbot/opbot/manager/test/opbot_private.pem"
-    assert scraper.load_private_key(private_key_path) is True
-
-    enc_text = b"128M\xb6\x1979\x10\xb3\xe0dB\xfc\xb1\xea\xc7\xc6\t<Q\xba\xa3\xa4\xe1/DzH\n<]\xf9'\x02vH\x89\xa3x\xb23\xa8Y9\xa1c\xe61\xe6^H\xfa\x85\x18\xb3'\xdex\xec\x9ayp\xa5;\x93\xf8W\xce\xfe\xc9~\xac\x84%\xe2}9y;\xc9g\xc9llE\x01r\xbb|\x05\x93S\xc0\x11\xbd\xcf\x07\xc8!\xa3\xaf\xbfiz\x05'(\xd0\x7f\xd0\xa1[q0Lc\xcc\x80\xeb\xb2\xfa\x9a#\xf9zi\xc0\x10\xf5S"
-    dec_result = scraper.dec(enc_text)
-    print("dec=(%d)[%s]" % (len(dec_result), dec_result.decode()))
