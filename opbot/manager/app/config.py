@@ -8,7 +8,7 @@ class Config(object):
     Manager 환경 설정 파일.
     """
     LOG_LEVEL = 'debug'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://opbot_appl:apbot_appl26#!@localhost/opbot_db?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://db_id:db_password@localhost/db_name?charset=utf8'
     # RSA KEY
     PUBLIC_KEY = '/home/donghun/PycharmProjects/opbot_new/opbot/manager/pem/opbot_public.pem'
     PRIVATE_KEY = '/home/donghun/PycharmProjects/opbot_new/opbot/manager/pem/opbot_private.pem'
