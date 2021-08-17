@@ -10,7 +10,7 @@ from datetime import timedelta
 class Config(object):
     LOG_LEVEL = DEBUG  # DEBUG, INFO, WARNING, ERROR, CRITICAL
     LOG_FILE = 'channel_adapter.log'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://opbot_appl:apbot_appl26#!@localhost/opbot_db?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://db_id:db_password@localhost/db_name?charset=utf8'
 
 
 class AdapterOracle(object):
